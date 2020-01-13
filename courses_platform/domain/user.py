@@ -1,4 +1,8 @@
 from uuid import uuid4
+from typing import Type, TypeVar
+
+
+U = TypeVar('U', bound='User')
 
 
 class User:
@@ -7,5 +11,5 @@ class User:
         self.email = email
 
     @classmethod
-    def from_dict(cls, adict: dict):
+    def from_dict(cls: Type[U], adict: dict) -> U:
         return cls(adict['email'])
