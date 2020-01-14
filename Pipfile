@@ -10,6 +10,7 @@ pytest = "*"
 pytest-flask = "*"
 flask = "*"
 flask-sqlalchemy = "*"
+mock = "*"
 
 [requires]
 python_version = "3.7"
