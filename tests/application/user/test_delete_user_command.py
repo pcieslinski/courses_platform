@@ -31,7 +31,7 @@ class TestDeleteUserCommand:
         repo.delete_user.assert_called_with(user_id=user_id)
         assert result.email == 'test@gmail.com'
 
-    def test_delete_user_returns_exception_when_called_with_bad_user_id(self):
+    def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self):
         user_id = str(uuid4())
 
         repo = Mock()
