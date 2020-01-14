@@ -44,6 +44,7 @@ def mock_course_repo(course: Course) -> Mock:
     repo = Mock()
 
     repo.create_course.return_value = course
+    repo.delete_course.return_value = course
 
     return repo
 
