@@ -1,6 +1,7 @@
 import pytest
+from mock import Mock
 
-from courses_platform.application.user.commands.create import CreateUserCommand
+from courses_platform.application.user.commands.create import CreateUserCommand, UserAlreadyExists
 
 
 @pytest.fixture(scope='function')
@@ -25,3 +26,16 @@ class TestCreateUserCommand:
 
         repo.create_user.assert_called_with(email='test@gmail.com')
         assert result.email == 'test@gmail.com'
+
+    def test_create_user_command_returns_exception_when_called_with_already_existing_user_email(self):
+        repo = Mock()
+        repo.create_user.side_effect = UserAlreadyExists(
+            'User with test@gmail.com email already exists.'
+        )
+        command = CreateUserCommand(repo=repo)
+
+        result = command.execute(email='test@gmail.com')
+
+        repo.create_user.assert_called_with(email='test@gmail.com')
+        assert isinstance(result, UserAlreadyExists)
+        assert str(result) == 'User with test@gmail.com email already exists.'

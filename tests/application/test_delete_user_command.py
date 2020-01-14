@@ -33,11 +33,11 @@ class TestDeleteUserCommand:
         user_id = str(uuid4())
 
         repo = Mock()
-        repo.delete_user.side_effect = NoMatchingUser(f'No match for User with id {user_id}')
+        repo.delete_user.side_effect = NoMatchingUser(f'No match for User with id {user_id}.')
         command = DeleteUserCommand(repo=repo)
 
         result = command.execute(user_id=user_id)
 
         repo.delete_user.assert_called_with(user_id=user_id)
         assert isinstance(result, NoMatchingUser)
-        assert str(result) == f'No match for User with id {user_id}'
+        assert str(result) == f'No match for User with id {user_id}.'
