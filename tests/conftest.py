@@ -3,11 +3,17 @@ from mock import Mock
 from typing import List
 
 from courses_platform.domain.user import User
+from courses_platform.domain.course import Course
 
 
 @pytest.fixture
 def user() -> User:
     return User('test@gmail.com')
+
+
+@pytest.fixture
+def course() -> Course:
+    return Course(name='Test Course')
 
 
 @pytest.fixture
@@ -31,3 +37,13 @@ def mock_user_repo(user: User, users: List[User]) -> Mock:
     repo.get_all_users.return_value = users
 
     return repo
+
+
+@pytest.fixture(scope='function')
+def mock_course_repo(course: Course) -> Mock:
+    repo = Mock()
+
+    repo.create_course.return_value = course
+
+    return repo
+
