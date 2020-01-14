@@ -5,7 +5,7 @@ from courses_platform.application.interfaces.icommand_query import ICommandQuery
 
 
 class GetAllUsersQuery(ICommandQuery):
-    def __init__(self, repo):
+    def __init__(self, repo) -> None:
         self.repo = repo
 
     def execute(self) -> List[User]:
