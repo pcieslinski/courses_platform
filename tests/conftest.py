@@ -10,7 +10,7 @@ def user() -> User:
 
 
 @pytest.fixture(scope='function')
-def mock_user_repo(user) -> Mock:
+def mock_user_repo(user: User) -> Mock:
     repo = Mock()
 
     repo.create_user.return_value = user
