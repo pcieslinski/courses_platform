@@ -1,12 +1,14 @@
 import pytest
 from mock import Mock
 from uuid import uuid4
+from typing import Tuple
 
+from courses_platform.application.interfaces.icommand_query import CommandQuery
 from courses_platform.application.user.commands.delete import DeleteUserCommand, NoMatchingUser
 
 
 @pytest.fixture(scope='function')
-def delete_command_with_mock_repo(mock_user_repo: Mock):
+def delete_command_with_mock_repo(mock_user_repo: Mock) -> Tuple[CommandQuery, Mock]:
     command = DeleteUserCommand(repo=mock_user_repo)
     return command, mock_user_repo
 

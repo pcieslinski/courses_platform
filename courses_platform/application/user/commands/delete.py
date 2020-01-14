@@ -1,13 +1,14 @@
 from typing import Union
 
 from courses_platform.domain.user import User
+from courses_platform.application.interfaces.icommand_query import ICommandQuery
 
 
 class NoMatchingUser(Exception):
     pass
 
 
-class DeleteUserCommand:
+class DeleteUserCommand(ICommandQuery):
     def __init__(self, repo) -> None:
         self.repo = repo
 

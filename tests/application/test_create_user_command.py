@@ -1,11 +1,13 @@
 import pytest
 from mock import Mock
+from typing import Tuple
 
+from courses_platform.application.interfaces.icommand_query import CommandQuery
 from courses_platform.application.user.commands.create import CreateUserCommand, UserAlreadyExists
 
 
 @pytest.fixture(scope='function')
-def create_command_with_mock_repo(mock_user_repo):
+def create_command_with_mock_repo(mock_user_repo: Mock) -> Tuple[CommandQuery, Mock]:
     command = CreateUserCommand(repo=mock_user_repo)
     return command, mock_user_repo
 

@@ -5,12 +5,12 @@ from courses_platform.domain.user import User
 
 
 @pytest.fixture
-def user():
+def user() -> User:
     return User('test@gmail.com')
 
 
 @pytest.fixture(scope='function')
-def mock_user_repo(user):
+def mock_user_repo(user: User) -> Mock:
     repo = Mock()
 
     repo.create_user.return_value = user
