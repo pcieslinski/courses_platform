@@ -27,6 +27,17 @@ def users() -> List[User]:
     ]
 
 
+@pytest.fixture
+def courses():
+    course_1 = Course('Test Course')
+    course_2 = Course('Sample Course')
+
+    return [
+        course_1,
+        course_2
+    ]
+
+
 @pytest.fixture(scope='function')
 def mock_user_repo(user: User, users: List[User]) -> Mock:
     repo = Mock()
@@ -40,11 +51,12 @@ def mock_user_repo(user: User, users: List[User]) -> Mock:
 
 
 @pytest.fixture(scope='function')
-def mock_course_repo(course: Course) -> Mock:
+def mock_course_repo(course: Course, courses: List[Course]) -> Mock:
     repo = Mock()
 
     repo.create_course.return_value = course
     repo.delete_course.return_value = course
 
-    return repo
+    repo.get_all_courses.return_value = courses
 
+    return repo
