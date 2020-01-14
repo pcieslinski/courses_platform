@@ -10,7 +10,7 @@ class NoMatchingCourse(Exception):
 
 class DeleteCourseCommand(ICommandQuery):
     def __init__(self, repo) -> None:
-        self.repo =repo
+        self.repo = repo
 
     def execute(self, course_id: str) -> Union[Course, Exception]:
         try:
