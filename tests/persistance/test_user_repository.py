@@ -1,13 +1,15 @@
 import pytest
 from uuid import uuid4
+from typing import Tuple
 from mock import Mock, patch
+from dataclasses import dataclass
 
 from courses_platform.domain.user import User
 from courses_platform.persistence.repositories.user.user_repository import UserRepository
 
 
 @pytest.fixture
-def db(user_record):
+def db(user_record: dataclass) -> Mock:
     db = Mock()
 
     db.query.return_value.filter.return_value.delete.return_value = 1
@@ -21,13 +23,13 @@ def db(user_record):
 
 @pytest.fixture(scope='function')
 @patch('courses_platform.persistence.database.session', autospec=True)
-def mock_session_with_db(session, db):
+def mock_session_with_db(session: Mock, db: Mock) -> Tuple[Mock, Mock]:
     session.return_value.__enter__.return_value = db
     return session, db
 
 
 @pytest.fixture(scope='function')
-def user_repo_with_mocks(mock_session_with_db):
+def user_repo_with_mocks(mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[Mock, Mock, Mock]:
     mock_session, db = mock_session_with_db
     repo = UserRepository(db_session=mock_session)
     return repo, mock_session, db
