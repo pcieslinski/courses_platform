@@ -17,6 +17,6 @@ class User:
     @classmethod
     def from_record(cls: Type[U], record) -> U:
         return cls(
-            email=record['email'],
-            id=record['id']
+            email=record.email,
+            id=record.id
         )
