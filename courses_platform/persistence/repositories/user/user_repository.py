@@ -3,9 +3,10 @@ from typing import List
 from courses_platform.domain.user import User
 from courses_platform.persistence.database import Session
 from courses_platform.persistence.repositories.user import user_model as um
+from courses_platform.application.interfaces.iuser_repository import IUserRepository
 
 
-class UserRepository:
+class UserRepository(IUserRepository):
     def __init__(self, db_session: Session) -> None:
         self.db_session = db_session
 
