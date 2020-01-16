@@ -1,6 +1,7 @@
 import pytest
 from mock import Mock
 from typing import List
+from dataclasses import dataclass
 
 from courses_platform.domain.user import User
 from courses_platform.domain.course import Course
@@ -9,6 +10,17 @@ from courses_platform.domain.course import Course
 @pytest.fixture
 def user() -> User:
     return User('test@gmail.com')
+
+
+@pytest.fixture
+def user_record():
+
+    @dataclass
+    class UserRecord:
+        id: str
+        email: str
+
+    return UserRecord
 
 
 @pytest.fixture

@@ -25,14 +25,11 @@ class TestUserEntity:
 
         assert user.email == 'test@gmail.com'
 
-    def test_user_initialize_correctly_from_record(self):
+    def test_user_initialize_correctly_from_record(self, user_record):
         user_id = str(uuid4())
-        user_record = {
-            'id': user_id,
-            'email': 'test@gmail.com'
-        }
+        u_record = user_record(user_id, 'test@gmail.com')
 
-        user = User.from_record(user_record)
+        user = User.from_record(u_record)
 
         assert isinstance(user, User)
         assert hasattr(user, 'id')
