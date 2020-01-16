@@ -1,13 +1,14 @@
 import os
+from contextlib import contextmanager
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
-db_path = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.abspath(os.path.dirname(__file__))
 
-engine = create_engine(f'sqlite:////{db_path}/test.db', convert_unicode=True)
+engine = create_engine(f'sqlite:////{DB_PATH}/test.db', convert_unicode=True)
 Session = scoped_session(sessionmaker(autocommit=False,
                                       autoflush=False,
                                       bind=engine))
@@ -16,7 +17,15 @@ Base = declarative_base()
 Base.query = Session.query_property()
 
 
-def init_db():
-    from courses_platform.persistance.repositories.user_model import User
+@contextmanager
+def session():
+    sess = Session()
 
-    Base.metadata.create_all(bind=engine)
+    try:
+        yield sess
+        sess.commit()
+    except:
+        sess.rollback()
+        raise
+    finally:
+        Session.remove()
