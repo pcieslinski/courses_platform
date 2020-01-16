@@ -29,6 +29,17 @@ def course() -> Course:
 
 
 @pytest.fixture
+def course_record() -> dataclass:
+
+    @dataclass
+    class CourseRecord:
+        id: str
+        name: str
+
+    return CourseRecord
+
+
+@pytest.fixture
 def users() -> List[User]:
     user_1 = User('test@gmail.com')
     user_2 = User('sample@gmail.com')
