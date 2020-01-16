@@ -2,6 +2,7 @@ from typing import Union
 
 from courses_platform.domain.course import Course
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from courses_platform.application.interfaces.icourse_repository import CRepository
 
 
 class CourseAlreadyExists(Exception):
@@ -9,7 +10,7 @@ class CourseAlreadyExists(Exception):
 
 
 class CreateCourseCommand(ICommandQuery):
-    def __init__(self, repo) -> None:
+    def __init__(self, repo: CRepository) -> None:
         self.repo = repo
 
     def execute(self, name: str) -> Union[Course, Exception]:
