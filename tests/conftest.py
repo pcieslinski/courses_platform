@@ -13,7 +13,7 @@ def user() -> User:
 
 
 @pytest.fixture
-def user_record():
+def user_record() -> dataclass:
 
     @dataclass
     class UserRecord:
@@ -40,7 +40,7 @@ def users() -> List[User]:
 
 
 @pytest.fixture
-def courses():
+def courses() -> List[Course]:
     course_1 = Course('Test Course')
     course_2 = Course('Sample Course')
 
