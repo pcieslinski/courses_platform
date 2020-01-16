@@ -29,7 +29,7 @@ class TestDeleteUserCommand:
         result = command.execute(user_id=user_id)
 
         repo.delete_user.assert_called_with(user_id=user_id)
-        assert result.email == 'test@gmail.com'
+        assert result
 
     def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self):
         user_id = str(uuid4())
@@ -38,8 +38,8 @@ class TestDeleteUserCommand:
         repo.delete_user.side_effect = NoMatchingUser(f'No match for User with id {user_id}.')
         command = DeleteUserCommand(repo=repo)
 
-        result = command.execute(user_id=user_id)
+        with pytest.raises(NoMatchingUser) as exc:
+            result = command.execute(user_id=user_id)
 
-        repo.delete_user.assert_called_with(user_id=user_id)
-        assert isinstance(result, NoMatchingUser)
-        assert str(result) == f'No match for User with id {user_id}.'
+            repo.delete_user.assert_called_with(user_id=user_id)
+            assert str(exc) == f'No match for User with id {user_id}.'
