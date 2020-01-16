@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from courses_platform.domain.course import Course
 
 
@@ -21,4 +23,16 @@ class TestCourseEntity:
         assert isinstance(course, Course)
         assert hasattr(course, 'id')
 
+        assert course.name == 'Test Course'
+
+    def test_course_initialize_correctly_form_record(self, course_record):
+        course_id = str(uuid4())
+        c_record = course_record(course_id, 'Test Course')
+
+        course = Course.from_record(c_record)
+
+        assert isinstance(course, Course)
+        assert hasattr(course, 'id')
+
+        assert course.id == course_id
         assert course.name == 'Test Course'
