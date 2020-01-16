@@ -29,7 +29,7 @@ class TestDeleteCourseCommand:
         result = command.execute(course_id=course_id)
 
         repo.delete_course.assert_called_with(course_id=course_id)
-        assert result.name == 'Test Course'
+        assert result
 
     def test_delete_course_command_returns_exception_when_called_with_bad_course_id(self):
         course_id = str(uuid4())
@@ -38,8 +38,8 @@ class TestDeleteCourseCommand:
         repo.delete_course.side_effect = NoMatchingCourse(f'No match for Course with id {course_id}.')
         command = DeleteCourseCommand(repo=repo)
 
-        result = command.execute(course_id=course_id)
+        with pytest.raises(NoMatchingCourse) as exc:
+            result = command.execute(course_id=course_id)
 
-        repo.delete_course.assert_called_with(course_id=course_id)
-        assert isinstance(result, NoMatchingCourse)
-        assert str(result) == f'No match for Course with id {course_id}.'
+            repo.delete_course.assert_called_with(course_id=course_id)
+            assert str(exc) == f'No match for Course with id {course_id}.'

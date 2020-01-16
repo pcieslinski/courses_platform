@@ -1,7 +1,5 @@
-from typing import Union
-
-from courses_platform.domain.course import Course
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from courses_platform.application.interfaces.icourse_repository import CRepository
 
 
 class NoMatchingCourse(Exception):
@@ -9,12 +7,13 @@ class NoMatchingCourse(Exception):
 
 
 class DeleteCourseCommand(ICommandQuery):
-    def __init__(self, repo) -> None:
+    def __init__(self, repo: CRepository) -> None:
         self.repo = repo
 
-    def execute(self, course_id: str) -> Union[Course, Exception]:
-        try:
-            result = self.repo.delete_course(course_id=course_id)
+    def execute(self, course_id: str) -> bool:
+        result = self.repo.delete_course(course_id=course_id)
+
+        if result:
             return result
-        except NoMatchingCourse as exc:
-            return exc
+        else:
+            raise NoMatchingCourse(f'No match for Course with id {course_id}.')
