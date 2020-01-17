@@ -1,21 +1,20 @@
-from typing import Union
-
-from courses_platform.domain.user import User
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.iuser_repository import URepository
 
-
-class UserAlreadyExists(Exception):
-    pass
+from courses_platform.request_objects import Request
+from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
 
 
 class CreateUserCommand(ICommandQuery):
     def __init__(self, repo: URepository) -> None:
         self.repo = repo
 
-    def execute(self, email: str) -> Union[User, Exception]:
+    def execute(self, request: Request) -> Response:
+        if not request:
+            return ResponseFailure.build_from_invalid_request(request)
+
         try:
-            new_user = self.repo.create_user(email=email)
-            return new_user
-        except UserAlreadyExists as exc:
-            return exc
+            new_user = self.repo.create_user(email=request.email)
+            return ResponseSuccess(new_user)
+        except Exception as exc:
+            return ResponseFailure.build_resource_error(exc)
