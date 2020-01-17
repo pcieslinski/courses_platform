@@ -2,6 +2,7 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
+from courses_platform.response_objects import ResponseSuccess
 from courses_platform.application.course.queries.get_all import GetAllCoursesQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 
@@ -24,7 +25,8 @@ class TestGetAllCoursesQuery:
     def test_get_all_courses_query_executes_correctly(self, courses, get_all_query_with_mock_repo):
         query, repo = get_all_query_with_mock_repo
 
-        result = query.execute()
+        response = query.execute()
 
         repo.get_all_courses.assert_called_with()
-        assert result == courses
+        assert isinstance(response, ResponseSuccess)
+        assert response.value == courses
