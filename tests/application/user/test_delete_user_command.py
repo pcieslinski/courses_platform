@@ -38,7 +38,7 @@ class TestDeleteUserCommand:
         repo.delete_user.assert_called_with(user_id='123')
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
-        assert response.value is 1
+        assert response.value is ''
 
     def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self,
                                                                                 delete_user_request):
