@@ -45,7 +45,10 @@ class TestCoursesApi:
         http_response = client.post('/api/courses', data=data, headers=headers)
         course_data = json.dumps(course, cls=CourseJsonEncoder)
 
+        _, kwargs = mock_command().execute.call_args
+
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(course_data)
         mock_command().execute.assert_called()
+        assert kwargs['request'].name == 'Test Course'
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'

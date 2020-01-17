@@ -38,7 +38,7 @@ class TestDeleteCourseCommand:
         repo.delete_course.assert_called_with(course_id='100')
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
-        assert response.value is 1
+        assert response.value is ''
 
     def test_delete_course_command_returns_exception_when_called_with_bad_course_id(self,
                                                                                     delete_course_request):
