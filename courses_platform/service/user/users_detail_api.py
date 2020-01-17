@@ -16,7 +16,7 @@ class UsersDetailApi(Resource):
         try:
             command.execute(user_id)
 
-        except delete.NoMatchingUser:
+        except Exception as exc:
             return Response(
                 json.dumps({
                     'message': f'No User has been found for a given id: {user_id}'

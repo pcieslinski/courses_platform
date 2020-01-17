@@ -1,8 +1,6 @@
 import mock
 from uuid import uuid4
 
-from courses_platform.application.user.commands.delete import NoMatchingUser
-
 
 class TestUsersDetailApi:
 
@@ -19,7 +17,7 @@ class TestUsersDetailApi:
 
     @mock.patch('courses_platform.application.user.commands.delete.DeleteUserCommand')
     def test_users_detail_api_raises_error_when_deletes_not_existing_user(self, mock_command, client):
-        mock_command().execute.side_effect = NoMatchingUser
+        mock_command().execute.side_effect = Exception
 
         http_response = client.delete('/api/users/bad_id')
 
