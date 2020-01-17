@@ -5,27 +5,22 @@ from flask_restful import Resource
 from courses_platform.application.user.commands import delete
 from courses_platform.application.interfaces.iuser_repository import URepository
 
+from courses_platform.service.status_codes import STATUS_CODES
+from courses_platform.request_objects.user import DeleteUserRequest
+
 
 class UsersDetailApi(Resource):
     def __init__(self, repo: URepository) -> None:
         self.repo = repo
 
     def delete(self, user_id) -> Response:
+        request_object = DeleteUserRequest.from_dict(dict(user_id=user_id))
+
         command = delete.DeleteUserCommand(repo=self.repo)
 
-        try:
-            command.execute(user_id)
-
-        except Exception as exc:
-            return Response(
-                json.dumps({
-                    'message': f'No User has been found for a given id: {user_id}'
-                }),
-                mimetype='application/json',
-                status=404
-            )
+        response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(''),
-            status=204
+            json.dumps(response.value),
+            status=STATUS_CODES[response.type]
         )
