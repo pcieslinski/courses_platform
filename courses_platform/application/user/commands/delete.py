@@ -14,7 +14,7 @@ class DeleteUserCommand(ICommandQuery):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
-            result = self.repo.delete_user(user_id=request.user_id)
-            return ResponseSuccess(result)
+            self.repo.delete_user(user_id=request.user_id)
+            return ResponseSuccess('')
         except Exception as exc:
             return ResponseFailure.build_resource_error(exc)
