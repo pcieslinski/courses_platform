@@ -2,6 +2,7 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
+from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.user.queries.get_all import GetAllUsersQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 
@@ -24,7 +25,8 @@ class TestGetAllUsersQuery:
     def test_get_all_users_query_returns_list_of_users(self, users, get_all_query_with_mock_repo):
         query, repo = get_all_query_with_mock_repo
 
-        result = query.execute()
+        response = query.execute()
 
         repo.get_all_users.assert_called_with()
-        assert result == users
+        assert isinstance(response, ResponseSuccess)
+        assert response.value == users
