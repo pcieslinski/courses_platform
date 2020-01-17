@@ -1,8 +1,8 @@
 import pytest
 from mock import Mock
-from uuid import uuid4
 from typing import Tuple
 
+from courses_platform.request_objects import Request
 from courses_platform.request_objects.user import DeleteUserRequest
 from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.interfaces.icommand_query import CommandQuery
@@ -10,7 +10,7 @@ from courses_platform.application.user.commands.delete import DeleteUserCommand
 
 
 @pytest.fixture
-def delete_user_request():
+def delete_user_request() -> Request:
     return DeleteUserRequest(user_id='123')
 
 
@@ -46,7 +46,7 @@ class TestDeleteUserCommand:
         repo.delete_user.side_effect = Exception(f'No match for User with id 123.')
         command = DeleteUserCommand(repo=repo)
 
-        response = command.execute(delete_user_request)
+        response = command.execute(request=delete_user_request)
 
         repo.delete_user.assert_called_with(user_id='123')
         assert isinstance(response, ResponseFailure)

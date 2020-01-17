@@ -16,7 +16,7 @@ class CoursesDetailApi(Resource):
         try:
             command.execute(course_id)
 
-        except delete.NoMatchingCourse:
+        except Exception:
             return Response(
                 json.dumps({
                     'message': f'No Course has been found for a given id: {course_id}'
