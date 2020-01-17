@@ -14,7 +14,7 @@ class DeleteCourseCommand(ICommandQuery):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
-            result = self.repo.delete_course(course_id=request.course_id)
-            return ResponseSuccess(result)
+            self.repo.delete_course(course_id=request.course_id)
+            return ResponseSuccess('')
         except Exception as exc:
             return ResponseFailure.build_resource_error(exc)
