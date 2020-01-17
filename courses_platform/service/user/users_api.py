@@ -8,7 +8,7 @@ from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 from courses_platform.application.interfaces.iuser_repository import URepository
 
 
-class UserApi(Resource):
+class UsersApi(Resource):
     def __init__(self, repo: URepository) -> None:
         self.repo = repo
 

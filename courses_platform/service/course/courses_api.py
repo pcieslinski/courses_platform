@@ -8,7 +8,7 @@ from courses_platform.serializers.json_course_serializer import CourseJsonEncode
 from courses_platform.application.interfaces.icourse_repository import CRepository
 
 
-class CourseApi(Resource):
+class CoursesApi(Resource):
     def __init__(self, repo: CRepository) -> None:
         self.repo = repo
 

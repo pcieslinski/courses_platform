@@ -4,10 +4,10 @@ import mock
 from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
 
 
-class TestCourseApi:
+class TestCoursesApi:
 
     @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
-    def test_course_api_returns_list_of_courses(self, mock_query, client, courses):
+    def test_courses_api_returns_list_of_courses(self, mock_query, client, courses):
         mock_query().execute.return_value = courses
 
         http_response = client.get('/api/courses')
@@ -19,7 +19,7 @@ class TestCourseApi:
         assert http_response.mimetype == 'application/json'
 
     @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
-    def test_course_api_returns_empty_list_of_courses(self, mock_query, client):
+    def test_courses_api_returns_empty_list_of_courses(self, mock_query, client):
         mock_query().execute.return_value = []
 
         http_response = client.get('/api/courses')
@@ -30,7 +30,7 @@ class TestCourseApi:
         assert http_response.mimetype == 'application/json'
 
     @mock.patch('courses_platform.application.course.commands.create.CreateCourseCommand')
-    def test_course_api_creates_new_course(self, mock_command, client, course):
+    def test_courses_api_creates_new_course(self, mock_command, client, course):
         mock_command().execute.return_value = course
 
         mimetype = 'application/json'
