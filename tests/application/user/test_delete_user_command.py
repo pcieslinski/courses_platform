@@ -3,8 +3,15 @@ from mock import Mock
 from uuid import uuid4
 from typing import Tuple
 
+from courses_platform.request_objects.user import DeleteUserRequest
+from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.user.commands.delete import DeleteUserCommand, NoMatchingUser
+from courses_platform.application.user.commands.delete import DeleteUserCommand
+
+
+@pytest.fixture
+def delete_user_request():
+    return DeleteUserRequest(user_id='123')
 
 
 @pytest.fixture(scope='function')
@@ -22,24 +29,27 @@ class TestDeleteUserCommand:
         assert hasattr(command, 'repo')
         assert command.repo is repo
 
-    def test_delete_user_command_executes_correctly(self, user, delete_command_with_mock_repo):
-        user_id = user.id
+    def test_delete_user_command_executes_correctly(self, delete_command_with_mock_repo,
+                                                    delete_user_request):
         command, repo = delete_command_with_mock_repo
 
-        result = command.execute(user_id=user_id)
+        response = command.execute(request=delete_user_request)
 
-        repo.delete_user.assert_called_with(user_id=user_id)
-        assert result
+        repo.delete_user.assert_called_with(user_id='123')
+        assert bool(response) is True
+        assert isinstance(response, ResponseSuccess)
+        assert response.value is 1
 
-    def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self):
-        user_id = str(uuid4())
-
+    def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self,
+                                                                                delete_user_request):
         repo = Mock()
-        repo.delete_user.side_effect = NoMatchingUser(f'No match for User with id {user_id}.')
+        repo.delete_user.side_effect = Exception(f'No match for User with id 123.')
         command = DeleteUserCommand(repo=repo)
 
-        with pytest.raises(NoMatchingUser) as exc:
-            result = command.execute(user_id=user_id)
+        response = command.execute(delete_user_request)
 
-            repo.delete_user.assert_called_with(user_id=user_id)
-            assert str(exc) == f'No match for User with id {user_id}.'
+        repo.delete_user.assert_called_with(user_id='123')
+        assert isinstance(response, ResponseFailure)
+        assert response.type == ResponseFailure.RESOURCE_ERROR
+        assert response.message == 'Exception: No match for User with id 123.'
+
