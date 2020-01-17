@@ -1,8 +1,8 @@
-from courses_platform.application.interfaces.icommand_query import ICommandQuery
-from courses_platform.application.interfaces.iuser_repository import URepository
-
 from courses_platform.request_objects import Request
 from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
+
+from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from courses_platform.application.interfaces.iuser_repository import URepository
 
 
 class CreateUserCommand(ICommandQuery):

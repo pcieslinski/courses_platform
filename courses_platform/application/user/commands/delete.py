@@ -1,19 +1,20 @@
+from courses_platform.request_objects import Request
+from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
+
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.iuser_repository import URepository
-
-
-class NoMatchingUser(Exception):
-    pass
 
 
 class DeleteUserCommand(ICommandQuery):
     def __init__(self, repo: URepository) -> None:
         self.repo = repo
 
-    def execute(self, user_id: str) -> bool:
-        result = self.repo.delete_user(user_id=user_id)
+    def execute(self, request: Request) -> Response:
+        if not request:
+            return ResponseFailure.build_from_invalid_request(request)
 
-        if result:
-            return result
-        else:
-            raise NoMatchingUser(f'No match for User with id {user_id}.')
+        try:
+            result = self.repo.delete_user(user_id=request.user_id)
+            return ResponseSuccess(result)
+        except Exception as exc:
+            return ResponseFailure.build_resource_error(exc)
