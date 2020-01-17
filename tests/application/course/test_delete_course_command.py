@@ -1,10 +1,17 @@
 import pytest
 from mock import Mock
-from uuid import uuid4
 from typing import Tuple
 
+from courses_platform.request_objects import Request
+from courses_platform.request_objects.course import DeleteCourseRequest
+from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.course.commands.delete import DeleteCourseCommand, NoMatchingCourse
+from courses_platform.application.course.commands.delete import DeleteCourseCommand
+
+
+@pytest.fixture
+def delete_course_request() -> Request:
+    return DeleteCourseRequest(course_id='100')
 
 
 @pytest.fixture(scope='function')
@@ -22,24 +29,26 @@ class TestDeleteCourseCommand:
         assert hasattr(command, 'repo')
         assert command.repo is repo
 
-    def test_delete_course_command_executes_correctly(self, course, delete_command_with_mock_repo):
-        course_id = course.id
+    def test_delete_course_command_executes_correctly(self, delete_command_with_mock_repo,
+                                                      delete_course_request):
         command, repo = delete_command_with_mock_repo
 
-        result = command.execute(course_id=course_id)
+        response = command.execute(request=delete_course_request)
 
-        repo.delete_course.assert_called_with(course_id=course_id)
-        assert result
+        repo.delete_course.assert_called_with(course_id='100')
+        assert bool(response) is True
+        assert isinstance(response, ResponseSuccess)
+        assert response.value is 1
 
-    def test_delete_course_command_returns_exception_when_called_with_bad_course_id(self):
-        course_id = str(uuid4())
-
+    def test_delete_course_command_returns_exception_when_called_with_bad_course_id(self,
+                                                                                    delete_course_request):
         repo = Mock()
-        repo.delete_course.side_effect = NoMatchingCourse(f'No match for Course with id {course_id}.')
+        repo.delete_course.side_effect = Exception(f'No match for Course with id 100.')
         command = DeleteCourseCommand(repo=repo)
 
-        with pytest.raises(NoMatchingCourse) as exc:
-            result = command.execute(course_id=course_id)
+        response = command.execute(request=delete_course_request)
 
-            repo.delete_course.assert_called_with(course_id=course_id)
-            assert str(exc) == f'No match for Course with id {course_id}.'
+        repo.delete_course.assert_called_with(course_id='100')
+        assert isinstance(response, ResponseFailure)
+        assert response.type == ResponseFailure.RESOURCE_ERROR
+        assert response.message == 'Exception: No match for Course with id 100.'

@@ -1,8 +1,6 @@
 import mock
 from uuid import uuid4
 
-from courses_platform.application.course.commands.delete import NoMatchingCourse
-
 
 class TestCoursesDetailApi:
 
@@ -19,7 +17,7 @@ class TestCoursesDetailApi:
 
     @mock.patch('courses_platform.application.course.commands.delete.DeleteCourseCommand')
     def test_courses_detail_api_raises_error_when_deletes_not_existing_course(self, mock_command, client):
-        mock_command().execute.side_effect = NoMatchingCourse
+        mock_command().execute.side_effect = Exception
 
         http_response = client.delete('/api/courses/bad_id')
 
