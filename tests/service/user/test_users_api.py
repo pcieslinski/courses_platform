@@ -4,10 +4,10 @@ import mock
 from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 
 
-class TestUserApi:
+class TestUsersApi:
 
     @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
-    def test_user_api_returns_list_of_users(self, mock_query, client, users):
+    def test_users_api_returns_list_of_users(self, mock_query, client, users):
         mock_query().execute.return_value = users
 
         http_response = client.get('/api/users')
@@ -19,7 +19,7 @@ class TestUserApi:
         assert http_response.mimetype == 'application/json'
 
     @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
-    def test_user_api_returns_empty_list_of_users(self, mock_query, client):
+    def test_users_api_returns_empty_list_of_users(self, mock_query, client):
         mock_query().execute.return_value = []
 
         http_response = client.get('/api/users')
@@ -30,7 +30,7 @@ class TestUserApi:
         assert http_response.mimetype == 'application/json'
 
     @mock.patch('courses_platform.application.user.commands.create.CreateUserCommand')
-    def test_user_api_creates_new_user(self, mock_command, client, user):
+    def test_users_api_creates_new_user(self, mock_command, client, user):
         mock_command().execute.return_value = user
 
         mimetype = 'application/json'
