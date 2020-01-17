@@ -12,6 +12,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 mock = "*"
 ipython = "*"
+flask-restful = "*"
 
 [requires]
 python_version = "3.7"
