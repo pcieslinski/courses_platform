@@ -1,6 +1,6 @@
 import pytest
 
-from courses_platform.request_objects.invalid_request import InvalidRequest
+from courses_platform.request_objects import InvalidRequest
 
 
 @pytest.fixture

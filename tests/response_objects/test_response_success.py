@@ -1,4 +1,4 @@
-from courses_platform.response_objects.response_success import ResponseSuccess
+from courses_platform.response_objects import ResponseSuccess
 
 
 class TestResponseSuccess:
