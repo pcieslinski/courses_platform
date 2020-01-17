@@ -1,19 +1,20 @@
+from courses_platform.request_objects import Request
+from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
+
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.icourse_repository import CRepository
-
-
-class NoMatchingCourse(Exception):
-    pass
 
 
 class DeleteCourseCommand(ICommandQuery):
     def __init__(self, repo: CRepository) -> None:
         self.repo = repo
 
-    def execute(self, course_id: str) -> bool:
-        result = self.repo.delete_course(course_id=course_id)
+    def execute(self, request: Request) -> Response:
+        if not request:
+            return ResponseFailure.build_from_invalid_request(request)
 
-        if result:
-            return result
-        else:
-            raise NoMatchingCourse(f'No match for Course with id {course_id}.')
+        try:
+            result = self.repo.delete_course(course_id=request.course_id)
+            return ResponseSuccess(result)
+        except Exception as exc:
+            return ResponseFailure.build_resource_error(exc)
