@@ -2,8 +2,15 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
+from courses_platform.request_objects.course import CreateCourseRequest
+from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.course.commands.create import CreateCourseCommand, CourseAlreadyExists
+from courses_platform.application.course.commands.create import CreateCourseCommand
+
+
+@pytest.fixture
+def create_course_request():
+    return CreateCourseRequest(name='Test Course')
 
 
 @pytest.fixture(scope='function')
@@ -21,23 +28,27 @@ class TestCreateCourseCommand:
         assert hasattr(command, 'repo')
         assert command.repo is repo
 
-    def test_create_course_command_executes_correctly(self, create_command_with_mock_repo):
+    def test_create_course_command_executes_correctly(self, create_command_with_mock_repo,
+                                                      create_course_request):
         command, repo = create_command_with_mock_repo
 
-        result = command.execute(name='Test Course')
+        response = command.execute(request=create_course_request)
 
         repo.create_course.assert_called_with(name='Test Course')
-        assert result.name == 'Test Course'
+        assert bool(response) is True
+        assert isinstance(response, ResponseSuccess)
+        assert response.value.name == 'Test Course'
 
-    def test_create_course_command_returns_exception_when_called_with_already_existing_course_name(self):
+    def test_create_course_command_returns_exception(self, create_course_request):
         repo = Mock()
-        repo.create_course.side_effect = CourseAlreadyExists(
+        repo.create_course.side_effect = Exception(
             'Course with "Test Course" name already exists.'
         )
         command = CreateCourseCommand(repo=repo)
 
-        result = command.execute(name='Test Course')
+        response = command.execute(request=create_course_request)
 
         repo.create_course.assert_called_with(name='Test Course')
-        assert isinstance(result, CourseAlreadyExists)
-        assert str(result) == 'Course with "Test Course" name already exists.'
+        assert isinstance(response, ResponseFailure)
+        assert response.type == ResponseFailure.RESOURCE_ERROR
+        assert response.message == 'Exception: Course with "Test Course" name already exists.'
