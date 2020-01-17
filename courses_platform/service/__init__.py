@@ -2,8 +2,10 @@ from typing import Type, Tuple
 from flask import Flask
 from flask_restful import Api
 
-from courses_platform.service.user.user_api import UserApi
-from courses_platform.service.course.course_api import CourseApi
+from courses_platform.service.user.users_api import UsersApi
+from courses_platform.service.course.courses_api import CoursesApi
+from courses_platform.service.user.users_detail_api import UsersDetailApi
+from courses_platform.service.course.courses_detail_api import CoursesDetailApi
 from courses_platform.service.config import Config, DevConfig
 
 from courses_platform.application.interfaces.iuser_repository import URepository
@@ -28,15 +30,29 @@ def create_app(config_object: Type[Config] = DevConfig) -> Flask:
 
 def register_resources(api: Api, user_repo: URepository, course_repo: CRepository) -> None:
     api.add_resource(
-        UserApi,
+        UsersApi,
         '/api/users',
         resource_class_kwargs={
             'repo': user_repo
         }
     )
     api.add_resource(
-        CourseApi,
+        UsersDetailApi,
+        '/api/users/<user_id>',
+        resource_class_kwargs={
+            'repo': user_repo
+        }
+    )
+    api.add_resource(
+        CoursesApi,
         '/api/courses',
+        resource_class_kwargs={
+            'repo': course_repo
+        }
+    )
+    api.add_resource(
+        CoursesDetailApi,
+        '/api/courses/<course_id>',
         resource_class_kwargs={
             'repo': course_repo
         }
