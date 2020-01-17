@@ -4,8 +4,11 @@ from flask_restful import Resource
 
 from courses_platform.application.user.queries import get_all
 from courses_platform.application.user.commands import create
-from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 from courses_platform.application.interfaces.iuser_repository import URepository
+
+from courses_platform.service.status_codes import STATUS_CODES
+from courses_platform.request_objects.user import CreateUserRequest
+from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 
 
 class UsersApi(Resource):
@@ -15,23 +18,23 @@ class UsersApi(Resource):
     def get(self) -> Response:
         query = get_all.GetAllUsersQuery(repo=self.repo)
 
-        result = query.execute()
+        response = query.execute()
 
         return Response(
-            json.dumps(result, cls=UserJsonEncoder),
+            json.dumps(response.value, cls=UserJsonEncoder),
             mimetype='application/json',
-            status=200
+            status=STATUS_CODES[response.type]
         )
 
     def post(self) -> Response:
-        req_data = request.get_json()
+        request_object = CreateUserRequest.from_dict(request.get_json())
 
         command = create.CreateUserCommand(repo=self.repo)
 
-        result = command.execute(req_data['email'])
+        response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(result, cls=UserJsonEncoder),
+            json.dumps(response.value, cls=UserJsonEncoder),
             mimetype='application/json',
-            status=201
+            status=STATUS_CODES[response.type]
         )
