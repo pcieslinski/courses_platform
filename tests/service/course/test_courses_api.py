@@ -9,7 +9,8 @@ class TestCoursesApi:
 
     @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
     def test_courses_api_returns_list_of_courses(self, mock_query, client, courses):
-        mock_query().execute.return_value = ResponseSuccess(value=courses)
+        response = ResponseSuccess.build_response_success(courses)
+        mock_query().execute.return_value = response
 
         http_response = client.get('/api/courses')
         courses_data = json.dumps(courses, cls=CourseJsonEncoder)
@@ -21,7 +22,8 @@ class TestCoursesApi:
 
     @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
     def test_courses_api_returns_empty_list_of_courses(self, mock_query, client):
-        mock_query().execute.return_value = ResponseSuccess(value=[])
+        response = ResponseSuccess.build_response_success([])
+        mock_query().execute.return_value = response
 
         http_response = client.get('/api/courses')
 
@@ -32,7 +34,8 @@ class TestCoursesApi:
 
     @mock.patch('courses_platform.application.course.commands.create.CreateCourseCommand')
     def test_courses_api_creates_new_course(self, mock_command, client, course):
-        mock_command().execute.return_value = ResponseSuccess(value=course)
+        response = ResponseSuccess.build_response_resource_created(course)
+        mock_command().execute.return_value = response
 
         mimetype = 'application/json'
         headers = {
@@ -50,5 +53,5 @@ class TestCoursesApi:
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(course_data)
         mock_command().execute.assert_called()
         assert kwargs['request'].name == 'Test Course'
-        assert http_response.status_code == 200
+        assert http_response.status_code == 201
         assert http_response.mimetype == 'application/json'
