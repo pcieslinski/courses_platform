@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from courses_platform.domain.user import User
 from courses_platform.persistence.database import Session
@@ -31,13 +31,15 @@ class UserRepository(IUserRepository):
 
             return result
 
-    def get_user(self, user_id: str) -> User:
+    def get_user(self, user_id: str) -> Union[User, None]:
         with self.db_session() as db:
             result = db.query(um.User).\
                         filter(um.User.id == user_id).\
                         first()
 
-            return User.from_record(result)
+            if result:
+                return User.from_record(result)
+            return None
 
     def get_all_users(self) -> List[User]:
         with self.db_session() as db:

@@ -15,6 +15,10 @@ class IUserRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_user(self, user_id: str) -> User:
+        pass
+
+    @abc.abstractmethod
     def get_all_users(self) -> List[User]:
         pass
 
