@@ -68,6 +68,7 @@ def mock_user_repo(user: User, users: List[User]) -> Mock:
     repo.create_user.return_value = user
     repo.delete_user.return_value = 1
 
+    repo.get_user.return_value = user
     repo.get_all_users.return_value = users
 
     return repo
