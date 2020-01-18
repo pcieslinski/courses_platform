@@ -40,10 +40,23 @@ class TestDeleteCourseCommand:
         assert isinstance(response, ResponseSuccess)
         assert response.value is ''
 
-    def test_delete_course_command_returns_exception_when_called_with_bad_course_id(self,
-                                                                                    delete_course_request):
+    def test_delete_course_command_returns_system_error_when_generic_exception_is_raised(self,
+                                                                                         delete_course_request):
         repo = Mock()
-        repo.delete_course.side_effect = Exception(f'No match for Course with id 100.')
+        repo.delete_course.side_effect = Exception(f'System error.')
+        command = DeleteCourseCommand(repo=repo)
+
+        response = command.execute(request=delete_course_request)
+
+        repo.delete_course.assert_called_with(course_id='100')
+        assert isinstance(response, ResponseFailure)
+        assert response.type == ResponseFailure.SYSTEM_ERROR
+        assert response.message == 'Exception: System error.'
+
+    def test_delete_course_command_returns_resource_error_when_called_with_bad_course_id(self,
+                                                                                         delete_course_request):
+        repo = Mock()
+        repo.delete_course.return_value = 0
         command = DeleteCourseCommand(repo=repo)
 
         response = command.execute(request=delete_course_request)
@@ -51,4 +64,4 @@ class TestDeleteCourseCommand:
         repo.delete_course.assert_called_with(course_id='100')
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
-        assert response.message == 'Exception: No match for Course with id 100.'
+        assert response.message == 'NoMatchingCourse: No Course has been found for a given id: 100'

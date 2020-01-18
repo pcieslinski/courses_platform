@@ -5,6 +5,10 @@ from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.iuser_repository import URepository
 
 
+class NoMatchingUser(Exception):
+    pass
+
+
 class DeleteUserCommand(ICommandQuery):
     def __init__(self, repo: URepository) -> None:
         self.repo = repo
@@ -14,7 +18,13 @@ class DeleteUserCommand(ICommandQuery):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
-            self.repo.delete_user(user_id=request.user_id)
+            result = self.repo.delete_user(user_id=request.user_id)
+
+            if not result:
+                return ResponseFailure.build_resource_error(
+                    NoMatchingUser(f'No User has been found for a given id: {request.user_id}'))
+
             return ResponseSuccess('')
+
         except Exception as exc:
-            return ResponseFailure.build_resource_error(exc)
+            return ResponseFailure.build_system_error(exc)
