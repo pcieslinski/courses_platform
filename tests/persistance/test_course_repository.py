@@ -13,6 +13,7 @@ def db(course_record: dataclass) -> Mock:
     db = Mock()
 
     db.query.return_value.filter.return_value.delete.return_value = 1
+    db.query.return_value.filter.return_value.first.return_value = course_record('1', 'Test Course')
     db.query.return_value.all.return_value = [
         course_record('1', 'Test Course'),
         course_record('2', 'Sample Course')
@@ -68,6 +69,21 @@ class TestCourseRepository:
         db.query().filter.assert_called_once()
         db.query().filter().delete.assert_called_once()
         assert result == 1
+
+    def test_course_repository_returns_course(self, course_repo_with_mocks):
+        repo, mock_session, db = course_repo_with_mocks
+
+        course_id = str(uuid4())
+        result = repo.get_course(course_id)
+
+        mock_session.assert_called_once()
+        db.query.assert_called_once()
+        db.query().filter.assert_called_once()
+        db.query().filter().first.assert_called_once()
+
+        assert isinstance(result, Course)
+        assert result.id == '1'
+        assert result.name == 'Test Course'
 
     def test_course_repository_returns_list_of_courses(self, course_repo_with_mocks):
         repo, mock_session, db = course_repo_with_mocks
