@@ -24,7 +24,7 @@ class DeleteUserCommand(ICommandQuery):
                 return ResponseFailure.build_resource_error(
                     NoMatchingUser(f'No User has been found for a given id: {request.user_id}'))
 
-            return ResponseSuccess('')
+            return ResponseSuccess.build_response_no_content()
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

@@ -25,5 +25,5 @@ class ResponseSuccess:
         return cls(cls.SUCCESS_RESOURCE_CREATED, value)
 
     @classmethod
-    def build_response_no_content(cls: Type[RS], value: Any = None) -> RS:
+    def build_response_no_content(cls: Type[RS], value: Any = '') -> RS:
         return cls(cls.SUCCESS_NO_CONTENT, value)

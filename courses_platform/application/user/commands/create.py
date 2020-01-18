@@ -15,6 +15,6 @@ class CreateUserCommand(ICommandQuery):
 
         try:
             new_user = self.repo.create_user(email=request.email)
-            return ResponseSuccess(new_user)
+            return ResponseSuccess.build_response_resource_created(new_user)
         except Exception as exc:
             return ResponseFailure.build_resource_error(exc)
