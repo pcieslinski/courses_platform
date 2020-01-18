@@ -13,6 +13,7 @@ def db(user_record: dataclass) -> Mock:
     db = Mock()
 
     db.query.return_value.filter.return_value.delete.return_value = 1
+    db.query.return_value.filter.return_value.first.return_value = user_record('1', 'test@gmail.com')
     db.query.return_value.all.return_value = [
         user_record('1', 'test@gmail.com'),
         user_record('2', 'sample@gmail.com')
@@ -68,6 +69,21 @@ class TestUserRepository:
         db.query().filter.assert_called_once()
         db.query().filter().delete.assert_called_once()
         assert result == 1
+
+    def test_user_repository_returns_user(self, user_repo_with_mocks):
+        repo, mock_session, db = user_repo_with_mocks
+
+        user_id = str(uuid4())
+        result = repo.get_user(user_id)
+
+        mock_session.assert_called_once()
+        db.query.assert_called_once()
+        db.query().filter.assert_called_once()
+        db.query().filter().first.assert_called_once()
+
+        assert isinstance(result, User)
+        assert result.id == '1'
+        assert result.email == 'test@gmail.com'
 
     def test_user_repository_returns_list_of_users(self, user_repo_with_mocks):
         repo, mock_session, db = user_repo_with_mocks
