@@ -1,12 +1,9 @@
 from courses_platform.request_objects import Request
 from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
 
+from courses_platform.application.course.exceptions import NoMatchingCourse
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.icourse_repository import CRepository
-
-
-class NoMatchingCourse(Exception):
-    pass
 
 
 class DeleteCourseCommand(ICommandQuery):

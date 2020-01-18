@@ -1,0 +1,2 @@
+class NoMatchingUser(Exception):
+    pass
