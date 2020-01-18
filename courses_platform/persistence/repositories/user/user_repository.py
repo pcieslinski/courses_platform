@@ -31,6 +31,14 @@ class UserRepository(IUserRepository):
 
             return result
 
+    def get_user(self, user_id: str) -> User:
+        with self.db_session() as db:
+            result = db.query(um.User).\
+                        filter(um.User.id == user_id).\
+                        first()
+
+            return User.from_record(result)
+
     def get_all_users(self) -> List[User]:
         with self.db_session() as db:
             result = db.query(um.User).\
