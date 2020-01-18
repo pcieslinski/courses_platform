@@ -38,6 +38,7 @@ class TestCreateUserCommand:
         repo.create_user.assert_called_with(email='test@gmail.com')
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_RESOURCE_CREATED
         assert response.value.email == 'test@gmail.com'
 
     def test_create_user_command_returns_exception(self, create_user_request):

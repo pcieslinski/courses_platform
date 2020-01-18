@@ -15,6 +15,6 @@ class CreateCourseCommand(ICommandQuery):
 
         try:
             new_course = self.repo.create_course(name=request.name)
-            return ResponseSuccess(new_course)
+            return ResponseSuccess.build_response_resource_created(new_course)
         except Exception as exc:
             return ResponseFailure.build_resource_error(exc)

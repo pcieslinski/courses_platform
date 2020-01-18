@@ -9,7 +9,8 @@ class TestUsersApi:
 
     @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
     def test_users_api_returns_list_of_users(self, mock_query, client, users):
-        mock_query().execute.return_value = ResponseSuccess(value=users)
+        response = ResponseSuccess.build_response_success(users)
+        mock_query().execute.return_value = response
 
         http_response = client.get('/api/users')
         users_data = json.dumps(users, cls=UserJsonEncoder)
@@ -21,7 +22,8 @@ class TestUsersApi:
 
     @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
     def test_users_api_returns_empty_list_of_users(self, mock_query, client):
-        mock_query().execute.return_value = ResponseSuccess(value=[])
+        response = ResponseSuccess.build_response_success([])
+        mock_query().execute.return_value = response
 
         http_response = client.get('/api/users')
 
@@ -32,7 +34,8 @@ class TestUsersApi:
 
     @mock.patch('courses_platform.application.user.commands.create.CreateUserCommand')
     def test_users_api_creates_new_user(self, mock_command, client, user):
-        mock_command().execute.return_value = ResponseSuccess(value=user)
+        response = ResponseSuccess.build_response_resource_created(user)
+        mock_command().execute.return_value = response
 
         mimetype = 'application/json'
         headers = {
@@ -49,5 +52,5 @@ class TestUsersApi:
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(user_data)
         mock_command().execute.assert_called()
         assert kwargs['request'].email == 'test@gmail.com'
-        assert http_response.status_code == 200
+        assert http_response.status_code == 201
         assert http_response.mimetype == 'application/json'

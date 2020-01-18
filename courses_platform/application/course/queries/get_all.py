@@ -11,6 +11,6 @@ class GetAllCoursesQuery(ICommandQuery):
     def execute(self) -> Response:
         try:
             courses = self.repo.get_all_courses()
-            return ResponseSuccess(courses)
+            return ResponseSuccess.build_response_success(courses)
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

@@ -11,6 +11,6 @@ class GetAllUsersQuery(ICommandQuery):
     def execute(self) -> Response:
         try:
             users = self.repo.get_all_users()
-            return ResponseSuccess(users)
+            return ResponseSuccess.build_response_success(users)
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

@@ -8,7 +8,8 @@ class TestCoursesDetailApi:
 
     @mock.patch('courses_platform.application.course.commands.delete.DeleteCourseCommand')
     def test_courses_detail_api_deletes_existing_course(self, mock_command, client):
-        mock_command().execute.return_value = ResponseSuccess(value='')
+        response = ResponseSuccess.build_response_no_content()
+        mock_command().execute.return_value = response
 
         course_id = str(uuid4())
         http_response = client.delete(f'/api/courses/{course_id}')
@@ -17,5 +18,5 @@ class TestCoursesDetailApi:
 
         mock_command().execute.assert_called()
         assert kwargs['request'].course_id == course_id
-        assert http_response.data == b'""'
-        assert http_response.status_code == 200
+        assert http_response.data == b''
+        assert http_response.status_code == 204
