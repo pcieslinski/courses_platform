@@ -44,7 +44,7 @@ class TestDeleteCourseCommand:
     def test_delete_course_command_returns_system_error_when_generic_exception_is_raised(self,
                                                                                          delete_course_request):
         repo = Mock()
-        repo.delete_course.side_effect = Exception(f'System error.')
+        repo.delete_course.side_effect = Exception('System error.')
         command = DeleteCourseCommand(repo=repo)
 
         response = command.execute(request=delete_course_request)

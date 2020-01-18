@@ -15,6 +15,10 @@ class ICourseRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_course(self, course_id: str) -> Course:
+        pass
+
+    @abc.abstractmethod
     def get_all_courses(self) -> List[Course]:
         pass
 

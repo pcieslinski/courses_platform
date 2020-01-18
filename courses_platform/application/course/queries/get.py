@@ -6,7 +6,7 @@ from courses_platform.application.interfaces.icommand_query import ICommandQuery
 from courses_platform.application.interfaces.icourse_repository import CRepository
 
 
-class DeleteCourseCommand(ICommandQuery):
+class GetCourseQuery(ICommandQuery):
     def __init__(self, repo: CRepository) -> None:
         self.repo = repo
 
@@ -15,13 +15,13 @@ class DeleteCourseCommand(ICommandQuery):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
-            result = self.repo.delete_course(course_id=request.course_id)
+            course = self.repo.get_course(course_id=request.course_id)
 
-            if not result:
+            if not course:
                 return ResponseFailure.build_resource_error(
                     NoMatchingCourse(f'No Course has been found for a given id: {request.course_id}'))
 
-            return ResponseSuccess.build_response_no_content()
+            return ResponseSuccess.build_response_success(course)
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

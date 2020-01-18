@@ -1,2 +1,3 @@
 from courses_platform.request_objects.course.create_course_request import CreateCourseRequest
 from courses_platform.request_objects.course.delete_course_request import DeleteCourseRequest
+from courses_platform.request_objects.course.get_course_request import GetCourseRequest

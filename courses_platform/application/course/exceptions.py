@@ -1,0 +1,2 @@
+class NoMatchingCourse(Exception):
+    pass

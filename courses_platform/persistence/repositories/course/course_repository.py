@@ -31,6 +31,14 @@ class CourseRepository(ICourseRepository):
 
             return result
 
+    def get_course(self, course_id: str) -> Course:
+        with self.db_session() as db:
+            result = db.query(cm.Course).\
+                        filter(cm.Course.id == course_id).\
+                        first()
+
+            return Course.from_record(result)
+
     def get_all_courses(self) -> List[Course]:
         with self.db_session() as db:
             result = db.query(cm.Course).\
