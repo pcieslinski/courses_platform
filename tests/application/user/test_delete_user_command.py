@@ -40,10 +40,23 @@ class TestDeleteUserCommand:
         assert isinstance(response, ResponseSuccess)
         assert response.value is ''
 
-    def test_delete_user_command_returns_exception_when_called_with_bad_user_id(self,
-                                                                                delete_user_request):
+    def test_delete_user_command_returns_system_error_when_generic_exception_is_raised(self,
+                                                                                       delete_user_request):
         repo = Mock()
-        repo.delete_user.side_effect = Exception(f'No match for User with id 123.')
+        repo.delete_user.side_effect = Exception('Some error.')
+        command = DeleteUserCommand(repo=repo)
+
+        response = command.execute(request=delete_user_request)
+
+        repo.delete_user.assert_called_with(user_id='123')
+        assert isinstance(response, ResponseFailure)
+        assert response.type == ResponseFailure.SYSTEM_ERROR
+        assert response.message == 'Exception: Some error.'
+
+    def test_delete_user_command_returns_resource_error_when_called_with_bad_user_id(self,
+                                                                                     delete_user_request):
+        repo = Mock()
+        repo.delete_user.return_value = 0
         command = DeleteUserCommand(repo=repo)
 
         response = command.execute(request=delete_user_request)
@@ -51,5 +64,5 @@ class TestDeleteUserCommand:
         repo.delete_user.assert_called_with(user_id='123')
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
-        assert response.message == 'Exception: No match for User with id 123.'
+        assert response.message == 'NoMatchingUser: No User has been found for a given id: 123'
 
