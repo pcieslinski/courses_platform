@@ -29,4 +29,5 @@ class TestGetAllCoursesQuery:
 
         repo.get_all_courses.assert_called_with()
         assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_OK
         assert response.value == courses

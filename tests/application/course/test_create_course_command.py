@@ -38,6 +38,7 @@ class TestCreateCourseCommand:
         repo.create_course.assert_called_with(name='Test Course')
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_RESOURCE_CREATED
         assert response.value.name == 'Test Course'
 
     def test_create_course_command_returns_exception(self, create_course_request):

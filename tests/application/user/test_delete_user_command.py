@@ -38,6 +38,7 @@ class TestDeleteUserCommand:
         repo.delete_user.assert_called_with(user_id='123')
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_NO_CONTENT
         assert response.value is ''
 
     def test_delete_user_command_returns_system_error_when_generic_exception_is_raised(self,

@@ -29,4 +29,5 @@ class TestGetAllUsersQuery:
 
         repo.get_all_users.assert_called_with()
         assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_OK
         assert response.value == users
