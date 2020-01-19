@@ -4,3 +4,7 @@ class NoMatchingCourse(Exception):
 
 class UserAlreadyEnrolled(Exception):
     pass
+
+
+class UserNotEnrolled(Exception):
+    pass
