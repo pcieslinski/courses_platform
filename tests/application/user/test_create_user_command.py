@@ -1,6 +1,7 @@
 import pytest
-from mock import Mock
+from mock import Mock, patch
 from typing import Tuple
+from dataclasses import dataclass
 
 from courses_platform.request_objects import Request
 from courses_platform.request_objects.user import CreateUserRequest
@@ -15,42 +16,49 @@ def create_user_request() -> Request:
 
 
 @pytest.fixture(scope='function')
-def create_command_with_mock_repo(mock_user_repo: Mock) -> Tuple[CommandQuery, Mock]:
-    command = CreateUserCommand(repo=mock_user_repo)
-    return command, mock_user_repo
+def create_command_with_mocks(
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+    session, db = mock_session_with_db
+    command = CreateUserCommand(db_session=session)
+    return command, session, db
 
 
 class TestCreateUserCommand:
 
-    def test_create_user_command_initialize_correctly(self, create_command_with_mock_repo):
-        command, repo = create_command_with_mock_repo
+    def test_create_user_command_initialize_correctly(self):
+        session = Mock()
+        command = CreateUserCommand(db_session=session)
 
         assert isinstance(command, CreateUserCommand)
-        assert hasattr(command, 'repo')
-        assert command.repo is repo
+        assert hasattr(command, 'db_session')
+        assert command.db_session is session
 
-    def test_create_user_command_executes_correctly(self, create_command_with_mock_repo,
-                                                    create_user_request):
-        command, repo = create_command_with_mock_repo
+    def test_create_user_command_executes_correctly(self, create_user_request,
+                                                    create_command_with_mocks):
+        command, mock_session, db = create_command_with_mocks
 
         response = command.execute(request=create_user_request)
 
-        repo.create_user.assert_called_with(email='test@gmail.com')
+        mock_session.assert_called_once()
+        db.add.assert_called_once()
+
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_RESOURCE_CREATED
         assert response.value.email == 'test@gmail.com'
 
-    def test_create_user_command_returns_exception(self, create_user_request):
-        repo = Mock()
-        repo.create_user.side_effect = Exception(
+    def test_create_user_command_returns_exception(self, create_user_request,
+                                                   create_command_with_mocks):
+        command, mock_session, db = create_command_with_mocks
+        db.add.side_effect = Exception(
             'User with test@gmail.com email already exists.'
         )
-        command = CreateUserCommand(repo=repo)
 
         response = command.execute(request=create_user_request)
 
-        repo.create_user.assert_called_with(email='test@gmail.com')
+        mock_session.assert_called_once()
+        db.add.assert_called_once()
+
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'Exception: User with test@gmail.com email already exists.'
