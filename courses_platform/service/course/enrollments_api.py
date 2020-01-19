@@ -6,7 +6,7 @@ from courses_platform.application.course.commands import enroll_user
 from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
-from courses_platform.request_objects.course import EnrollUserRequest
+from courses_platform.request_objects.course import EnrollmentRequest
 
 
 class EnrollmentsApi(Resource):
@@ -16,7 +16,7 @@ class EnrollmentsApi(Resource):
     def post(self, course_id) -> Response:
         params = request.get_json()
 
-        request_object = EnrollUserRequest.from_dict(
+        request_object = EnrollmentRequest.from_dict(
             {
                 'course_id': course_id,
                 'user_id': params['user_id']

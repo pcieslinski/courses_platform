@@ -3,7 +3,7 @@ from mock import Mock, patch
 from typing import Tuple
 
 from courses_platform.request_objects import Request
-from courses_platform.request_objects.course import EnrollUserRequest
+from courses_platform.request_objects.course import EnrollmentRequest
 from courses_platform.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 from courses_platform.application.course.commands.enroll_user import EnrollUserCommand
@@ -11,7 +11,7 @@ from courses_platform.application.course.commands.enroll_user import EnrollUserC
 
 @pytest.fixture
 def enroll_user_request() -> Request:
-    return EnrollUserRequest(course_id='100', user_id='20')
+    return EnrollmentRequest(course_id='100', user_id='20')
 
 
 @pytest.fixture(scope='function')
