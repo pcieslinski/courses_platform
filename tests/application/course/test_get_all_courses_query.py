@@ -8,26 +8,36 @@ from courses_platform.application.interfaces.icommand_query import CommandQuery
 
 
 @pytest.fixture(scope='function')
-def get_all_query_with_mock_repo(mock_course_repo: Mock) -> Tuple[CommandQuery, Mock]:
-    query = GetAllCoursesQuery(repo=mock_course_repo)
-    return query, mock_course_repo
+def get_all_query_with_mocks(
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+    session, db = mock_session_with_db
+    query = GetAllCoursesQuery(db_session=session)
+    return query, session, db
 
 
 class TestGetAllCoursesQuery:
 
-    def test_get_all_courses_query_initialize_correctly(self, get_all_query_with_mock_repo):
-        query, repo = get_all_query_with_mock_repo
+    def test_get_all_courses_query_initialize_correctly(self):
+        session = Mock()
+        query = GetAllCoursesQuery(db_session=session)
 
         assert isinstance(query, GetAllCoursesQuery)
-        assert hasattr(query, 'repo')
-        assert query.repo is repo
+        assert hasattr(query, 'db_session')
+        assert query.db_session is session
 
-    def test_get_all_courses_query_executes_correctly(self, courses, get_all_query_with_mock_repo):
-        query, repo = get_all_query_with_mock_repo
+    def test_get_all_courses_query_executes_correctly(self, get_all_query_with_mocks):
+        query, mock_session, db = get_all_query_with_mocks
 
         response = query.execute()
 
-        repo.get_all_courses.assert_called_with()
+        mock_session.assert_called_once()
+        db.query().all.assert_called_once_with()
+
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK
-        assert response.value == courses
+
+        assert len(response.value) == 2
+        assert response.value[0].id == '1'
+        assert response.value[0].name == 'Test Course'
+        assert response.value[1].id == '2'
+        assert response.value[1].name == 'Sample Course'
