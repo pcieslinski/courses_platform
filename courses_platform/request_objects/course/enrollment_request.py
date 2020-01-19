@@ -4,7 +4,7 @@ from courses_platform.request_objects import InvalidRequest
 from courses_platform.request_objects.valid_request import ValidRequest, VR
 
 
-class EnrollUserRequest(ValidRequest):
+class EnrollmentRequest(ValidRequest):
     required_params = [
         'course_id',
         'user_id'

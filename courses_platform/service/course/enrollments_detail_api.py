@@ -1,34 +1,32 @@
 import json
-from flask import Response, request
+from flask import Response
 from flask_restful import Resource
 
-from courses_platform.application.course.commands import enroll_user
 from courses_platform.application.interfaces.idb_session import DbSession
+from courses_platform.application.course.commands import withdraw_user_enrollment as withdraw
 
 from courses_platform.service.status_codes import STATUS_CODES
 from courses_platform.request_objects.course import EnrollmentRequest
 
 
-class EnrollmentsApi(Resource):
+class EnrollmentsDetailApi(Resource):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
-    def post(self, course_id: str) -> Response:
-        params = request.get_json()
+    def delete(self, course_id: str, user_id: str) -> Response:
 
         request_object = EnrollmentRequest.from_dict(
             {
                 'course_id': course_id,
-                'user_id': params['user_id']
+                'user_id': user_id
             }
         )
 
-        command = enroll_user.EnrollUserCommand(db_session=self.db_session)
+        command = withdraw.WithdrawUserEnrollmentCommand(db_session=self.db_session)
 
         response = command.execute(request=request_object)
 
         return Response(
             json.dumps(response.value),
-            mimetype='application/json',
             status=STATUS_CODES[response.type]
         )
