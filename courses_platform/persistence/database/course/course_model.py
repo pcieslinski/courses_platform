@@ -2,7 +2,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 from courses_platform.persistence.database import Base
-from courses_platform.persistence.enrollment_table import enrollment
+from courses_platform.persistence.database.enrollment_table import enrollment
 
 
 class Course(Base):
