@@ -4,7 +4,8 @@ from flask_restful import Api
 
 from courses_platform.service.config import Config, DevConfig
 from courses_platform.service.user import UsersApi, UsersDetailApi
-from courses_platform.service.course import CoursesApi, CoursesDetailApi, EnrollmentsApi
+from courses_platform.service.course import (
+    CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
 from courses_platform.persistence.database import session
 from courses_platform.application.interfaces.idb_session import DbSession
@@ -56,4 +57,10 @@ def register_resources(api: Api, db_session: DbSession) -> None:
             'db_session': db_session
         }
     )
-
+    api.add_resource(
+        EnrollmentsDetailApi,
+        '/api/courses/<course_id>/users/<user_id>',
+        resource_class_kwargs={
+            'db_session': db_session
+        }
+    )
