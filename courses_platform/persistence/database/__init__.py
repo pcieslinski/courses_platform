@@ -18,7 +18,7 @@ Base.query = Session.query_property()
 
 
 @contextmanager
-def session():
+def session() -> Session:
     sess = Session()
 
     try:
@@ -29,3 +29,16 @@ def session():
         raise
     finally:
         Session.remove()
+
+
+from courses_platform.persistence.database.user import User
+from courses_platform.persistence.database.course import Course
+from courses_platform.persistence.database.enrollment_table import enrollment
+
+
+def init_db():
+    from courses_platform.persistence.database.user import User
+    from courses_platform.persistence.database.course import Course
+    from courses_platform.persistence.database.enrollment_table import enrollment
+
+    Base.metadata.create_all(bind=engine)

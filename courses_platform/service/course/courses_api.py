@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from courses_platform.application.course.commands import create
 from courses_platform.application.course.queries import get_all
-from courses_platform.application.interfaces.icourse_repository import CRepository
+from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
 from courses_platform.request_objects.course import CreateCourseRequest
@@ -12,11 +12,11 @@ from courses_platform.serializers.json_course_serializer import CourseJsonEncode
 
 
 class CoursesApi(Resource):
-    def __init__(self, repo: CRepository) -> None:
-        self.repo = repo
+    def __init__(self, db_session: DbSession) -> None:
+        self.db_session = db_session
 
     def get(self) -> Response:
-        query = get_all.GetAllCoursesQuery(repo=self.repo)
+        query = get_all.GetAllCoursesQuery(db_session=self.db_session)
 
         response = query.execute()
 
@@ -29,7 +29,7 @@ class CoursesApi(Resource):
     def post(self) -> Response:
         request_object = CreateCourseRequest.from_dict(request.get_json())
 
-        command = create.CreateCourseCommand(repo=self.repo)
+        command = create.CreateCourseCommand(db_session=self.db_session)
 
         response = command.execute(request=request_object)
 

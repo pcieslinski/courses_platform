@@ -15,54 +15,63 @@ def get_user_request() -> Request:
 
 
 @pytest.fixture(scope='function')
-def get_query_with_mock_repo(mock_user_repo: Mock) -> Tuple[CommandQuery, Mock]:
-    query = GetUserQuery(repo=mock_user_repo)
-    return query, mock_user_repo
+def get_query_with_mocks(
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+    session, db = mock_session_with_db
+    query = GetUserQuery(db_session=session)
+    return query, session, db
 
 
 class TestGetUserQuery:
 
-    def test_get_user_query_initialize_correctly(self, get_query_with_mock_repo):
-        query, repo = get_query_with_mock_repo
+    def test_get_user_query_initialize_correctly(self):
+        session = Mock()
+        query = GetUserQuery(db_session=session)
 
         assert isinstance(query, GetUserQuery)
-        assert hasattr(query, 'repo')
-        assert query.repo is repo
+        assert hasattr(query, 'db_session')
+        assert query.db_session is session
 
-    def test_get_user_query_executes_correctly(self, get_query_with_mock_repo,
-                                               get_user_request):
-        query, repo = get_query_with_mock_repo
+    def test_get_user_query_executes_correctly(self, get_user_request,
+                                               get_query_with_mocks):
+        query, mock_session, db = get_query_with_mocks
 
         response = query.execute(request=get_user_request)
 
-        repo.get_user.assert_called_with(user_id='100')
+        mock_session.assert_called_once()
+        db.query().filter().first.assert_called_once()
+
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK
         assert response.value.email == 'test@gmail.com'
 
     def test_qet_user_query_returns_exception_when_no_resource_has_been_found(self,
-                                                                              get_user_request):
-        repo = Mock()
-        repo.get_user.return_value = None
-        query = GetUserQuery(repo=repo)
+                                                                              get_user_request,
+                                                                              get_query_with_mocks):
+        query, mock_session, db = get_query_with_mocks
+        db.query.return_value.filter.return_value.first.return_value = None
 
         response = query.execute(request=get_user_request)
 
-        repo.get_user.assert_called_with(user_id='100')
+        mock_session.assert_called_once()
+        db.query().filter().first.assert_called_once()
+
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 100'
 
     def test_get_user_query_returns_system_error_when_generic_exception_is_raised(self,
-                                                                                  get_user_request):
-        repo = Mock()
-        repo.get_user.side_effect = Exception('System error.')
-        query = GetUserQuery(repo=repo)
+                                                                                  get_user_request,
+                                                                                  get_query_with_mocks):
+        query, mock_session, db = get_query_with_mocks
+        db.query.return_value.filter.return_value.first.side_effect = Exception('System error.')
 
         response = query.execute(request=get_user_request)
 
-        repo.get_user.assert_called_with(user_id='100')
+        mock_session.assert_called_once()
+        db.query().filter().first.assert_called_once()
+
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.SYSTEM_ERROR
         assert response.message == 'Exception: System error.'
