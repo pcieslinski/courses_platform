@@ -18,8 +18,8 @@ def enroll_user_request() -> Request:
 def enroll_user_command_with_mocks(
         mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
-    query = EnrollUserCommand(db_session=session)
-    return query, session, db
+    command = EnrollUserCommand(db_session=session)
+    return command, session, db
 
 
 class TestEnrollUserCommand:
