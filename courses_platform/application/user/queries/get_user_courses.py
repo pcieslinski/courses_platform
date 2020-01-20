@@ -9,7 +9,7 @@ from courses_platform.application.interfaces.idb_session import DbSession
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 
 
-class GetUserCourses(ICommandQuery):
+class GetUserCoursesQuery(ICommandQuery):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
@@ -29,12 +29,12 @@ class GetUserCourses(ICommandQuery):
                             f'No User has been found for a given id: {request.user_id}')
                     )
 
-            return ResponseSuccess.build_response_success(
-                [
-                    Course.from_record(course_record)
-                    for course_record in user.courses
-                ]
-            )
+                return ResponseSuccess.build_response_success(
+                    [
+                        Course.from_record(course_record)
+                        for course_record in user.courses
+                    ]
+                )
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
