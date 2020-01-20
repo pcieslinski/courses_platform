@@ -45,6 +45,7 @@ class TestGetUserQuery:
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK
         assert response.value.email == 'test@gmail.com'
+        assert response.value.courses == []
 
     def test_qet_user_query_returns_exception_when_no_resource_has_been_found(self,
                                                                               get_user_request,

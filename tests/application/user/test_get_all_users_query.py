@@ -39,5 +39,7 @@ class TestGetAllUsersQuery:
         assert len(response.value) == 2
         assert response.value[0].id == '1'
         assert response.value[0].email == 'test@gmail.com'
+        assert response.value[0].courses == []
         assert response.value[1].id == '2'
         assert response.value[1].email == 'sample@gmail.com'
+        assert response.value[1].courses == []
