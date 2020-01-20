@@ -20,13 +20,6 @@ class TestCreateUserRequest:
         assert hasattr(req, 'email')
         assert req.email == 'test@gmail.com'
 
-    def test_from_dict_returns_invalid_request_when_called_without_email(self):
-        req = CreateUserRequest.from_dict({})
-
-        assert isinstance(req, InvalidRequest)
-        assert req.errors[0]['parameter'] == 'email'
-        assert req.errors[0]['message'] == 'email is a required parameter'
-
     def test_from_dict_returns_invalid_request_when_called_with_not_string_type_email(self):
         req = CreateUserRequest.from_dict(dict(email=1))
 
