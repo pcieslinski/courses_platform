@@ -62,6 +62,16 @@ def courses() -> List[Course]:
     ]
 
 
+@pytest.fixture
+def courses_with_enrollments():
+    return [
+            {
+                'course': Course('Test Course'),
+                'enrollments': 10
+            }
+        ]
+
+
 @pytest.fixture(scope='function')
 def mock_user_repo(user: User, users: List[User]) -> Mock:
     repo = Mock()
