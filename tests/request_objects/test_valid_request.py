@@ -1,6 +1,6 @@
 import pytest
 
-from courses_platform.request_objects import ValidRequest
+from courses_platform.request_objects import ValidRequest, InvalidRequest
 
 
 class TestValidRequest:
@@ -13,3 +13,15 @@ class TestValidRequest:
         req = ValidRequest()
 
         assert bool(req) is True
+
+    def test_validate_required_params_validates_parameters(self):
+        ValidRequest.required_params = ('name', )
+
+        invalid_req = ValidRequest.validate_required_params(
+            invalid_req=InvalidRequest(),
+            params=dict(email='test')
+        )
+
+        assert invalid_req.has_errors()
+        assert invalid_req.errors[0]['parameter'] == 'name'
+        assert invalid_req.errors[0]['message'] == 'name is a required parameter'

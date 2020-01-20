@@ -20,13 +20,6 @@ class TestCreateCourseRequest:
         assert hasattr(req, 'name')
         assert req.name == 'Test Course'
 
-    def test_from_dict_returns_invalid_request_when_called_without_name(self):
-        req = CreateCourseRequest.from_dict({})
-
-        assert isinstance(req, InvalidRequest)
-        assert req.errors[0]['parameter'] == 'name'
-        assert req.errors[0]['message'] == 'name is a required parameter'
-
     def test_from_dict_returns_invalid_request_when_called_with_not_string_type_name(self):
         req = CreateCourseRequest.from_dict(dict(name=100))
 

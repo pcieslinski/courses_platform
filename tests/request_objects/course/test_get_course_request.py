@@ -1,4 +1,3 @@
-from courses_platform.request_objects import InvalidRequest
 from courses_platform.request_objects.course import GetCourseRequest
 
 
@@ -19,10 +18,3 @@ class TestGetCourseRequest:
         assert isinstance(req, GetCourseRequest)
         assert hasattr(req, 'course_id')
         assert req.course_id == '100'
-
-    def test_from_dict_returns_invalid_request_when_called_without_course_id(self):
-        req = GetCourseRequest.from_dict({})
-
-        assert isinstance(req, InvalidRequest)
-        assert req.errors[0]['parameter'] == 'course_id'
-        assert req.errors[0]['message'] == 'course_id is a required parameter'
