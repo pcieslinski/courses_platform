@@ -25,3 +25,15 @@ class TestValidRequest:
         assert invalid_req.has_errors()
         assert invalid_req.errors[0]['parameter'] == 'name'
         assert invalid_req.errors[0]['message'] == 'name is a required parameter'
+
+    def test_validate_accepted_params_validates_parameters(self):
+        ValidRequest.accepted_params = ('include', )
+
+        invalid_req = ValidRequest.validate_accepted_params(
+            invalid_req=InvalidRequest(),
+            params=dict(test='test')
+        )
+
+        assert invalid_req.has_errors()
+        assert invalid_req.errors[0]['parameter'] == 'test'
+        assert invalid_req.errors[0]['message'] == 'test is not an acceptable parameter'
