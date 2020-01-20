@@ -1,7 +1,6 @@
 from courses_platform.request_objects import Request
 from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
 
-from courses_platform.domain.user import User
 from courses_platform.domain.course import Course
 from courses_platform.persistence.database import user as um
 from courses_platform.application.user.exceptions import NoMatchingUser
