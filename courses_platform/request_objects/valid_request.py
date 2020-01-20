@@ -8,6 +8,7 @@ VR = TypeVar('VR', bound='ValidRequest')
 
 class ValidRequest:
     required_params: Tuple[str] = ()
+    accepted_params: Tuple[str] = ()
 
     @classmethod
     def validate_required_params(
@@ -19,6 +20,19 @@ class ValidRequest:
                     required_param,
                     f'{required_param} is a required parameter'
                 )
+        return invalid_req
+
+    @classmethod
+    def validate_accepted_params(
+            cls: Type[VR], invalid_req: InvalidRequest, params: dict) -> InvalidRequest:
+
+        for param in params:
+            if param not in cls.accepted_params:
+                invalid_req.add_error(
+                    param,
+                    f'{param} is not an acceptable parameter'
+                )
+
         return invalid_req
 
     @classmethod
