@@ -7,7 +7,7 @@ from courses_platform.service.user import UsersApi, UsersDetailApi, UsersCourses
 from courses_platform.service.course import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
-from courses_platform.persistence.database import session
+from app.persistence.database import session
 from courses_platform.application.interfaces.idb_session import DbSession
 
 

@@ -1,10 +1,9 @@
 import click
 from uuid import uuid4
 
-from courses_platform.persistence.database.user import User
-from courses_platform.persistence.database.course import Course
-from courses_platform.persistence.database.enrollment_table import enrollment
-from courses_platform.persistence.database import Base, engine, session
+from app.persistence.database.user.user_model import User
+from app.persistence.database.course.course_model import Course
+from app.persistence.database import Base, engine, session
 
 
 @click.group()

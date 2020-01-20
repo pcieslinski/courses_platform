@@ -2,9 +2,9 @@ import json
 import mock
 import pytest
 
-from courses_platform.domain.course import Course
+from app.domain.course import Course
 from courses_platform.response_objects import ResponseSuccess
-from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
+from app.serializers.json_course_serializer import CourseJsonEncoder
 
 
 class TestUsersCoursesApi:

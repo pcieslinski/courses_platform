@@ -3,8 +3,8 @@ from mock import Mock
 from typing import List
 from dataclasses import dataclass
 
-from courses_platform.domain.user import User
-from courses_platform.domain.course import Course
+from app.domain.user import User
+from app.domain.course import Course
 
 
 @pytest.fixture

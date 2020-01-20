@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from courses_platform.domain.user import User
+from app.domain.user import User
 
 
 class TestUserEntity:

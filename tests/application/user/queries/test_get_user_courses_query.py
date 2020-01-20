@@ -2,7 +2,7 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from courses_platform.domain.course import Course
+from app.domain.course import Course
 from courses_platform.request_objects import Request
 from courses_platform.request_objects.user import GetUserRequest
 from courses_platform.response_objects import ResponseSuccess, ResponseFailure

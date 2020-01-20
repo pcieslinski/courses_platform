@@ -2,9 +2,9 @@ import json
 import mock
 import pytest
 
-from courses_platform.domain.course import Course
+from app.domain.course import Course
 from courses_platform.response_objects import ResponseSuccess
-from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
+from app.serializers.json_course_serializer import CourseJsonEncoder
 
 
 class TestCoursesApi:
@@ -39,7 +39,6 @@ class TestCoursesApi:
         assert kwargs['request'].include == ['stats']
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'
-
 
     @mock.patch('courses_platform.application.course.commands.create.CreateCourseCommand')
     def test_courses_api_creates_new_course(self, mock_command, client, course):

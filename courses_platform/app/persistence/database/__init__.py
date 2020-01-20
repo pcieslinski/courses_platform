@@ -31,14 +31,14 @@ def session() -> Session:
         Session.remove()
 
 
-from courses_platform.persistence.database.user import User
-from courses_platform.persistence.database.course import Course
-from courses_platform.persistence.database.enrollment_table import enrollment
+from app.persistence.database.user.user_model import User
+from app.persistence.database.course.course_model import Course
+from app.persistence.database.enrollment_table import enrollment
 
 
 def init_db():
-    from courses_platform.persistence.database.user import User
-    from courses_platform.persistence.database.course import Course
-    from courses_platform.persistence.database.enrollment_table import enrollment
+    from app.persistence.database.user.user_model import User
+    from app.persistence.database.course.course_model import Course
+    from app.persistence.database.enrollment_table import enrollment
 
     Base.metadata.create_all(bind=engine)

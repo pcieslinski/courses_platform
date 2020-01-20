@@ -7,7 +7,7 @@ from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
 from courses_platform.request_objects.user import GetUserRequest
-from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
+from app.serializers.json_course_serializer import CourseJsonEncoder
 
 
 class UsersCoursesApi(Resource):

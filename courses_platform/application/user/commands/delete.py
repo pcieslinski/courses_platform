@@ -1,7 +1,7 @@
 from courses_platform.request_objects import Request
 from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
 
-from courses_platform.persistence.database import user as um
+from app.persistence.database.user import user_model as um
 from courses_platform.application.user.exceptions import NoMatchingUser
 from courses_platform.application.interfaces.idb_session import DbSession
 from courses_platform.application.interfaces.icommand_query import ICommandQuery

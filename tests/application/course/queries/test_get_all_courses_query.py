@@ -2,7 +2,6 @@ import pytest
 from mock import Mock, patch
 from typing import Tuple
 
-from courses_platform.domain.course import Course
 from courses_platform.response_objects import ResponseSuccess
 from courses_platform.request_objects.course import GetAllCoursesRequest
 from courses_platform.application.course.queries.get_all import GetAllCoursesQuery

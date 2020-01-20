@@ -1,6 +1,6 @@
 from sqlalchemy import Table, Column, String, ForeignKey
 
-from courses_platform.persistence.database import Base
+from app.persistence.database import Base
 
 
 enrollment = Table(

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from courses_platform.persistence.database import Base
+from app.persistence.database import Base
 
 
 class User(Base):

@@ -1,7 +1,7 @@
 from uuid import uuid4
 from typing import List, Type, TypeVar
 
-from courses_platform.domain.course import Course
+from app.domain.course import Course
 
 U = TypeVar('U', bound='User')
 
