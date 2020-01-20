@@ -1,6 +1,8 @@
 import json
 import mock
+import pytest
 
+from courses_platform.domain.user import User
 from courses_platform.response_objects import ResponseSuccess
 from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 
@@ -8,26 +10,15 @@ from courses_platform.serializers.json_user_serializer import UserJsonEncoder
 class TestUsersApi:
 
     @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
-    def test_users_api_returns_list_of_users(self, mock_query, client, users):
-        response = ResponseSuccess.build_response_success(users)
+    @pytest.mark.parametrize('response_val', [([User('test@gmail.com')]), ([])])
+    def test_users_api_returns_list_of_users(self, mock_query, client, response_val):
+        response = ResponseSuccess.build_response_success(response_val)
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/users')
-        users_data = json.dumps(users, cls=UserJsonEncoder)
+        users_data = json.dumps(response_val, cls=UserJsonEncoder)
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(users_data)
-        mock_query().execute.assert_called_with()
-        assert http_response.status_code == 200
-        assert http_response.mimetype == 'application/json'
-
-    @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
-    def test_users_api_returns_empty_list_of_users(self, mock_query, client):
-        response = ResponseSuccess.build_response_success([])
-        mock_query().execute.return_value = response
-
-        http_response = client.get('/api/users')
-
-        assert json.loads(http_response.data.decode('UTF-8')) == []
         mock_query().execute.assert_called_with()
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'

@@ -6,7 +6,7 @@ from courses_platform.domain.course import Course
 from courses_platform.request_objects import Request
 from courses_platform.request_objects.user import GetUserRequest
 from courses_platform.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.user.queries.get_user_courses import GetUserCourses
+from courses_platform.application.user.queries.get_user_courses import GetUserCoursesQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 
 
@@ -19,7 +19,7 @@ def get_user_request() -> Request:
 def get_query_with_mocks(
         mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
-    query = GetUserCourses(db_session=session)
+    query = GetUserCoursesQuery(db_session=session)
     return query, session, db
 
 
@@ -27,9 +27,9 @@ class TestGetUserCoursesQuery:
 
     def test_get_user_courses_query_initialize_correctly(self):
         session = Mock()
-        query = GetUserCourses(db_session=session)
+        query = GetUserCoursesQuery(db_session=session)
 
-        assert isinstance(query, GetUserCourses)
+        assert isinstance(query, GetUserCoursesQuery)
         assert hasattr(query, 'db_session')
         assert query.db_session is session
 
