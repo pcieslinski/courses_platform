@@ -7,8 +7,8 @@ from courses_platform.application.course.queries import get_all
 from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
-from courses_platform.request_objects.course import CreateCourseRequest
 from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
+from courses_platform.request_objects.course import CreateCourseRequest, GetAllCoursesRequest
 
 
 class CoursesApi(Resource):
@@ -16,12 +16,14 @@ class CoursesApi(Resource):
         self.db_session = db_session
 
     def get(self) -> Response:
+        request_object = GetAllCoursesRequest.from_dict(dict(request.args))
+
         query = get_all.GetAllCoursesQuery(db_session=self.db_session)
 
-        response = query.execute()
+        response = query.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=CourseJsonEncoder),
+            json.dumps(response.value, default=lambda o: o.__dict__),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )
