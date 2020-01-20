@@ -3,7 +3,7 @@ from flask import Flask
 from flask_restful import Api
 
 from courses_platform.service.config import Config, DevConfig
-from courses_platform.service.user import UsersApi, UsersDetailApi
+from courses_platform.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
 from courses_platform.service.course import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
@@ -32,6 +32,13 @@ def register_resources(api: Api, db_session: DbSession) -> None:
     api.add_resource(
         UsersDetailApi,
         '/api/users/<user_id>',
+        resource_class_kwargs={
+            'db_session': db_session
+        }
+    )
+    api.add_resource(
+        UsersCoursesApi,
+        '/api/users/<user_id>/courses',
         resource_class_kwargs={
             'db_session': db_session
         }
