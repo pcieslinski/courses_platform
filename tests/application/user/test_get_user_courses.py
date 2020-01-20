@@ -2,10 +2,11 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
+from courses_platform.domain.course import Course
 from courses_platform.request_objects import Request
 from courses_platform.request_objects.user import GetUserRequest
 from courses_platform.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.user.queries.get import GetUserQuery
+from courses_platform.application.user.queries.get_user_courses import GetUserCoursesQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 
 
@@ -18,23 +19,26 @@ def get_user_request() -> Request:
 def get_query_with_mocks(
         mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
-    query = GetUserQuery(db_session=session)
+    query = GetUserCoursesQuery(db_session=session)
     return query, session, db
 
 
-class TestGetUserQuery:
+class TestGetUserCoursesQuery:
 
-    def test_get_user_query_initialize_correctly(self):
+    def test_get_user_courses_query_initialize_correctly(self):
         session = Mock()
-        query = GetUserQuery(db_session=session)
+        query = GetUserCoursesQuery(db_session=session)
 
-        assert isinstance(query, GetUserQuery)
+        assert isinstance(query, GetUserCoursesQuery)
         assert hasattr(query, 'db_session')
         assert query.db_session is session
 
-    def test_get_user_query_executes_correctly(self, get_user_request,
-                                               get_query_with_mocks):
+    def test_get_user_courses_executes_correctly(self, get_user_request, get_query_with_mocks,
+                                                 user_record, course_record):
         query, mock_session, db = get_query_with_mocks
+
+        user = user_record('100', 'test@gmail.com', [course_record('1', 'Test Course')])
+        db.query.return_value.filter.return_value.first.return_value = user
 
         response = query.execute(request=get_user_request)
 
@@ -44,12 +48,11 @@ class TestGetUserQuery:
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK
-        assert response.value.email == 'test@gmail.com'
-        assert response.value.courses == []
+        assert len(response.value) == 1
+        assert isinstance(response.value[0], Course)
+        assert response.value[0].name == 'Test Course'
 
-    def test_qet_user_query_returns_exception_when_no_resource_has_been_found(self,
-                                                                              get_user_request,
-                                                                              get_query_with_mocks):
+    def test_get_user_courses_returns_resource_error(self, get_user_request, get_query_with_mocks):
         query, mock_session, db = get_query_with_mocks
         db.query.return_value.filter.return_value.first.return_value = None
 
@@ -62,9 +65,7 @@ class TestGetUserQuery:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 100'
 
-    def test_get_user_query_returns_system_error_when_generic_exception_is_raised(self,
-                                                                                  get_user_request,
-                                                                                  get_query_with_mocks):
+    def test_get_user_courses_returns_system_error(self, get_user_request, get_query_with_mocks):
         query, mock_session, db = get_query_with_mocks
         db.query.return_value.filter.return_value.first.side_effect = Exception('System error.')
 

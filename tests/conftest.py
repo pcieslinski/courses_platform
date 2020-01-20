@@ -19,6 +19,7 @@ def user_record() -> dataclass:
     class UserRecord:
         id: str
         email: str
+        courses: List[Course]
 
     return UserRecord
 

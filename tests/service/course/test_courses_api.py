@@ -1,6 +1,8 @@
 import json
 import mock
+import pytest
 
+from courses_platform.domain.course import Course
 from courses_platform.response_objects import ResponseSuccess
 from courses_platform.serializers.json_course_serializer import CourseJsonEncoder
 
@@ -8,26 +10,15 @@ from courses_platform.serializers.json_course_serializer import CourseJsonEncode
 class TestCoursesApi:
 
     @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
-    def test_courses_api_returns_list_of_courses(self, mock_query, client, courses):
-        response = ResponseSuccess.build_response_success(courses)
+    @pytest.mark.parametrize('response_val', [([Course('Test Course')]), ([])])
+    def test_courses_api_returns_list_of_courses(self, mock_query, client, response_val):
+        response = ResponseSuccess.build_response_success(response_val)
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/courses')
-        courses_data = json.dumps(courses, cls=CourseJsonEncoder)
+        courses_data = json.dumps(response_val, cls=CourseJsonEncoder)
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(courses_data)
-        mock_query().execute.assert_called_with()
-        assert http_response.status_code == 200
-        assert http_response.mimetype == 'application/json'
-
-    @mock.patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery')
-    def test_courses_api_returns_empty_list_of_courses(self, mock_query, client):
-        response = ResponseSuccess.build_response_success([])
-        mock_query().execute.return_value = response
-
-        http_response = client.get('/api/courses')
-
-        assert json.loads(http_response.data.decode('UTF-8')) == []
         mock_query().execute.assert_called_with()
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'

@@ -12,6 +12,7 @@ class TestUserEntity:
         assert hasattr(user, 'id')
 
         assert user.email == 'test@gmail.com'
+        assert user.courses == []
 
     def test_user_initialize_correctly_from_dict(self):
         user_dict = {
@@ -24,10 +25,11 @@ class TestUserEntity:
         assert hasattr(user, 'id')
 
         assert user.email == 'test@gmail.com'
+        assert user.courses == []
 
     def test_user_initialize_correctly_from_record(self, user_record):
         user_id = str(uuid4())
-        u_record = user_record(user_id, 'test@gmail.com')
+        u_record = user_record(user_id, 'test@gmail.com', [])
 
         user = User.from_record(u_record)
 
@@ -36,3 +38,4 @@ class TestUserEntity:
 
         assert user.id == user_id
         assert user.email == 'test@gmail.com'
+        assert user.courses == []
