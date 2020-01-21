@@ -6,7 +6,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
-DB_PATH = os.getenv("DATABASE_URL", "sqlite://")
+DEV_DB_PATH = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.getenv('DATABASE_URL', f'sqlite:////{DEV_DB_PATH}/test.db')
 
 engine = create_engine(DB_PATH, convert_unicode=True)
 Session = scoped_session(sessionmaker(autocommit=False,
