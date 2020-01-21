@@ -7,7 +7,10 @@ class UserJsonEncoder(json.JSONEncoder):
             to_serialize = {
                 'id': o.id,
                 'email': o.email,
-                'courses': [c.__dict__ for c in o.courses]
+                'courses': [
+                    course.__dict__
+                    for course in o.courses
+                ]
             }
             return to_serialize
         except AttributeError:
