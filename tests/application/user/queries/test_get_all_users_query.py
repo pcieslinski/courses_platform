@@ -3,8 +3,8 @@ from mock import Mock
 from typing import Tuple
 
 from app.response_objects import ResponseSuccess
-from courses_platform.application.user.queries.get_all import GetAllUsersQuery
-from courses_platform.application.interfaces.icommand_query import CommandQuery
+from app.application.user.queries.get_all import GetAllUsersQuery
+from app.application.interfaces.icommand_query import CommandQuery
 
 
 @pytest.fixture(scope='function')

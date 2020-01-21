@@ -9,7 +9,7 @@ from app.serializers.json_user_serializer import UserJsonEncoder
 
 class TestUsersApi:
 
-    @mock.patch('courses_platform.application.user.queries.get_all.GetAllUsersQuery')
+    @mock.patch('app.application.user.queries.get_all.GetAllUsersQuery')
     @pytest.mark.parametrize('response_val', [([User('test@gmail.com')]), ([])])
     def test_users_api_returns_list_of_users(self, mock_query, client, response_val):
         response = ResponseSuccess.build_response_success(response_val)
@@ -23,7 +23,7 @@ class TestUsersApi:
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'
 
-    @mock.patch('courses_platform.application.user.commands.create.CreateUserCommand')
+    @mock.patch('app.application.user.commands.create.CreateUserCommand')
     def test_users_api_creates_new_user(self, mock_command, client, user):
         response = ResponseSuccess.build_response_resource_created(user)
         mock_command().execute.return_value = response

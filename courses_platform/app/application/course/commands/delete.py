@@ -2,9 +2,9 @@ from app.request_objects import Request
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.persistence.database.course import course_model as cm
-from courses_platform.application.interfaces.idb_session import DbSession
-from courses_platform.application.course.exceptions import NoMatchingCourse
-from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from app.application.interfaces.idb_session import DbSession
+from app.application.course.exceptions import NoMatchingCourse
+from app.application.interfaces.icommand_query import ICommandQuery
 
 
 class DeleteCourseCommand(ICommandQuery):

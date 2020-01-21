@@ -2,13 +2,13 @@ from typing import Type
 from flask import Flask
 from flask_restful import Api
 
-from courses_platform.service.config import Config, DevConfig
-from courses_platform.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
-from courses_platform.service.course import (
+from app.service.config import Config, DevConfig
+from app.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
+from app.service.course import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
 from app.persistence.database import session
-from courses_platform.application.interfaces.idb_session import DbSession
+from app.application.interfaces.idb_session import DbSession
 
 
 def create_app(config_object: Type[Config] = DevConfig) -> Flask:

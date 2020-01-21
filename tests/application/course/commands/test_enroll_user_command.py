@@ -5,8 +5,8 @@ from typing import Tuple
 from app.request_objects import Request
 from app.request_objects.course import EnrollmentRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.course.commands.enroll_user import EnrollUserCommand
+from app.application.interfaces.icommand_query import CommandQuery
+from app.application.course.commands.enroll_user import EnrollUserCommand
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ class TestEnrollUserCommand:
         assert hasattr(command, 'db_session')
         assert command.db_session is session
 
-    @patch('courses_platform.application.course.commands.enroll_user.EnrollUserCommand.user_is_enrolled')
+    @patch('app.application.course.commands.enroll_user.EnrollUserCommand.user_is_enrolled')
     def test_enroll_user_command_executes_correctly(self, mock_user_is_enrolled, enroll_user_request,
                                                     enroll_user_command_with_mocks):
         mock_user_is_enrolled.return_value = False
@@ -78,7 +78,7 @@ class TestEnrollUserCommand:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 20'
 
-    @patch('courses_platform.application.course.commands.enroll_user.EnrollUserCommand.user_is_enrolled')
+    @patch('app.application.course.commands.enroll_user.EnrollUserCommand.user_is_enrolled')
     def test_enroll_user_command_returns_user_already_enrolled_error(self, mock_user_is_enrolled,
                                                                      enroll_user_request,
                                                                      enroll_user_command_with_mocks):

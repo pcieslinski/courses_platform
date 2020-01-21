@@ -3,10 +3,10 @@ from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.persistence.database.user import user_model as um
 from app.persistence.database.course import course_model as cm
-from courses_platform.application.course import exceptions as ex
-from courses_platform.application.user.exceptions import NoMatchingUser
-from courses_platform.application.interfaces.idb_session import DbSession
-from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from app.application.course import exceptions as ex
+from app.application.user.exceptions import NoMatchingUser
+from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.icommand_query import ICommandQuery
 
 
 class EnrollUserCommand(ICommandQuery):

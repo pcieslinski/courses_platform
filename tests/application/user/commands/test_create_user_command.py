@@ -5,8 +5,8 @@ from typing import Tuple
 from app.request_objects import Request
 from app.request_objects.user import CreateUserRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.user.commands.create import CreateUserCommand
+from app.application.interfaces.icommand_query import CommandQuery
+from app.application.user.commands.create import CreateUserCommand
 
 
 @pytest.fixture

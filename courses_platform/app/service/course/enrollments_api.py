@@ -2,10 +2,10 @@ import json
 from flask import Response, request
 from flask_restful import Resource
 
-from courses_platform.application.course.commands import enroll_user
-from courses_platform.application.interfaces.idb_session import DbSession
+from app.application.course.commands import enroll_user
+from app.application.interfaces.idb_session import DbSession
 
-from courses_platform.service.status_codes import STATUS_CODES
+from app.service.status_codes import STATUS_CODES
 from app.request_objects.course import EnrollmentRequest
 
 

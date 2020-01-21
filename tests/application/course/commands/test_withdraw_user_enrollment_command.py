@@ -5,8 +5,8 @@ from typing import Tuple
 from app.request_objects import Request
 from app.request_objects.course import EnrollmentRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.course.commands.withdraw_user_enrollment import \
+from app.application.interfaces.icommand_query import CommandQuery
+from app.application.course.commands.withdraw_user_enrollment import \
     WithdrawUserEnrollmentCommand
 
 
@@ -33,7 +33,7 @@ class TestWithdrawUserEnrollmentCommand:
         assert hasattr(command, 'db_session')
         assert command.db_session is session
 
-    @patch('courses_platform.application.course.commands.withdraw_user_enrollment.WithdrawUserEnrollmentCommand.user_is_enrolled')
+    @patch('app.application.course.commands.withdraw_user_enrollment.WithdrawUserEnrollmentCommand.user_is_enrolled')
     def test_withdraw_user_enrollment_executes_correctly(self, mock_user_is_enrolled,
                                                          withdraw_user_enrollment_request,
                                                          withdraw_user_enrollment_with_mocks):
@@ -81,7 +81,7 @@ class TestWithdrawUserEnrollmentCommand:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 25'
 
-    @patch('courses_platform.application.course.commands.withdraw_user_enrollment.WithdrawUserEnrollmentCommand.user_is_enrolled')
+    @patch('app.application.course.commands.withdraw_user_enrollment.WithdrawUserEnrollmentCommand.user_is_enrolled')
     def test_withdraw_user_enrollment_returns_user_not_enrolled_error(self,
                                                                       mock_user_is_enrolled,
                                                                       withdraw_user_enrollment_request,

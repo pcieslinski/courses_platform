@@ -1,8 +1,8 @@
 import pytest
 from flask import Flask
 
-from courses_platform.service import create_app
-from courses_platform.service.config import TestConfig
+from app.service import create_app
+from app.service.config import TestConfig
 
 
 @pytest.fixture(scope='function')

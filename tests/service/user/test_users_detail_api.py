@@ -6,7 +6,7 @@ from app.response_objects import ResponseSuccess
 
 class TestUsersDetailApi:
 
-    @mock.patch('courses_platform.application.user.commands.delete.DeleteUserCommand')
+    @mock.patch('app.application.user.commands.delete.DeleteUserCommand')
     def test_users_detail_api_deletes_existing_user(self, mock_command, client):
         response = ResponseSuccess.build_response_no_content()
         mock_command().execute.return_value = response

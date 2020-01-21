@@ -5,8 +5,8 @@ from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.domain.course import Course
 from app.persistence.database.course import course_model as cm
-from courses_platform.application.interfaces.idb_session import DbSession
-from courses_platform.application.interfaces.icommand_query import ICommandQuery
+from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.icommand_query import ICommandQuery
 
 
 class GetAllCoursesQuery(ICommandQuery):

@@ -2,10 +2,10 @@ import json
 from flask import Response
 from flask_restful import Resource
 
-from courses_platform.application.user.queries import get_user_courses
-from courses_platform.application.interfaces.idb_session import DbSession
+from app.application.user.queries import get_user_courses
+from app.application.interfaces.idb_session import DbSession
 
-from courses_platform.service.status_codes import STATUS_CODES
+from app.service.status_codes import STATUS_CODES
 from app.request_objects.user import GetUserRequest
 from app.serializers.json_course_serializer import CourseJsonEncoder
 

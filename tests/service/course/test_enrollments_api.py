@@ -6,7 +6,7 @@ from app.response_objects import ResponseSuccess
 
 class TestEnrollmentsApi:
 
-    @mock.patch('courses_platform.application.course.commands.enroll_user.EnrollUserCommand')
+    @mock.patch('app.application.course.commands.enroll_user.EnrollUserCommand')
     def test_enrollments_api_enrolls_user_for_course(self, mock_command, client):
         request_data = dict(course_id='123', user_id='1')
         response = ResponseSuccess.build_response_resource_created(request_data)
