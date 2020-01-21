@@ -167,7 +167,8 @@ http DELETE :5000/api/courses/123/users/321
 ## TODO
 
 1. Implement hypermedia controls.
-2. Write integration tests.
-3. Implement a solution that allows composing commands and queries 
+2. Add email validation in the endpoint for creating new users.
+3. Write integration tests.
+4. Implement a solution that allows composing commands and queries 
 into more complex abstractions.
-4. Add NGINX as a rivers proxy to the architecture.
+5. Add NGINX as a rivers proxy to the architecture.
