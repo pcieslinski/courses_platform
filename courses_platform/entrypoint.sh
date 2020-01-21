@@ -11,6 +11,5 @@ then
 fi
 
 python manage.py create-db
-python manage.py seed-db
 
 exec "$@"
