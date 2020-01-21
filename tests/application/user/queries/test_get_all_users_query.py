@@ -2,7 +2,7 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from courses_platform.response_objects import ResponseSuccess
+from app.response_objects import ResponseSuccess
 from courses_platform.application.user.queries.get_all import GetAllUsersQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 

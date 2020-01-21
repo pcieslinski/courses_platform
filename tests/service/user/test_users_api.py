@@ -3,7 +3,7 @@ import mock
 import pytest
 
 from app.domain.user import User
-from courses_platform.response_objects import ResponseSuccess
+from app.response_objects import ResponseSuccess
 from app.serializers.json_user_serializer import UserJsonEncoder
 
 

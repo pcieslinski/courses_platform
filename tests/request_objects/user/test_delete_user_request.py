@@ -1,4 +1,4 @@
-from courses_platform.request_objects.user import DeleteUserRequest
+from app.request_objects.user import DeleteUserRequest
 
 
 class TestDeleteUserRequest:

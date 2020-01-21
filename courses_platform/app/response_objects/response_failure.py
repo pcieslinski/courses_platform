@@ -1,6 +1,6 @@
 from typing import Union, Type, TypeVar
 
-from courses_platform.request_objects import InvalidRequest
+from app.request_objects.invalid_request import InvalidRequest
 
 RF = TypeVar('RF', bound='ResponseFailure')
 

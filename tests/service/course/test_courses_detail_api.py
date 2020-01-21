@@ -1,7 +1,7 @@
 import mock
 from uuid import uuid4
 
-from courses_platform.response_objects import ResponseSuccess
+from app.response_objects import ResponseSuccess
 
 
 class TestCoursesDetailApi:

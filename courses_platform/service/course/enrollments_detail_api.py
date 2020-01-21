@@ -6,7 +6,7 @@ from courses_platform.application.interfaces.idb_session import DbSession
 from courses_platform.application.course.commands import withdraw_user_enrollment as withdraw
 
 from courses_platform.service.status_codes import STATUS_CODES
-from courses_platform.request_objects.course import EnrollmentRequest
+from app.request_objects.course import EnrollmentRequest
 
 
 class EnrollmentsDetailApi(Resource):

@@ -1,7 +1,7 @@
 import json
 import mock
 
-from courses_platform.response_objects import ResponseSuccess
+from app.response_objects import ResponseSuccess
 
 
 class TestEnrollmentsApi:

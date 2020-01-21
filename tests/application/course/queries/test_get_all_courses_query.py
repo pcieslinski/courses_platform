@@ -2,8 +2,8 @@ import pytest
 from mock import Mock, patch
 from typing import Tuple
 
-from courses_platform.response_objects import ResponseSuccess
-from courses_platform.request_objects.course import GetAllCoursesRequest
+from app.response_objects import ResponseSuccess
+from app.request_objects.course import GetAllCoursesRequest
 from courses_platform.application.course.queries.get_all import GetAllCoursesQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 

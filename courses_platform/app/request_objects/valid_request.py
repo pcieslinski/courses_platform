@@ -1,6 +1,6 @@
 from typing import Tuple, Type, TypeVar
 
-from courses_platform.request_objects.invalid_request import InvalidRequest
+from app.request_objects.invalid_request import InvalidRequest
 
 
 VR = TypeVar('VR', bound='ValidRequest')

@@ -1,5 +1,5 @@
-from courses_platform.request_objects import Request
-from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
+from app.request_objects import Request
+from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.domain.course import Course
 from app.persistence.database.course import course_model as cm

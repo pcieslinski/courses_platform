@@ -3,7 +3,7 @@ from app.persistence.database.user import user_model as um
 from courses_platform.application.interfaces.idb_session import DbSession
 from courses_platform.application.interfaces.icommand_query import ICommandQuery
 
-from courses_platform.response_objects import Response, ResponseFailure, ResponseSuccess
+from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 
 class GetAllUsersQuery(ICommandQuery):

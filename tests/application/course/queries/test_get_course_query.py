@@ -2,9 +2,9 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from courses_platform.request_objects import Request
-from courses_platform.request_objects.course import GetCourseRequest
-from courses_platform.response_objects import ResponseSuccess, ResponseFailure
+from app.request_objects import Request
+from app.request_objects.course import GetCourseRequest
+from app.response_objects import ResponseSuccess, ResponseFailure
 from courses_platform.application.course.queries.get import GetCourseQuery
 from courses_platform.application.interfaces.icommand_query import CommandQuery
 

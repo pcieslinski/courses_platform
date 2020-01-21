@@ -1,5 +1,5 @@
-from courses_platform.request_objects import InvalidRequest
-from courses_platform.request_objects.course import CreateCourseRequest
+from app.request_objects.invalid_request import InvalidRequest
+from app.request_objects.course import CreateCourseRequest
 
 
 class TestCreateCourseRequest:

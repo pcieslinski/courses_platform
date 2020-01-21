@@ -1,4 +1,4 @@
-from courses_platform.response_objects import ResponseFailure, ResponseSuccess
+from app.response_objects import ResponseFailure, ResponseSuccess
 
 
 STATUS_CODES = {

@@ -1,7 +1,7 @@
 from typing import Tuple, Type, Union
 
-from courses_platform.request_objects import InvalidRequest
-from courses_platform.request_objects.valid_request import ValidRequest, VR
+from app.request_objects.invalid_request import InvalidRequest
+from app.request_objects.valid_request import ValidRequest, VR
 
 
 class GetCourseRequest(ValidRequest):

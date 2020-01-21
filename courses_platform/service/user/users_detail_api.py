@@ -6,7 +6,7 @@ from courses_platform.application.user.commands import delete
 from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
-from courses_platform.request_objects.user import DeleteUserRequest
+from app.request_objects.user import DeleteUserRequest
 
 
 class UsersDetailApi(Resource):

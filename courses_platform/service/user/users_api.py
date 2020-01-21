@@ -7,7 +7,7 @@ from courses_platform.application.user.commands import create
 from courses_platform.application.interfaces.idb_session import DbSession
 
 from courses_platform.service.status_codes import STATUS_CODES
-from courses_platform.request_objects.user import CreateUserRequest
+from app.request_objects.user import CreateUserRequest
 from app.serializers.json_user_serializer import UserJsonEncoder
 
 

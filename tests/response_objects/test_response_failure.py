@@ -1,7 +1,7 @@
 import pytest
 
-from courses_platform.request_objects import InvalidRequest
-from courses_platform.response_objects import ResponseFailure
+from app.request_objects.invalid_request import InvalidRequest
+from app.response_objects.response_failure import ResponseFailure
 
 
 @pytest.fixture
