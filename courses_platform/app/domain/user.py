@@ -21,5 +21,8 @@ class User:
         return cls(
             email=record.email,
             id=record.id,
-            courses=record.courses
+            courses=[
+                Course.from_record(course)
+                for course in record.courses
+            ]
         )
