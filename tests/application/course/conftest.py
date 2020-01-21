@@ -19,7 +19,7 @@ def db(course_record: dataclass) -> Mock:
 
 
 @pytest.fixture(scope='function')
-@patch('courses_platform.persistence.database.session', autospec=True)
+@patch('app.persistence.database.session', autospec=True)
 def mock_session_with_db(session: Mock, db: Mock) -> Tuple[Mock, Mock]:
     session.return_value.__enter__.return_value = db
     return session, db

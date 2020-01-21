@@ -1,4 +1,4 @@
-from courses_platform.request_objects.course import GetCourseRequest
+from app.request_objects.course import GetCourseRequest
 
 
 class TestGetCourseRequest:

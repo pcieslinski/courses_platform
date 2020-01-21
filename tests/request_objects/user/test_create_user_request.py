@@ -1,5 +1,5 @@
-from courses_platform.request_objects import InvalidRequest
-from courses_platform.request_objects.user import CreateUserRequest
+from app.request_objects.invalid_request import InvalidRequest
+from app.request_objects.user import CreateUserRequest
 
 
 class TestCreateUserRequest:

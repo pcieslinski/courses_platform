@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  courses_platform:
+    build: ./courses_platform/
+    command: gunicorn --bind 0.0.0.0:5000 main:app
+    ports:
+      - 5000:5000
+    env_file:
+      - .env.sample
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db.sample
+
+volumes:
+  postgres_data:

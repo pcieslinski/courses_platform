@@ -1,6 +1,6 @@
 import pytest
 
-from courses_platform.request_objects import ValidRequest, InvalidRequest
+from app.request_objects import ValidRequest, InvalidRequest
 
 
 class TestValidRequest:

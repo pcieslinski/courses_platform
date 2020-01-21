@@ -2,11 +2,10 @@ import pytest
 from mock import Mock, patch
 from typing import Tuple
 
-from courses_platform.domain.course import Course
-from courses_platform.response_objects import ResponseSuccess
-from courses_platform.request_objects.course import GetAllCoursesRequest
-from courses_platform.application.course.queries.get_all import GetAllCoursesQuery
-from courses_platform.application.interfaces.icommand_query import CommandQuery
+from app.response_objects import ResponseSuccess
+from app.request_objects.course import GetAllCoursesRequest
+from app.application.course.queries.get_all import GetAllCoursesQuery
+from app.application.interfaces.icommand_query import CommandQuery
 
 
 @pytest.fixture(scope='function')
@@ -44,7 +43,7 @@ class TestGetAllCoursesQuery:
         assert response.value[1].id == '2'
         assert response.value[1].name == 'Sample Course'
 
-    @patch('courses_platform.application.course.queries.get_all.GetAllCoursesQuery._create_courses_objects_with_stats')
+    @patch('app.application.course.queries.get_all.GetAllCoursesQuery._create_courses_objects_with_stats')
     def test_get_all_courses_query_returns_courses_with_stats(self, mock_creat_courses_objects_with_stats,
                                                               get_all_query_with_mocks,
                                                               courses_with_enrollments):

@@ -1,4 +1,4 @@
-from courses_platform.request_objects.course import EnrollmentRequest
+from app.request_objects.course import EnrollmentRequest
 
 
 class TestEnrollmentRequest:

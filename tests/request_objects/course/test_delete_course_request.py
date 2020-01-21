@@ -1,4 +1,4 @@
-from courses_platform.request_objects.course import DeleteCourseRequest
+from app.request_objects.course import DeleteCourseRequest
 
 
 class TestDeleteCourseRequest:

@@ -1,5 +1,5 @@
-from courses_platform.request_objects.course import GetAllCoursesRequest
-from courses_platform.request_objects.invalid_request import InvalidRequest
+from app.request_objects.course import GetAllCoursesRequest
+from app.request_objects.invalid_request import InvalidRequest
 
 
 class TestGetAllCoursesRequest:

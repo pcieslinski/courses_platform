@@ -1,13 +1,12 @@
 import pytest
-from mock import Mock, patch
+from mock import Mock
 from typing import Tuple
-from dataclasses import dataclass
 
-from courses_platform.request_objects import Request
-from courses_platform.request_objects.user import CreateUserRequest
-from courses_platform.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.interfaces.icommand_query import CommandQuery
-from courses_platform.application.user.commands.create import CreateUserCommand
+from app.request_objects import Request
+from app.request_objects.user import CreateUserRequest
+from app.response_objects import ResponseSuccess, ResponseFailure
+from app.application.interfaces.icommand_query import CommandQuery
+from app.application.user.commands.create import CreateUserCommand
 
 
 @pytest.fixture

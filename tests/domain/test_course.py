@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from courses_platform.domain.course import Course
+from app.domain.course import Course
 
 
 class TestCourseEntity:

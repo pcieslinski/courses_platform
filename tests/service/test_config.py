@@ -1,7 +1,7 @@
 from flask import Flask
 
-from courses_platform.service import create_app
-from courses_platform.service.config import TestConfig, DevConfig, ProdConfig
+from app.service import create_app
+from app.service.config import TestConfig, DevConfig, ProdConfig
 
 
 def test_app_initialize_correctly_with_test_config():

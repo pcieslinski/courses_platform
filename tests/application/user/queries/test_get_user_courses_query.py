@@ -2,12 +2,12 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from courses_platform.domain.course import Course
-from courses_platform.request_objects import Request
-from courses_platform.request_objects.user import GetUserRequest
-from courses_platform.response_objects import ResponseSuccess, ResponseFailure
-from courses_platform.application.user.queries.get_user_courses import GetUserCoursesQuery
-from courses_platform.application.interfaces.icommand_query import CommandQuery
+from app.domain.course import Course
+from app.request_objects import Request
+from app.request_objects.user import GetUserRequest
+from app.response_objects import ResponseSuccess, ResponseFailure
+from app.application.interfaces.icommand_query import CommandQuery
+from app.application.user.queries.get_user_courses import GetUserCoursesQuery
 
 
 @pytest.fixture

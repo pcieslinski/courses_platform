@@ -2,7 +2,7 @@ import json
 from uuid import uuid4
 from typing import Tuple
 
-from courses_platform.serializers import json_course_serializer as ser
+from app.serializers import json_course_serializer as ser
 
 
 def create_stub_course() -> Tuple[object, str]:

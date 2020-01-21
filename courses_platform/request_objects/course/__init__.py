@@ -1,5 +1,0 @@
-from courses_platform.request_objects.course.create_course_request import CreateCourseRequest
-from courses_platform.request_objects.course.delete_course_request import DeleteCourseRequest
-from courses_platform.request_objects.course.get_course_request import GetCourseRequest
-from courses_platform.request_objects.course.enrollment_request import EnrollmentRequest
-from courses_platform.request_objects.course.get_all_courses_request import GetAllCoursesRequest
