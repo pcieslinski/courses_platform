@@ -6,9 +6,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
-DB_PATH = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.getenv("DATABASE_URL", "sqlite://")
 
-engine = create_engine(f'sqlite:////{DB_PATH}/test.db', convert_unicode=True)
+engine = create_engine(DB_PATH, convert_unicode=True)
 Session = scoped_session(sessionmaker(autocommit=False,
                                       autoflush=False,
                                       bind=engine))
@@ -34,11 +34,3 @@ def session() -> Session:
 from app.persistence.database.user.user_model import User
 from app.persistence.database.course.course_model import Course
 from app.persistence.database.enrollment_table import enrollment
-
-
-def init_db():
-    from app.persistence.database.user.user_model import User
-    from app.persistence.database.course.course_model import Course
-    from app.persistence.database.enrollment_table import enrollment
-
-    Base.metadata.create_all(bind=engine)
