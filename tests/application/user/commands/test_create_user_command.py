@@ -44,8 +44,8 @@ class TestCreateUserCommand:
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_RESOURCE_CREATED
+        assert not hasattr(response.value, 'courses')
         assert response.value.email == 'test@gmail.com'
-        assert response.value.courses == []
 
     def test_create_user_command_returns_exception(self, create_user_request,
                                                    create_command_with_mocks):

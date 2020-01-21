@@ -18,6 +18,7 @@ class CreateUserCommand(ICommandQuery):
         try:
             with self.db_session() as db:
                 new_user = User(email=request.email)
+                del new_user.courses
 
                 db.add(
                     um.User(
