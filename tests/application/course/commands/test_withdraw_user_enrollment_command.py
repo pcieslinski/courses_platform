@@ -44,7 +44,8 @@ class TestWithdrawUserEnrollmentCommand:
         response = command.execute(request=withdraw_user_enrollment_request)
 
         mock_session.assert_called_once()
-        assert db.query().filter().first.call_count == 2
+        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
@@ -69,12 +70,14 @@ class TestWithdrawUserEnrollmentCommand:
                                                                      withdraw_user_enrollment_request,
                                                                      withdraw_user_enrollment_with_mocks):
         command, mock_session, db = withdraw_user_enrollment_with_mocks
-        db.query.return_value.filter.return_value.first.side_effect = ['course', None]
+        db.query.return_value.filter.return_value.first.side_effect = 'course'
+        db.query.return_value.options.return_value.filter.return_value.first.return_value = None
 
         response = command.execute(request=withdraw_user_enrollment_request)
 
         mock_session.assert_called_once()
-        assert db.query().filter().first.call_count == 2
+        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
@@ -92,7 +95,8 @@ class TestWithdrawUserEnrollmentCommand:
         response = command.execute(request=withdraw_user_enrollment_request)
 
         mock_session.assert_called_once()
-        assert db.query().filter().first.call_count == 2
+        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
