@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from typing import List, Tuple
 
 from app.request_objects import Request
@@ -19,19 +20,13 @@ class GetAllCoursesQuery(ICommandQuery):
             for course_record in result
         ]
 
-    def _create_courses_objects_with_stats(self, result: List[cm.Course]) -> List[dict]:
+    def _create_courses_objects_with_stats(self, result: List[Tuple[cm.Course, int]]) -> List[dict]:
         return [
             {
                 'course': Course.from_record(course),
                 'enrollments': n_enrollments
             }
-            for course, n_enrollments in self._get_n_enrollments(result)
-        ]
-
-    def _get_n_enrollments(self, result: List[cm.Course]) -> List[Tuple[cm.Course, int]]:
-        return [
-            (course, course.enrollments.count())
-            for course in result
+            for course, n_enrollments in result
         ]
 
     def execute(self, request: Request) -> Response:
@@ -40,16 +35,22 @@ class GetAllCoursesQuery(ICommandQuery):
 
         try:
             with self.db_session() as db:
+
+                if 'stats' in request.include:
+                    result = db.query(cm.Course, func.count(cm.Course.id)).\
+                                outerjoin(cm.Course.enrollments).\
+                                group_by(cm.Course.id).\
+                                all()
+
+                    return ResponseSuccess.build_response_success(
+                        self._create_courses_objects_with_stats(result)
+                    )
+
                 result = db.query(cm.Course).\
                             all()
 
-                if 'stats' not in request.include:
-                    return ResponseSuccess.build_response_success(
-                        self._create_courses_objects(result)
-                    )
-
                 return ResponseSuccess.build_response_success(
-                    self._create_courses_objects_with_stats(result)
+                    self._create_courses_objects(result)
                 )
 
         except Exception as exc:
