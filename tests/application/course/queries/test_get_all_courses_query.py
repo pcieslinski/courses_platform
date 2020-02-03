@@ -54,7 +54,7 @@ class TestGetAllCoursesQuery:
         response = query.execute(request=GetAllCoursesRequest(include=['stats']))
 
         mock_session.assert_called_once()
-        db.query().all.assert_called_once_with()
+        db.query().outerjoin().group_by().all.assert_called_once()
         mock_creat_courses_objects_with_stats.assert_called_once()
 
         assert isinstance(response, ResponseSuccess)
