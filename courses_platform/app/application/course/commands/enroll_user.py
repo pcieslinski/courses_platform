@@ -1,3 +1,5 @@
+from sqlalchemy.orm import selectinload
+
 from app.request_objects import Request
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
@@ -33,6 +35,7 @@ class EnrollUserCommand(ICommandQuery):
                             f'No Course has been found for a given id: {request.course_id}'))
 
                 user = db.query(um.User). \
+                          options(selectinload('courses')). \
                           filter(um.User.id == request.user_id). \
                           first()
 
