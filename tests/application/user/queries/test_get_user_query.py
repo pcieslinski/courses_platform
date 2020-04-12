@@ -39,7 +39,7 @@ class TestGetUserQuery:
         response = query.execute(request=get_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
@@ -51,12 +51,12 @@ class TestGetUserQuery:
                                                                               get_user_request,
                                                                               get_query_with_mocks):
         query, mock_session, db = get_query_with_mocks
-        db.query.return_value.filter.return_value.first.return_value = None
+        db.query.return_value.options.return_value.filter.return_value.first.return_value = None
 
         response = query.execute(request=get_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
@@ -66,12 +66,12 @@ class TestGetUserQuery:
                                                                                   get_user_request,
                                                                                   get_query_with_mocks):
         query, mock_session, db = get_query_with_mocks
-        db.query.return_value.filter.return_value.first.side_effect = Exception('System error.')
+        db.query.return_value.options.return_value.filter.return_value.first.side_effect = Exception('System error.')
 
         response = query.execute(request=get_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
+        db.query().options().filter().first.assert_called_once()
 
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.SYSTEM_ERROR

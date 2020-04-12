@@ -1,3 +1,5 @@
+from sqlalchemy.orm import selectinload
+
 from app.request_objects import Request
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
@@ -23,7 +25,7 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                course = db.query(cm.Course). \
+                course = db.query(cm.Course).\
                             filter(cm.Course.id == request.course_id). \
                             first()
 
@@ -32,8 +34,9 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
                         ex.NoMatchingCourse(
                             f'No Course has been found for a given id: {request.course_id}'))
 
-                user = db.query(um.User). \
-                          filter(um.User.id == request.user_id). \
+                user = db.query(um.User).\
+                          options(selectinload('courses')).\
+                          filter(um.User.id == request.user_id).\
                           first()
 
                 if not user:

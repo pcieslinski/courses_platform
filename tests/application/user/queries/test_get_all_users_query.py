@@ -31,7 +31,7 @@ class TestGetAllUsersQuery:
         response = query.execute()
 
         mock_session.assert_called_once()
-        db.query().all.assert_called_once_with()
+        db.query().options().all.assert_called_once_with()
 
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK

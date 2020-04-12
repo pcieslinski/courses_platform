@@ -1,3 +1,5 @@
+from sqlalchemy.orm import selectinload
+
 from app.request_objects import Request
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
@@ -19,6 +21,7 @@ class GetUserCoursesQuery(ICommandQuery):
         try:
             with self.db_session() as db:
                 user = db.query(um.User).\
+                          options(selectinload('courses')).\
                           filter(um.User.id == request.user_id).\
                           first()
 
