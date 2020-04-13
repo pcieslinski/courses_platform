@@ -5,9 +5,9 @@ from flask_restful import Resource
 from app.application.user.queries import get_user_courses
 from app.application.interfaces.idb_session import DbSession
 
+from app.serializers import CourseJsonEncoder
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.user import GetUserRequest
-from app.serializers.json_course_serializer import CourseJsonEncoder
 
 
 class UsersCoursesApi(Resource):

@@ -6,9 +6,9 @@ from app.application.user.queries import get_all
 from app.application.user.commands import create
 from app.application.interfaces.idb_session import DbSession
 
+from app.serializers import UserJsonEncoder
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.user import CreateUserRequest
-from app.serializers.json_user_serializer import UserJsonEncoder
 
 
 class UsersApi(Resource):
