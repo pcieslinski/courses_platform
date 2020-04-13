@@ -6,8 +6,8 @@ from app.application.course.queries import get
 from app.application.course.commands import delete
 from app.application.interfaces.idb_session import DbSession
 
+from app.serializers import CourseJsonEncoder
 from app.service.status_codes import STATUS_CODES
-from app.serializers.json_course_serializer import CourseJsonEncoder
 from app.request_objects.course import DeleteCourseRequest, GetCourseRequest
 
 

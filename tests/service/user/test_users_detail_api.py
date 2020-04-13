@@ -2,8 +2,8 @@ import json
 import mock
 from uuid import uuid4
 
+from app.serializers import UserJsonEncoder
 from app.response_objects import ResponseSuccess
-from app.serializers.json_user_serializer import UserJsonEncoder
 
 
 class TestUsersDetailApi:

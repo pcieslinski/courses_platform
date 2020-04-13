@@ -6,8 +6,8 @@ from app.application.user.queries import get
 from app.application.user.commands import delete
 from app.application.interfaces.idb_session import DbSession
 
+from app.serializers import UserJsonEncoder
 from app.service.status_codes import STATUS_CODES
-from app.serializers.json_user_serializer import UserJsonEncoder
 from app.request_objects.user import GetUserRequest, DeleteUserRequest
 
 

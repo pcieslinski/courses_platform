@@ -6,8 +6,8 @@ from app.application.course.commands import create
 from app.application.course.queries import get_all
 from app.application.interfaces.idb_session import DbSession
 
+from app.serializers import CourseJsonEncoder
 from app.service.status_codes import STATUS_CODES
-from app.serializers.json_course_serializer import CourseJsonEncoder
 from app.request_objects.course import CreateCourseRequest, GetAllCoursesRequest
 
 
