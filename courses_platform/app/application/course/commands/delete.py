@@ -17,17 +17,23 @@ class DeleteCourseCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                result = db.query(cm.Course).\
-                            filter(cm.Course.id == request.course_id).\
-                            delete()
+                course = db.query(cm.Course). \
+                            filter(cm.Course.id == request.course_id). \
+                            first()
 
-            if not result:
-                return ResponseFailure.build_resource_error(
-                    NoMatchingCourse(
-                        f'No Course has been found for a given id: {request.course_id}')
-                )
+                if course:
+                    self.clear_enrollments(course)
+                    db.delete(course)
+                else:
+                    return ResponseFailure.build_resource_error(
+                        NoMatchingCourse(
+                            f'No Course has been found for a given id: {request.course_id}')
+                    )
 
             return ResponseSuccess.build_response_no_content()
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
+
+    def clear_enrollments(self, course: cm.Course) -> None:
+        course.enrollments = []

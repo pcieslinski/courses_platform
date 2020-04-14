@@ -17,17 +17,23 @@ class DeleteUserCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                result = db.query(um.User).\
-                            filter(um.User.id == request.user_id).\
-                            delete()
+                user = db.query(um.User). \
+                          filter(um.User.id == request.user_id). \
+                          first()
 
-            if not result:
-                return ResponseFailure.build_resource_error(
-                    NoMatchingUser(
-                        f'No User has been found for a given id: {request.user_id}')
-                )
+                if user:
+                    self.clear_courses(user)
+                    db.delete(user)
+                else:
+                    return ResponseFailure.build_resource_error(
+                        NoMatchingUser(
+                            f'No User has been found for a given id: {request.user_id}')
+                    )
 
             return ResponseSuccess.build_response_no_content()
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
+
+    def clear_courses(self, user: um.User) -> None:
+        user.courses = []

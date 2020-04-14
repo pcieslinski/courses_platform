@@ -39,7 +39,7 @@ class TestDeleteUserCommand:
         response = command.execute(request=delete_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().delete.assert_called_once()
+        db.delete.assert_called_once()
 
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
@@ -50,12 +50,12 @@ class TestDeleteUserCommand:
                                                                                        delete_user_request,
                                                                                        delete_command_with_mocks):
         command, mock_session, db = delete_command_with_mocks
-        db.query.return_value.filter.return_value.delete.side_effect = Exception('Some error.')
+        db.delete.side_effect = Exception('Some error.')
 
         response = command.execute(request=delete_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().delete.assert_called_once()
+        db.delete.assert_called_once()
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
@@ -66,15 +66,14 @@ class TestDeleteUserCommand:
                                                                                      delete_user_request,
                                                                                      delete_command_with_mocks):
         command, mock_session, db = delete_command_with_mocks
-        db.query.return_value.filter.return_value.delete.return_value = 0
+        db.query.return_value.filter.return_value.first.return_value = None
 
         response = command.execute(request=delete_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().delete.assert_called_once()
+        assert db.delete.call_count == 0
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 123'
-
