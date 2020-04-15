@@ -2,7 +2,7 @@
 # BUILDER #
 ###########
 
-FROM python:3.7.4-alpine as builder
+FROM python:3.8.2-alpine as builder
 
 WORKDIR /usr/src/app
 
@@ -23,7 +23,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # FINAL #
 #########
 
-FROM python:3.7.4-alpine
+FROM python:3.8.2-alpine
 
 RUN addgroup -S app && adduser -S app -G app
 
