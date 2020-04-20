@@ -1,8 +1,6 @@
+from __future__ import annotations
+
 from uuid import uuid4
-from typing import Type, TypeVar
-
-
-C = TypeVar('C', bound='Course')
 
 
 class Course:
@@ -11,11 +9,11 @@ class Course:
         self.name = name
 
     @classmethod
-    def from_dict(cls: Type[C], adict: dict) -> C:
+    def from_dict(cls, adict: dict) -> Course:
         return cls(adict['name'])
 
     @classmethod
-    def from_record(cls: Type[C], record) -> C:
+    def from_record(cls, record) -> Course:
         return cls(
             name=record.name,
             id=record.id

@@ -1,20 +1,26 @@
 import json
+from typing import Any, Dict
+
+from app.domain.user import User
+
+
+ResultJson = Dict[str, Any]
 
 
 class UserJsonEncoder(json.JSONEncoder):
-    def default(self, o):
+    def default(self, user: User) -> ResultJson:
         try:
-            to_serialize = {
-                'id': o.id,
-                'email': o.email
+            to_serialize: ResultJson = {
+                'id': user.id,
+                'email': user.email
             }
 
-            if hasattr(o, 'courses'):
+            if hasattr(user, 'courses'):
                 to_serialize['courses'] = [
                     course.__dict__
-                    for course in o.courses
+                    for course in user.courses
                 ]
 
             return to_serialize
         except AttributeError:
-            super().default(o)
+            return super().default(user)

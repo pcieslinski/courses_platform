@@ -1,5 +1,4 @@
-from typing import NewType
-from sqlalchemy.orm import session
+from typing import Callable, ContextManager
 
 
-DbSession = NewType('DbSession', session)
+DbSession = Callable[..., ContextManager]

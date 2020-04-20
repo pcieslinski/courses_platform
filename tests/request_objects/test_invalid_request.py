@@ -4,7 +4,7 @@ from app.request_objects.invalid_request import InvalidRequest
 
 
 @pytest.fixture
-def invalid_request():
+def invalid_request() -> InvalidRequest:
     return InvalidRequest()
 
 
@@ -36,6 +36,3 @@ class TestInvalidRequest:
     def test_has_errors_returns_false_when_called_with_invalid_request_without_errors(self,
                                                                                       invalid_request):
         assert not invalid_request.has_errors()
-
-    def test_invalid_request_is_false(self, invalid_request):
-        assert bool(invalid_request) is False

@@ -1,7 +1,6 @@
-from typing import Any, Type, TypeVar
+from __future__ import annotations
 
-
-RS = TypeVar('RS', bound='ResponseSuccess')
+from typing import Any
 
 
 class ResponseSuccess:
@@ -17,13 +16,13 @@ class ResponseSuccess:
         return True
 
     @classmethod
-    def build_response_success(cls: Type[RS], value: Any) -> RS:
+    def build_response_success(cls, value: Any) -> ResponseSuccess:
         return cls(cls.SUCCESS_OK, value)
 
     @classmethod
-    def build_response_resource_created(cls: Type[RS], value: Any) -> RS:
+    def build_response_resource_created(cls, value: Any) -> ResponseSuccess:
         return cls(cls.SUCCESS_RESOURCE_CREATED, value)
 
     @classmethod
-    def build_response_no_content(cls: Type[RS], value: Any = '') -> RS:
+    def build_response_no_content(cls, value: Any = '') -> ResponseSuccess:
         return cls(cls.SUCCESS_NO_CONTENT, value)

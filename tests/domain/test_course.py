@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from app.domain.course import Course
+from tests.factories import CourseRecord
 
 
 class TestCourseEntity:
@@ -25,9 +26,9 @@ class TestCourseEntity:
 
         assert course.name == 'Test Course'
 
-    def test_course_initialize_correctly_form_record(self, course_record):
+    def test_course_initialize_correctly_form_record(self):
         course_id = str(uuid4())
-        c_record = course_record(course_id, 'Test Course')
+        c_record = CourseRecord(course_id, 'Test Course')
 
         course = Course.from_record(c_record)
 

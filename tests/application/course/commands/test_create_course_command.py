@@ -2,21 +2,20 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from app.request_objects import Request
 from app.request_objects.course import CreateCourseRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 from app.application.course.commands.create import CreateCourseCommand
 
 
 @pytest.fixture
-def create_course_request() -> Request:
+def create_course_request() -> CreateCourseRequest:
     return CreateCourseRequest(name='Test Course')
 
 
 @pytest.fixture(scope='function')
 def create_command_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     command = CreateCourseCommand(db_session=session)
     return command, session, db

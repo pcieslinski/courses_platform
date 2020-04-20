@@ -3,7 +3,7 @@ from contextlib import contextmanager
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 
 
 DEV_DB_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -14,12 +14,12 @@ Session = scoped_session(sessionmaker(autocommit=False,
                                       autoflush=False,
                                       bind=engine))
 
-Base = declarative_base()
+Base: DeclarativeMeta = declarative_base()
 Base.query = Session.query_property()
 
 
 @contextmanager
-def session() -> Session:
+def session():
     sess = Session()
 
     try:

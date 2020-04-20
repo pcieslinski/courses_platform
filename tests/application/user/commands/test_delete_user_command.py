@@ -2,21 +2,20 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from app.request_objects import Request
 from app.request_objects.user import DeleteUserRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 from app.application.user.commands.delete import DeleteUserCommand
 
 
 @pytest.fixture
-def delete_user_request() -> Request:
+def delete_user_request() -> DeleteUserRequest:
     return DeleteUserRequest(user_id='123')
 
 
 @pytest.fixture(scope='function')
 def delete_command_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     command = DeleteUserCommand(db_session=session)
     return command, session, db

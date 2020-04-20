@@ -5,17 +5,17 @@ from app.response_objects.response_failure import ResponseFailure
 
 
 @pytest.fixture
-def response_type():
+def response_type() -> str:
     return 'ResponseError'
 
 
 @pytest.fixture
-def response_message():
+def response_message() -> str:
     return 'This is a response error'
 
 
 @pytest.fixture
-def response_failure(response_type, response_message):
+def response_failure(response_type, response_message) -> ResponseFailure:
     return ResponseFailure(response_type, response_message)
 
 

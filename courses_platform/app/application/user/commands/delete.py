@@ -1,4 +1,7 @@
-from app.request_objects import Request
+from typing import Union
+
+from app.request_objects.invalid_request import InvalidRequest
+from app.request_objects.user.delete_user_request import DeleteUserRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.persistence.database.user import user_model as um
@@ -7,12 +10,15 @@ from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
 
+Request = Union[DeleteUserRequest, InvalidRequest]
+
+
 class DeleteUserCommand(ICommandQuery):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
     def execute(self, request: Request) -> Response:
-        if not request:
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:

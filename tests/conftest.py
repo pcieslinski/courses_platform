@@ -1,7 +1,6 @@
 import pytest
 from mock import Mock
-from typing import List
-from dataclasses import dataclass
+from typing import Any, Dict, List, Union
 
 from app.domain.user import User
 from app.domain.course import Course
@@ -13,31 +12,8 @@ def user() -> User:
 
 
 @pytest.fixture
-def user_record() -> dataclass:
-
-    @dataclass
-    class UserRecord:
-        id: str
-        email: str
-        courses: List[Course]
-
-    return UserRecord
-
-
-@pytest.fixture
 def course() -> Course:
     return Course(name='Test Course')
-
-
-@pytest.fixture
-def course_record() -> dataclass:
-
-    @dataclass
-    class CourseRecord:
-        id: str
-        name: str
-
-    return CourseRecord
 
 
 @pytest.fixture
@@ -63,7 +39,7 @@ def courses() -> List[Course]:
 
 
 @pytest.fixture
-def courses_with_enrollments():
+def courses_with_enrollments() -> List[Dict[str, Union[Course, int]]]:
     return [
             {
                 'course': Course('Test Course'),

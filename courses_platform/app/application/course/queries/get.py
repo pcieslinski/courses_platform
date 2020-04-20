@@ -1,4 +1,7 @@
-from app.request_objects import Request
+from typing import Union
+
+from app.request_objects.invalid_request import InvalidRequest
+from app.request_objects.course.get_course_request import GetCourseRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.domain.course import Course
@@ -8,12 +11,15 @@ from app.application.course.exceptions import NoMatchingCourse
 from app.application.interfaces.icommand_query import ICommandQuery
 
 
+Request = Union[GetCourseRequest, InvalidRequest]
+
+
 class GetCourseQuery(ICommandQuery):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
     def execute(self, request: Request) -> Response:
-        if not request:
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:

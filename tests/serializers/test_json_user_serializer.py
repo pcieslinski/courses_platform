@@ -2,21 +2,15 @@ import json
 from uuid import uuid4
 from typing import Tuple
 
-from app.domain.course import Course
+from tests.factories import StubUser
 from app.serializers import json_user_serializer as ser
 
 
-def create_stub_user() -> Tuple[object, str, str]:
+def create_stub_user() -> Tuple[StubUser, str, str]:
     user_id = str(uuid4())
     course_id = str(uuid4())
 
-    class StubUser:
-        def __init__(self):
-            self.id = user_id
-            self.email = 'test@gmail.com'
-            self.courses = [Course(id=course_id, name='Test Course')]
-
-    return StubUser(), user_id, course_id
+    return StubUser(user_id, course_id), user_id, course_id
 
 
 def test_serialize_user_without_courses():

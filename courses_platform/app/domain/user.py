@@ -1,9 +1,9 @@
+from __future__ import annotations
+
 from uuid import uuid4
-from typing import List, Type, TypeVar
+from typing import List
 
 from app.domain.course import Course
-
-U = TypeVar('U', bound='User')
 
 
 class User:
@@ -13,11 +13,11 @@ class User:
         self.courses = courses or []
 
     @classmethod
-    def from_dict(cls: Type[U], adict: dict) -> U:
+    def from_dict(cls, adict: dict) -> User:
         return cls(adict['email'])
 
     @classmethod
-    def from_record(cls: Type[U], record) -> U:
+    def from_record(cls, record) -> User:
         return cls(
             email=record.email,
             id=record.id,

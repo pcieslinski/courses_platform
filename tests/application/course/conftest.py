@@ -1,18 +1,19 @@
 import pytest
 from typing import Tuple
 from mock import Mock, patch
-from dataclasses import dataclass
+
+from tests.factories import CourseRecord
 
 
 @pytest.fixture
-def db(course_record: dataclass) -> Mock:
+def db() -> Mock:
     db = Mock()
 
     db.query.return_value.filter.return_value.delete.return_value = 1
-    db.query.return_value.filter.return_value.first.return_value = course_record('1', 'Test Course')
+    db.query.return_value.filter.return_value.first.return_value = CourseRecord('1', 'Test Course')
     db.query.return_value.all.return_value = [
-        course_record('1', 'Test Course'),
-        course_record('2', 'Sample Course')
+        CourseRecord('1', 'Test Course'),
+        CourseRecord('2', 'Sample Course')
     ]
 
     return db

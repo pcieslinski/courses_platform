@@ -2,21 +2,20 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from app.request_objects import Request
 from app.request_objects.course import DeleteCourseRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 from app.application.course.commands.delete import DeleteCourseCommand
 
 
 @pytest.fixture
-def delete_course_request() -> Request:
+def delete_course_request() -> DeleteCourseRequest:
     return DeleteCourseRequest(course_id='100')
 
 
 @pytest.fixture(scope='function')
 def delete_command_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     command = DeleteCourseCommand(db_session=session)
     return command, session, db
