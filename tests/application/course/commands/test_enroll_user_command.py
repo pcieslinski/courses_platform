@@ -2,21 +2,20 @@ import pytest
 from mock import Mock, patch
 from typing import Tuple
 
-from app.request_objects import Request
 from app.request_objects.course import EnrollmentRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 from app.application.course.commands.enroll_user import EnrollUserCommand
 
 
 @pytest.fixture
-def enroll_user_request() -> Request:
+def enroll_user_request() -> EnrollmentRequest:
     return EnrollmentRequest(course_id='100', user_id='20')
 
 
 @pytest.fixture(scope='function')
 def enroll_user_command_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     command = EnrollUserCommand(db_session=session)
     return command, session, db

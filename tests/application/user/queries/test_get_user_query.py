@@ -2,21 +2,20 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
-from app.request_objects import Request
 from app.request_objects.user import GetUserRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
 from app.application.user.queries.get import GetUserQuery
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 
 
 @pytest.fixture
-def get_user_request() -> Request:
+def get_user_request() -> GetUserRequest:
     return GetUserRequest(user_id='100')
 
 
 @pytest.fixture(scope='function')
 def get_query_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     query = GetUserQuery(db_session=session)
     return query, session, db

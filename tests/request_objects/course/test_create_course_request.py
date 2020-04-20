@@ -7,7 +7,6 @@ class TestCreateCourseRequest:
     def test_create_course_request_initialize_correctly(self):
         req = CreateCourseRequest(name='Test Course')
 
-        assert bool(req) is True
         assert isinstance(req, CreateCourseRequest)
         assert hasattr(req, 'name')
         assert req.name == 'Test Course'
@@ -15,7 +14,6 @@ class TestCreateCourseRequest:
     def test_create_course_request_builds_correctly_from_dict(self):
         req = CreateCourseRequest.from_dict(dict(name='Test Course'))
 
-        assert bool(req) is True
         assert isinstance(req, CreateCourseRequest)
         assert hasattr(req, 'name')
         assert req.name == 'Test Course'

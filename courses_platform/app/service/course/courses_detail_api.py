@@ -28,7 +28,7 @@ class CoursesDetailApi(Resource):
             status=STATUS_CODES[response.type]
         )
 
-    def delete(self, course_id) -> Response:
+    def delete(self, course_id: str) -> Response:
         request_object = DeleteCourseRequest.from_dict(dict(course_id=course_id))
 
         command = delete.DeleteCourseCommand(db_session=self.db_session)

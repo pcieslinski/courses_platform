@@ -7,7 +7,6 @@ class TestCreateUserRequest:
     def test_create_user_request_initialize_correctly(self):
         req = CreateUserRequest(email='test@gmail.com')
 
-        assert bool(req) is True
         assert isinstance(req, CreateUserRequest)
         assert hasattr(req, 'email')
         assert req.email == 'test@gmail.com'
@@ -15,7 +14,6 @@ class TestCreateUserRequest:
     def test_create_user_request_builds_correctly_from_dict(self):
         req = CreateUserRequest.from_dict(dict(email='test@gmail.com'))
 
-        assert bool(req) is True
         assert isinstance(req, CreateUserRequest)
         assert hasattr(req, 'email')
         assert req.email == 'test@gmail.com'

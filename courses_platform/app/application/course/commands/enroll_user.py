@@ -1,7 +1,9 @@
+from typing import Union
 from sqlalchemy.orm import selectinload
 
-from app.request_objects import Request
+from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
+from app.request_objects.course.enrollment_request import EnrollmentRequest
 
 from app.persistence.database.user import user_model as um
 from app.persistence.database.course import course_model as cm
@@ -9,6 +11,9 @@ from app.application.course import exceptions as ex
 from app.application.user.exceptions import NoMatchingUser
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
+
+
+Request = Union[EnrollmentRequest, InvalidRequest]
 
 
 class EnrollUserCommand(ICommandQuery):
@@ -20,7 +25,7 @@ class EnrollUserCommand(ICommandQuery):
         return True if user in course.enrollments else False
 
     def execute(self, request: Request) -> Response:
-        if not request:
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:

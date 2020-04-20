@@ -1,20 +1,23 @@
+from typing import List
+
 import pytest
 
+from app.domain.user import User
 from app.response_objects import ResponseSuccess
 
 
 @pytest.fixture
-def response_type():
+def response_type() -> str:
     return 'ResponseSuccess'
 
 
 @pytest.fixture
-def response_value(users):
+def response_value(users: List[User]) -> List[User]:
     return users
 
 
 @pytest.fixture
-def response_success(response_type, response_value):
+def response_success(response_type: str, response_value: List[User]) -> ResponseSuccess:
     return ResponseSuccess(response_type, response_value)
 
 

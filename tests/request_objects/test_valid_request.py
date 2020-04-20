@@ -9,11 +9,6 @@ class TestValidRequest:
         with pytest.raises(NotImplementedError):
             req = ValidRequest.from_dict({})
 
-    def test_valid_request_is_true(self):
-        req = ValidRequest()
-
-        assert bool(req) is True
-
     def test_validate_required_params_validates_parameters(self):
         ValidRequest.required_params = ('name', )
 

@@ -2,22 +2,23 @@ import pytest
 from mock import Mock
 from typing import Tuple
 
+from tests.factories import UserRecord, CourseRecord
+
 from app.domain.course import Course
-from app.request_objects import Request
 from app.request_objects.user import GetUserRequest
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 from app.application.user.queries.get_user_courses import GetUserCoursesQuery
 
 
 @pytest.fixture
-def get_user_request() -> Request:
+def get_user_request() -> GetUserRequest:
     return GetUserRequest(user_id='100')
 
 
 @pytest.fixture(scope='function')
 def get_query_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     query = GetUserCoursesQuery(db_session=session)
     return query, session, db
@@ -33,11 +34,10 @@ class TestGetUserCoursesQuery:
         assert hasattr(query, 'db_session')
         assert query.db_session is session
 
-    def test_get_user_courses_executes_correctly(self, get_user_request, get_query_with_mocks,
-                                                 user_record, course_record):
+    def test_get_user_courses_executes_correctly(self, get_user_request, get_query_with_mocks):
         query, mock_session, db = get_query_with_mocks
 
-        user = user_record('100', 'test@gmail.com', [course_record('1', 'Test Course')])
+        user = UserRecord('100', 'test@gmail.com', [CourseRecord('1', 'Test Course')])
         db.query.return_value.options.return_value.filter.return_value.first.return_value = user
 
         response = query.execute(request=get_user_request)

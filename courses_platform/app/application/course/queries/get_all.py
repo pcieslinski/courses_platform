@@ -1,13 +1,17 @@
 from sqlalchemy import func
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
-from app.request_objects import Request
+from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
+from app.request_objects.course.get_all_courses_request import GetAllCoursesRequest
 
 from app.domain.course import Course
 from app.persistence.database.course import course_model as cm
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
+
+
+Request = Union[GetAllCoursesRequest, InvalidRequest]
 
 
 class GetAllCoursesQuery(ICommandQuery):
@@ -30,7 +34,7 @@ class GetAllCoursesQuery(ICommandQuery):
         ]
 
     def execute(self, request: Request) -> Response:
-        if not request:
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:

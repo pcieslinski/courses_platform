@@ -1,8 +1,8 @@
-from typing import Union, Type, TypeVar
+from __future__ import annotations
+
+from typing import Union
 
 from app.request_objects.invalid_request import InvalidRequest
-
-RF = TypeVar('RF', bound='ResponseFailure')
 
 
 class ResponseFailure:
@@ -30,7 +30,7 @@ class ResponseFailure:
         return False
 
     @classmethod
-    def build_from_invalid_request(cls: Type[RF], invalid_request: InvalidRequest) -> RF:
+    def build_from_invalid_request(cls, invalid_request: InvalidRequest) -> ResponseFailure:
         message = "\n".join(
             [f"{err['parameter']}: {err['message']}"
              for err in invalid_request.errors]
@@ -38,13 +38,13 @@ class ResponseFailure:
         return cls(cls.PARAMETERS_ERROR, message)
 
     @classmethod
-    def build_resource_error(cls: Type[RF], message: Exception = None) -> RF:
+    def build_resource_error(cls, message: Exception) -> ResponseFailure:
         return cls(cls.RESOURCE_ERROR, message)
 
     @classmethod
-    def build_system_error(cls: Type[RF], message: Exception = None) -> RF:
+    def build_system_error(cls, message: Exception) -> ResponseFailure:
         return cls(cls.SYSTEM_ERROR, message)
 
     @classmethod
-    def build_parameters_error(cls: Type[RF], message: Union[Exception, str] = None) -> RF:
+    def build_parameters_error(cls, message: Union[Exception, str]) -> ResponseFailure:
         return cls(cls.PARAMETERS_ERROR, message)

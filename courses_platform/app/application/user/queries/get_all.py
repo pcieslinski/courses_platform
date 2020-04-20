@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from sqlalchemy.orm import selectinload
 
 from app.domain.user import User
@@ -6,7 +6,12 @@ from app.persistence.database.user import user_model as um
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
+from app.request_objects.valid_request import ValidRequest
+from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
+
+
+Request = Union[InvalidRequest, ValidRequest]
 
 
 class GetAllUsersQuery(ICommandQuery):
@@ -25,7 +30,7 @@ class GetAllUsersQuery(ICommandQuery):
 
         return users_objects
 
-    def execute(self) -> Response:
+    def execute(self, request: Request = None) -> Response:
         try:
             with self.db_session() as db:
                 result = db.query(um.User).\

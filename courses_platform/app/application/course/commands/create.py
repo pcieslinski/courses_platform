@@ -1,5 +1,8 @@
-from app.request_objects import Request
+from typing import Union
+
+from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
+from app.request_objects.course.create_course_request import CreateCourseRequest
 
 from app.domain.course import Course
 from app.persistence.database.course import course_model as cm
@@ -7,12 +10,15 @@ from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
 
+Request = Union[CreateCourseRequest, InvalidRequest]
+
+
 class CreateCourseCommand(ICommandQuery):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
     def execute(self, request: Request) -> Response:
-        if not request:
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:

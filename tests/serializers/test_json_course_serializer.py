@@ -2,18 +2,14 @@ import json
 from uuid import uuid4
 from typing import Tuple
 
+from tests.factories import StubCourse
 from app.serializers import json_course_serializer as ser
 
 
-def create_stub_course() -> Tuple[object, str]:
+def create_stub_course() -> Tuple[StubCourse, str]:
     course_id = str(uuid4())
 
-    class StubCourse:
-        def __init__(self):
-            self.id = course_id
-            self.name = 'Test Course'
-
-    return StubCourse(), course_id
+    return StubCourse(course_id), course_id
 
 
 def test_serialize_user_entity():

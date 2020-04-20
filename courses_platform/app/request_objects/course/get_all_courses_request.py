@@ -1,12 +1,14 @@
-from typing import List, Tuple, Type, Union
+from __future__ import annotations
 
+from typing import List, Tuple, Union
+
+from app.request_objects.valid_request import ValidRequest
 from app.request_objects.invalid_request import InvalidRequest
-from app.request_objects.valid_request import ValidRequest, VR
 
 
 class GetAllCoursesRequest(ValidRequest):
-    accepted_params: Tuple[str] = ('include', )
-    accepted_include_values: Tuple[str] = ('stats', )
+    accepted_params: Tuple[str] = ('include',)
+    accepted_include_values: Tuple[str] = ('stats',)
 
     def __init__(self, include: List[str] = None) -> None:
         self.include = include or []
@@ -16,7 +18,7 @@ class GetAllCoursesRequest(ValidRequest):
         return include.split(',')
 
     @classmethod
-    def from_dict(cls: Type[VR], params: dict) -> Union[InvalidRequest, VR]:
+    def from_dict(cls, params: dict) -> Union[InvalidRequest, GetAllCoursesRequest]:
         invalid_req = cls.validate_accepted_params(
             invalid_req=InvalidRequest(),
             params=params

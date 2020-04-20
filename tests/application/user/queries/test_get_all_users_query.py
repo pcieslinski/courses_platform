@@ -4,12 +4,12 @@ from typing import Tuple
 
 from app.response_objects import ResponseSuccess
 from app.application.user.queries.get_all import GetAllUsersQuery
-from app.application.interfaces.icommand_query import CommandQuery
+from app.application.interfaces.icommand_query import ICommandQuery
 
 
 @pytest.fixture(scope='function')
 def get_all_query_with_mocks(
-        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[CommandQuery, Mock, Mock]:
+        mock_session_with_db: Tuple[Mock, Mock]) -> Tuple[ICommandQuery, Mock, Mock]:
     session, db = mock_session_with_db
     query = GetAllUsersQuery(db_session=session)
     return query, session, db
