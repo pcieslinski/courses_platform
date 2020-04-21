@@ -51,7 +51,7 @@ class TestCreateCourseCommand:
         db.add.side_effect = Exception(
             'Course with "Test Course" name already exists.'
         )
-        
+
         response = command.execute(request=create_course_request)
 
         mock_session.assert_called_once()

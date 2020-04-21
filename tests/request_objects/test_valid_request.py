@@ -7,7 +7,7 @@ class TestValidRequest:
 
     def test_valid_request_raises_error_when_built_from_dict(self):
         with pytest.raises(NotImplementedError):
-            req = ValidRequest.from_dict({})
+            ValidRequest.from_dict({})
 
     def test_validate_required_params_validates_parameters(self):
         ValidRequest.required_params = ('name', )

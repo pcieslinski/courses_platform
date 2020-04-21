@@ -10,7 +10,6 @@ from app.persistence.database.course import course_model as cm
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
-
 Request = Union[GetAllCoursesRequest, InvalidRequest]
 
 
@@ -41,17 +40,17 @@ class GetAllCoursesQuery(ICommandQuery):
             with self.db_session() as db:
 
                 if 'stats' in request.include:
-                    result = db.query(cm.Course, func.count(cm.Course.id)).\
-                                outerjoin(cm.Course.enrollments).\
-                                group_by(cm.Course.id).\
-                                all()
+                    result = db.query(cm.Course, func.count(cm.Course.id))\
+                               .outerjoin(cm.Course.enrollments)\
+                               .group_by(cm.Course.id)\
+                               .all()
 
                     return ResponseSuccess.build_response_success(
                         self._create_courses_objects_with_stats(result)
                     )
 
-                result = db.query(cm.Course).\
-                            all()
+                result = db.query(cm.Course)\
+                           .all()
 
                 return ResponseSuccess.build_response_success(
                     self._create_courses_objects(result)

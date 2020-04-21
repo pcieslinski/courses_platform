@@ -115,4 +115,3 @@ class TestWithdrawUserEnrollmentCommand:
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.SYSTEM_ERROR
         assert response.message == 'Exception: Some error'
-

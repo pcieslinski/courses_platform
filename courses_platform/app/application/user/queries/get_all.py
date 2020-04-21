@@ -33,9 +33,9 @@ class GetAllUsersQuery(ICommandQuery):
     def execute(self, request: Request = None) -> Response:
         try:
             with self.db_session() as db:
-                result = db.query(um.User).\
-                            options(selectinload('courses')).\
-                            all()
+                result = db.query(um.User)\
+                           .options(selectinload('courses'))\
+                           .all()
 
                 return ResponseSuccess.build_response_success(
                     self._create_users_objects(result)

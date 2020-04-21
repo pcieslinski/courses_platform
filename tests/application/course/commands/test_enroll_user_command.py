@@ -62,7 +62,7 @@ class TestEnrollUserCommand:
         assert isinstance(response, ResponseFailure)
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingCourse: No Course has been found for a given id: 100'
-    
+
     def test_enroll_user_command_returns_no_matching_user_error(self, enroll_user_request,
                                                                 enroll_user_command_with_mocks):
         command, mock_session, db = enroll_user_command_with_mocks

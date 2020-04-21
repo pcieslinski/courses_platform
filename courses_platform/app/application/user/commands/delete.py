@@ -23,9 +23,9 @@ class DeleteUserCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                user = db.query(um.User). \
-                          filter(um.User.id == request.user_id). \
-                          first()
+                user = db.query(um.User)\
+                         .filter(um.User.id == request.user_id)\
+                         .first()
 
                 if user:
                     self.clear_courses(user)

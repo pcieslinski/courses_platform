@@ -22,5 +22,3 @@ class TestUsersCoursesApi:
         assert mock_query().execute.call_count == 1
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'
-
-

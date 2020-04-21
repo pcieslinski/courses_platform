@@ -8,6 +8,7 @@ mypy = "*"
 pytest = "*"
 pytest-flask = "*"
 mock = "*"
+flake8 = "*"
 
 [packages]
 Werkzeug = "==0.16.1"
@@ -17,6 +18,7 @@ psycopg2-binary = "*"
 flask = "*"
 flask-restful = "*"
 sqlalchemy = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"

@@ -24,9 +24,9 @@ class DeleteCourseCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                course = db.query(cm.Course). \
-                            filter(cm.Course.id == request.course_id). \
-                            first()
+                course = db.query(cm.Course)\
+                           .filter(cm.Course.id == request.course_id)\
+                           .first()
 
                 if course:
                     self.clear_enrollments(course)

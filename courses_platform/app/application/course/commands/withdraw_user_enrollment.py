@@ -25,24 +25,24 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
         return True if user in course.enrollments else False
 
     def execute(self, request: Request) -> Response:
-        if isinstance(request,InvalidRequest):
+        if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
             with self.db_session() as db:
-                course = db.query(cm.Course).\
-                            filter(cm.Course.id == request.course_id). \
-                            first()
+                course = db.query(cm.Course)\
+                           .filter(cm.Course.id == request.course_id)\
+                           .first()
 
                 if not course:
                     return ResponseFailure.build_resource_error(
                         ex.NoMatchingCourse(
                             f'No Course has been found for a given id: {request.course_id}'))
 
-                user = db.query(um.User).\
-                          options(selectinload('courses')).\
-                          filter(um.User.id == request.user_id).\
-                          first()
+                user = db.query(um.User)\
+                         .options(selectinload('courses'))\
+                         .filter(um.User.id == request.user_id)\
+                         .first()
 
                 if not user:
                     return ResponseFailure.build_resource_error(
