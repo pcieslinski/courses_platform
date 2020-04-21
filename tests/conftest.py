@@ -1,6 +1,6 @@
 import pytest
 from mock import Mock
-from typing import Any, Dict, List, Union
+from typing import Dict, List, Union
 
 from app.domain.user import User
 from app.domain.course import Course

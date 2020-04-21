@@ -25,10 +25,10 @@ class GetUserQuery(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                user_record = db.query(um.User).\
-                                 options(selectinload('courses')).\
-                                 filter(um.User.id == request.user_id).\
-                                 first()
+                user_record = db.query(um.User)\
+                                .options(selectinload('courses'))\
+                                .filter(um.User.id == request.user_id)\
+                                .first()
 
                 if not user_record:
                     return ResponseFailure.build_resource_error(

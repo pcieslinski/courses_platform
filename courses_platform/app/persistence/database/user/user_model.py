@@ -5,7 +5,7 @@ from app.persistence.database import Base
 
 class User(Base):
     __tablename__ = 'user'
-    
+
     id = Column(String(36),
                 nullable=False,
                 primary_key=True)

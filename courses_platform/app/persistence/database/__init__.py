@@ -25,13 +25,13 @@ def session():
     try:
         yield sess
         sess.commit()
-    except:
+    except Exception:
         sess.rollback()
         raise
     finally:
         Session.remove()
 
 
-from app.persistence.database.user.user_model import User
-from app.persistence.database.course.course_model import Course
-from app.persistence.database.enrollment_table import enrollment
+from app.persistence.database.user.user_model import User  # noqa: E402, F401
+from app.persistence.database.course.course_model import Course  # noqa: E402, F401
+from app.persistence.database.enrollment_table import enrollment  # noqa: E402, F401

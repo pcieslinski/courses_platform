@@ -24,9 +24,9 @@ class GetCourseQuery(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                course_record = db.query(cm.Course).\
-                                   filter(cm.Course.id == request.course_id).\
-                                   first()
+                course_record = db.query(cm.Course)\
+                                  .filter(cm.Course.id == request.course_id)\
+                                  .first()
 
                 if not course_record:
                     return ResponseFailure.build_resource_error(

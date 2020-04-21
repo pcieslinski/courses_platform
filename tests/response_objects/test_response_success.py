@@ -60,4 +60,4 @@ class TestResponseSuccess:
         assert bool(res) is True
         assert isinstance(res, ResponseSuccess)
         assert res.type == ResponseSuccess.SUCCESS_NO_CONTENT
-        assert res.value is ''
+        assert res.value == ''
