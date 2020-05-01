@@ -5,7 +5,6 @@ from app.request_objects.course.get_course_request import GetCourseRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.domain.course import Course
-from app.persistence.database.course import course_model as cm
 from app.application.interfaces.idb_session import DbSession
 from app.application.course.exceptions import NoMatchingCourse
 from app.application.interfaces.icommand_query import ICommandQuery
@@ -24,17 +23,17 @@ class GetCourseQuery(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                course_record = db.query(cm.Course)\
-                                  .filter(cm.Course.id == request.course_id)\
-                                  .first()
+                course = db.query(Course)\
+                           .filter_by(id=request.course_id)\
+                           .first()
 
-                if not course_record:
+                if not course:
                     return ResponseFailure.build_resource_error(
                         NoMatchingCourse(
                             f'No Course has been found for a given id: {request.course_id}')
                     )
 
-                return ResponseSuccess.build_response_success(Course.from_record(course_record))
+                return ResponseSuccess.build_response_success(course)
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

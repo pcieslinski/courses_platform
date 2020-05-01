@@ -5,7 +5,6 @@ from app.request_objects.user.create_user_request import CreateUserRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 from app.domain.user import User
-from app.persistence.database.user import user_model as um
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -24,14 +23,7 @@ class CreateUserCommand(ICommandQuery):
         try:
             with self.db_session() as db:
                 new_user = User(email=request.email)
-                del new_user.courses
-
-                db.add(
-                    um.User(
-                        id=new_user.id,
-                        email=new_user.email
-                    )
-                )
+                db.add(new_user)
 
             return ResponseSuccess.build_response_resource_created(new_user)
 

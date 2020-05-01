@@ -64,7 +64,7 @@ class TestDeleteCourseCommand:
                                                                                          delete_course_request,
                                                                                          delete_command_with_mocks):
         command, mock_session, db = delete_command_with_mocks
-        db.query.return_value.filter.return_value.first.return_value = None
+        db.query.return_value.filter_by.return_value.first.return_value = None
 
         response = command.execute(request=delete_course_request)
 

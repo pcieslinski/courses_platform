@@ -28,10 +28,10 @@ class TestGetAllUsersQuery:
     def test_get_all_users_query_returns_list_of_users(self, get_all_query_with_mocks):
         query, mock_session, db = get_all_query_with_mocks
 
-        response = query.execute()
+        response = query.execute(request=None)
 
         mock_session.assert_called_once()
-        db.query().options().all.assert_called_once_with()
+        db.query().all.assert_called_once_with()
 
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK
@@ -39,7 +39,7 @@ class TestGetAllUsersQuery:
         assert len(response.value) == 2
         assert response.value[0].id == '1'
         assert response.value[0].email == 'test@gmail.com'
-        assert not hasattr(response.value, 'courses')
+        assert response.value[0].courses == []
         assert response.value[1].id == '2'
         assert response.value[1].email == 'sample@gmail.com'
-        assert not hasattr(response.value, 'courses')
+        assert response.value[1].courses == []

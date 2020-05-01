@@ -1,5 +1,4 @@
 import pytest
-from mock import Mock
 from typing import Dict, List, Union
 
 from app.domain.user import User
@@ -46,29 +45,3 @@ def courses_with_enrollments() -> List[Dict[str, Union[Course, int]]]:
                 'enrollments': 10
             }
         ]
-
-
-@pytest.fixture(scope='function')
-def mock_user_repo(user: User, users: List[User]) -> Mock:
-    repo = Mock()
-
-    repo.create_user.return_value = user
-    repo.delete_user.return_value = 1
-
-    repo.get_user.return_value = user
-    repo.get_all_users.return_value = users
-
-    return repo
-
-
-@pytest.fixture(scope='function')
-def mock_course_repo(course: Course, courses: List[Course]) -> Mock:
-    repo = Mock()
-
-    repo.create_course.return_value = course
-    repo.delete_course.return_value = 1
-
-    repo.get_course.return_value = course
-    repo.get_all_courses.return_value = courses
-
-    return repo

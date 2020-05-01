@@ -1,6 +1,5 @@
 import json
 import mock
-import pytest
 
 from app.domain.course import Course
 from app.serializers import CourseJsonEncoder
@@ -10,8 +9,8 @@ from app.response_objects import ResponseSuccess
 class TestUsersCoursesApi:
 
     @mock.patch('app.application.user.queries.get_user_courses.GetUserCoursesQuery')
-    @pytest.mark.parametrize('response_val', [([Course('Test Course')]), ([])])
-    def test_users_courses_api_returns_list_of_user_courses(self, mock_query, client, response_val):
+    def test_users_courses_api_returns_list_of_user_courses(self, mock_query, client):
+        response_val = [Course('Test Course')]
         response = ResponseSuccess.build_response_success(response_val)
         mock_query().execute.return_value = response
 

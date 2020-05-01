@@ -4,7 +4,7 @@ from app.request_objects.invalid_request import InvalidRequest
 from app.request_objects.user.delete_user_request import DeleteUserRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
-from app.persistence.database.user import user_model as um
+from app.domain.user import User
 from app.application.user.exceptions import NoMatchingUser
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
@@ -23,8 +23,8 @@ class DeleteUserCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                user = db.query(um.User)\
-                         .filter(um.User.id == request.user_id)\
+                user = db.query(User)\
+                         .filter_by(id=request.user_id)\
                          .first()
 
                 if user:
@@ -41,5 +41,5 @@ class DeleteUserCommand(ICommandQuery):
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
 
-    def clear_courses(self, user: um.User) -> None:
+    def clear_courses(self, user: User) -> None:
         user.courses = []

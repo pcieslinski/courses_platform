@@ -43,19 +43,19 @@ class TestGetAllCoursesQuery:
         assert response.value[1].id == '2'
         assert response.value[1].name == 'Sample Course'
 
-    @patch('app.application.course.queries.get_all.GetAllCoursesQuery._create_courses_objects_with_stats')
-    def test_get_all_courses_query_returns_courses_with_stats(self, mock_creat_courses_objects_with_stats,
+    @patch('app.application.course.queries.get_all.GetAllCoursesQuery._format_response')
+    def test_get_all_courses_query_returns_courses_with_stats(self, mock_format_response,
                                                               get_all_query_with_mocks,
                                                               courses_with_enrollments):
-        mock_creat_courses_objects_with_stats.return_value = courses_with_enrollments
+        mock_format_response.return_value = courses_with_enrollments
 
         query, mock_session, db = get_all_query_with_mocks
 
         response = query.execute(request=GetAllCoursesRequest(include=['stats']))
 
         mock_session.assert_called_once()
-        db.query().outerjoin().group_by().all.assert_called_once()
-        mock_creat_courses_objects_with_stats.assert_called_once()
+        db.query().all.assert_called_once()
+        mock_format_response.assert_called_once()
 
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK

@@ -1,6 +1,5 @@
 import json
 import mock
-import pytest
 
 from app.domain.user import User
 from app.serializers import UserJsonEncoder
@@ -10,8 +9,8 @@ from app.response_objects import ResponseSuccess
 class TestUsersApi:
 
     @mock.patch('app.application.user.queries.get_all.GetAllUsersQuery')
-    @pytest.mark.parametrize('response_val', [([User('test@gmail.com')]), ([])])
-    def test_users_api_returns_list_of_users(self, mock_query, client, response_val):
+    def test_users_api_returns_list_of_users(self, mock_query, client):
+        response_val = [User('test@gmail.com')]
         response = ResponseSuccess.build_response_success(response_val)
         mock_query().execute.return_value = response
 

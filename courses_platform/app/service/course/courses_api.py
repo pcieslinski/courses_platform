@@ -23,7 +23,7 @@ class CoursesApi(Resource):
         response = query.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, default=lambda o: o.__dict__),
+            json.dumps(response.value, cls=CourseJsonEncoder),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )

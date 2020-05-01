@@ -1,12 +1,10 @@
-from sqlalchemy import func
-from typing import List, Tuple, Union
+from typing import List, Union
 
 from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 from app.request_objects.course.get_all_courses_request import GetAllCoursesRequest
 
 from app.domain.course import Course
-from app.persistence.database.course import course_model as cm
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -17,44 +15,30 @@ class GetAllCoursesQuery(ICommandQuery):
     def __init__(self, db_session: DbSession) -> None:
         self.db_session = db_session
 
-    def _create_courses_objects(self, result: List[cm.Course]) -> List[Course]:
-        return [
-            Course.from_record(course_record)
-            for course_record in result
-        ]
-
-    def _create_courses_objects_with_stats(self, result: List[Tuple[cm.Course, int]]) -> List[dict]:
-        return [
-            {
-                'course': Course.from_record(course),
-                'enrollments': n_enrollments
-            }
-            for course, n_enrollments in result
-        ]
-
     def execute(self, request: Request) -> Response:
         if isinstance(request, InvalidRequest):
             return ResponseFailure.build_from_invalid_request(request)
 
         try:
             with self.db_session() as db:
-
-                if 'stats' in request.include:
-                    result = db.query(cm.Course, func.count(cm.Course.id))\
-                               .outerjoin(cm.Course.enrollments)\
-                               .group_by(cm.Course.id)\
-                               .all()
-
-                    return ResponseSuccess.build_response_success(
-                        self._create_courses_objects_with_stats(result)
-                    )
-
-                result = db.query(cm.Course)\
+                result = db.query(Course)\
                            .all()
 
-                return ResponseSuccess.build_response_success(
-                    self._create_courses_objects(result)
-                )
+                if 'stats' in request.include:
+                    return ResponseSuccess.build_response_success(
+                        self._format_response(result)
+                    )
+
+                return ResponseSuccess.build_response_success(result)
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
+
+    def _format_response(self, result: List[Course]) -> List[dict]:
+        return [
+            {
+                'course': course,
+                'enrollments': course.enrollments.count()  # type: ignore
+            }
+            for course in result
+        ]

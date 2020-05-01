@@ -15,12 +15,6 @@ class UserJsonEncoder(json.JSONEncoder):
                 'email': user.email
             }
 
-            if hasattr(user, 'courses'):
-                to_serialize['courses'] = [
-                    course.__dict__
-                    for course in user.courses
-                ]
-
             return to_serialize
         except AttributeError:
             return super().default(user)

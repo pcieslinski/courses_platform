@@ -8,7 +8,8 @@ from app.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
 from app.service.course import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
-from app.persistence.database import session
+from app.persistence import session, Session
+from app.persistence.orm import start_mappers
 from app.application.interfaces.idb_session import DbSession
 
 
@@ -16,8 +17,13 @@ def create_app(config_object: Type[Config] = DevConfig) -> Flask:
     app = Flask(__name__)
     api = Api(app)
 
+    start_mappers()
     app.config.from_object(config_object)
     register_resources(api, session)
+
+    @app.teardown_request
+    def remove_session(exception: Exception = None) -> None:
+        Session.remove()
 
     return app
 

@@ -1,9 +1,9 @@
 import click
-from uuid import uuid4
 
-from app.persistence.database.user.user_model import User
-from app.persistence.database.course.course_model import Course
-from app.persistence.database import Base, engine, session
+from app.domain.user import User
+from app.domain.course import Course
+from app.persistence import engine, session, Session
+from app.persistence.orm import metadata, start_mappers
 
 
 @click.group()
@@ -13,35 +13,35 @@ def main():
 
 @main.command()
 def create_db():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    metadata.drop_all(bind=engine)
+    metadata.create_all(bind=engine)
 
 
 @main.command()
 def seed_db():
+    start_mappers()
+
     with session() as db:
         users = [
-            User(id=str(uuid4()), email='test@gmail'),
-            User(id=str(uuid4()), email='sample@gmail'),
-            User(id=str(uuid4()), email='random@gmail'),
-            User(id=str(uuid4()), email='default@gmail')
+            User(email='test@gmail'),
+            User(email='sample@gmail'),
+            User(email='random@gmail'),
+            User(email='default@gmail')
         ]
 
         courses = [
-            Course(id=str(uuid4()), name='Test Course'),
-            Course(id=str(uuid4()), name='Sample Course')
+            Course(name='Test Course'),
+            Course(name='Sample Course')
         ]
 
-        db.bulk_save_objects(users)
-        db.bulk_save_objects(courses)
+        courses[0].enrollments.append(users[0])
+        courses[0].enrollments.append(users[1])
+        courses[1].enrollments.append(users[1])
+        courses[1].enrollments.append(users[2])
 
-        db_courses = db.query(Course).all()
-        db_users = db.query(User).all()
+        db.add_all([*users, *courses])
 
-        db_courses[0].enrollments.append(db_users[0])
-        db_courses[0].enrollments.append(db_users[1])
-        db_courses[1].enrollments.append(db_users[1])
-        db_courses[1].enrollments.append(db_users[2])
+    Session.remove()
 
 
 if __name__ == "__main__":
