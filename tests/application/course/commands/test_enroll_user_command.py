@@ -36,13 +36,14 @@ class TestEnrollUserCommand:
                                                     enroll_user_command_with_mocks):
         mock_user_is_enrolled.return_value = False
         command, mock_session, db = enroll_user_command_with_mocks
-        db.query.return_value.filter.return_value.first.return_value = Mock()
+        db.query.return_value.filter_by.return_value.first.return_value = Mock()
+        db.query.return_value.options.return_value.filter_by.return_value.first.return_value = Mock()
 
         response = command.execute(request=enroll_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
-        db.query().options().filter().first.assert_called_once()
+        db.query().filter_by().first.assert_called_once()
+        db.query().options().filter_by().first.assert_called_once()
 
         assert bool(response) is True
         assert isinstance(response, ResponseSuccess)
@@ -53,7 +54,7 @@ class TestEnrollUserCommand:
     def test_enroll_user_command_returns_no_matching_course_error(self, enroll_user_request,
                                                                   enroll_user_command_with_mocks):
         command, mock_session, db = enroll_user_command_with_mocks
-        db.query.return_value.filter.return_value.first.return_value = None
+        db.query.return_value.filter_by.return_value.first.return_value = None
 
         response = command.execute(request=enroll_user_request)
 
@@ -66,14 +67,14 @@ class TestEnrollUserCommand:
     def test_enroll_user_command_returns_no_matching_user_error(self, enroll_user_request,
                                                                 enroll_user_command_with_mocks):
         command, mock_session, db = enroll_user_command_with_mocks
-        db.query.return_value.filter.return_value.first.return_value = 'course'
-        db.query.return_value.options.return_value.filter.return_value.first.return_value = None
+        db.query.return_value.filter_by.return_value.first.return_value = 'course'
+        db.query.return_value.options.return_value.filter_by.return_value.first.return_value = None
 
         response = command.execute(request=enroll_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
-        db.query().options().filter().first.assert_called_once()
+        db.query().filter_by().first.assert_called_once()
+        db.query().options().filter_by().first.assert_called_once()
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
@@ -90,8 +91,8 @@ class TestEnrollUserCommand:
         response = command.execute(request=enroll_user_request)
 
         mock_session.assert_called_once()
-        db.query().filter().first.assert_called_once()
-        db.query().options().filter().first.assert_called_once()
+        db.query().filter_by().first.assert_called_once()
+        db.query().options().filter_by().first.assert_called_once()
 
         assert bool(response) is False
         assert isinstance(response, ResponseFailure)
@@ -101,7 +102,7 @@ class TestEnrollUserCommand:
     def test_enroll_user_command_returns_system_error(self, enroll_user_request,
                                                       enroll_user_command_with_mocks):
         command, mock_session, db = enroll_user_command_with_mocks
-        db.query.return_value.filter.return_value.first.side_effect = Exception('Generic error')
+        db.query.return_value.filter_by.return_value.first.side_effect = Exception('Generic error')
 
         response = command.execute(request=enroll_user_request)
 

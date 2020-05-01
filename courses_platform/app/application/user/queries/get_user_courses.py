@@ -5,8 +5,7 @@ from app.request_objects.invalid_request import InvalidRequest
 from app.request_objects.user.get_user_request import GetUserRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
-from app.domain.course import Course
-from app.persistence.database.user import user_model as um
+from app.domain.user import User
 from app.application.user.exceptions import NoMatchingUser
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
@@ -25,9 +24,9 @@ class GetUserCoursesQuery(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                user = db.query(um.User)\
+                user = db.query(User)\
                          .options(selectinload('courses'))\
-                         .filter(um.User.id == request.user_id)\
+                         .filter_by(id=request.user_id)\
                          .first()
 
                 if not user:
@@ -36,12 +35,7 @@ class GetUserCoursesQuery(ICommandQuery):
                             f'No User has been found for a given id: {request.user_id}')
                     )
 
-                return ResponseSuccess.build_response_success(
-                    [
-                        Course.from_record(course_record)
-                        for course_record in user.courses
-                    ]
-                )
+                return ResponseSuccess.build_response_success(user.courses)
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)

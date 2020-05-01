@@ -5,7 +5,6 @@ from app.response_objects import Response, ResponseFailure, ResponseSuccess
 from app.request_objects.course.create_course_request import CreateCourseRequest
 
 from app.domain.course import Course
-from app.persistence.database.course import course_model as cm
 from app.application.interfaces.idb_session import DbSession
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -24,13 +23,7 @@ class CreateCourseCommand(ICommandQuery):
         try:
             with self.db_session() as db:
                 new_course = Course(name=request.name)
-
-                db.add(
-                    cm.Course(
-                        id=new_course.id,
-                        name=new_course.name
-                    )
-                )
+                db.add(new_course)
 
             return ResponseSuccess.build_response_resource_created(new_course)
 

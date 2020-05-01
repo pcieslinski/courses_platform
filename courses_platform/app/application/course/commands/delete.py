@@ -4,8 +4,7 @@ from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 from app.request_objects.course.delete_course_request import DeleteCourseRequest
 
-
-from app.persistence.database.course import course_model as cm
+from app.domain.course import Course
 from app.application.interfaces.idb_session import DbSession
 from app.application.course.exceptions import NoMatchingCourse
 from app.application.interfaces.icommand_query import ICommandQuery
@@ -24,8 +23,8 @@ class DeleteCourseCommand(ICommandQuery):
 
         try:
             with self.db_session() as db:
-                course = db.query(cm.Course)\
-                           .filter(cm.Course.id == request.course_id)\
+                course = db.query(Course)\
+                           .filter_by(id=request.course_id)\
                            .first()
 
                 if course:
@@ -42,5 +41,5 @@ class DeleteCourseCommand(ICommandQuery):
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
 
-    def clear_enrollments(self, course: cm.Course) -> None:
+    def clear_enrollments(self, course: Course) -> None:
         course.enrollments = []
