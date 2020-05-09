@@ -1,7 +1,6 @@
 from typing import Union
 
-from app.domain.user import User
-from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 from app.application.interfaces.icommand_query import ICommandQuery
 
 from app.request_objects.valid_request import ValidRequest
@@ -13,14 +12,13 @@ Request = Union[InvalidRequest, ValidRequest]
 
 
 class GetAllUsersQuery(ICommandQuery):
-    def __init__(self, db_session: DbSession) -> None:
-        self.db_session = db_session
+    def __init__(self, unit_of_work: IUnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
 
     def execute(self, request: Request = None) -> Response:
         try:
-            with self.db_session() as db:
-                result = db.query(User)\
-                           .all()
+            with self.unit_of_work as uow:
+                result = uow.users.list()
 
                 return ResponseSuccess.build_response_success(result)
 
