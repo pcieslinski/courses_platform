@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from app.application.course.queries import get
 from app.application.course.commands import delete
-from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 from app.serializers import CourseJsonEncoder
 from app.service.status_codes import STATUS_CODES
@@ -12,13 +12,13 @@ from app.request_objects.course import DeleteCourseRequest, GetCourseRequest
 
 
 class CoursesDetailApi(Resource):
-    def __init__(self, db_session: DbSession) -> None:
-        self.db_session = db_session
+    def __init__(self, unit_of_work: IUnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
 
     def get(self, course_id: str) -> Response:
         request_object = GetCourseRequest.from_dict(dict(course_id=course_id))
 
-        query = get.GetCourseQuery(db_session=self.db_session)
+        query = get.GetCourseQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute(request=request_object)
 
@@ -31,7 +31,7 @@ class CoursesDetailApi(Resource):
     def delete(self, course_id: str) -> Response:
         request_object = DeleteCourseRequest.from_dict(dict(course_id=course_id))
 
-        command = delete.DeleteCourseCommand(db_session=self.db_session)
+        command = delete.DeleteCourseCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(request=request_object)
 

@@ -24,7 +24,7 @@ jobs:
     - name: Mypy
       run: |
         pip install mypy
-        mypy courses_platform
+        mypy courses_platform/app
     - name: Test with pytest
       run: |
         pip install pytest

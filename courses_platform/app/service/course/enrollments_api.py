@@ -3,15 +3,15 @@ from flask import Response, request
 from flask_restful import Resource
 
 from app.application.course.commands import enroll_user
-from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.course import EnrollmentRequest
 
 
 class EnrollmentsApi(Resource):
-    def __init__(self, db_session: DbSession) -> None:
-        self.db_session = db_session
+    def __init__(self, unit_of_work: IUnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
 
     def post(self, course_id: str) -> Response:
         params = request.get_json()
@@ -23,7 +23,7 @@ class EnrollmentsApi(Resource):
             }
         )
 
-        command = enroll_user.EnrollUserCommand(db_session=self.db_session)
+        command = enroll_user.EnrollUserCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(request=request_object)
 
