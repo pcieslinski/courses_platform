@@ -2,8 +2,9 @@ import click
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.persistence import engine, session, Session
+from app.persistence import engine, Session
 from app.persistence.orm import metadata, start_mappers
+from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
 
 
 @click.group()
@@ -21,7 +22,9 @@ def create_db():
 def seed_db():
     start_mappers()
 
-    with session() as db:
+    unit_of_work = SqlAlchemyUnitOfWork(session_factory=Session)
+
+    with unit_of_work as uow:
         users = [
             User(email='test@gmail'),
             User(email='sample@gmail'),
@@ -39,7 +42,11 @@ def seed_db():
         courses[1].enrollments.append(users[1])
         courses[1].enrollments.append(users[2])
 
-        db.add_all([*users, *courses])
+        for user in users:
+            uow.users.add(user)
+
+        for course in courses:
+            uow.courses.add(course)
 
     Session.remove()
 
