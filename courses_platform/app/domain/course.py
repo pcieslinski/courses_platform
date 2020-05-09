@@ -19,3 +19,6 @@ class Course:
     @classmethod
     def from_dict(cls, adict: dict) -> Course:
         return cls(adict['name'])
+
+    def __repr__(self):
+        return f'Course: id<{self.id}>, name<{self.name}>'
