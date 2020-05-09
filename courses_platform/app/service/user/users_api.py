@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from app.application.user.queries import get_all
 from app.application.user.commands import create
-from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 from app.serializers import UserJsonEncoder
 from app.service.status_codes import STATUS_CODES
@@ -12,11 +12,11 @@ from app.request_objects.user import CreateUserRequest
 
 
 class UsersApi(Resource):
-    def __init__(self, db_session: DbSession) -> None:
-        self.db_session = db_session
+    def __init__(self, unit_of_work: IUnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
 
     def get(self) -> Response:
-        query = get_all.GetAllUsersQuery(db_session=self.db_session)
+        query = get_all.GetAllUsersQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute()
 
@@ -29,7 +29,7 @@ class UsersApi(Resource):
     def post(self) -> Response:
         request_object = CreateUserRequest.from_dict(request.get_json())
 
-        command = create.CreateUserCommand(db_session=self.db_session)
+        command = create.CreateUserCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(request=request_object)
 

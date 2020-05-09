@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from app.application.course.commands import create
 from app.application.course.queries import get_all
-from app.application.interfaces.idb_session import DbSession
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 from app.serializers import CourseJsonEncoder
 from app.service.status_codes import STATUS_CODES
@@ -12,13 +12,13 @@ from app.request_objects.course import CreateCourseRequest, GetAllCoursesRequest
 
 
 class CoursesApi(Resource):
-    def __init__(self, db_session: DbSession) -> None:
-        self.db_session = db_session
+    def __init__(self, unit_of_work: IUnitOfWork) -> None:
+        self.unit_of_work = unit_of_work
 
     def get(self) -> Response:
         request_object = GetAllCoursesRequest.from_dict(dict(request.args))
 
-        query = get_all.GetAllCoursesQuery(db_session=self.db_session)
+        query = get_all.GetAllCoursesQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute(request=request_object)
 
@@ -31,7 +31,7 @@ class CoursesApi(Resource):
     def post(self) -> Response:
         request_object = CreateCourseRequest.from_dict(request.get_json())
 
-        command = create.CreateCourseCommand(db_session=self.db_session)
+        command = create.CreateCourseCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(request=request_object)
 
