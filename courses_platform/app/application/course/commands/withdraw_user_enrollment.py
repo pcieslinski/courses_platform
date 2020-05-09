@@ -38,7 +38,7 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
                         ex.NoMatchingUser(request.user_id)
                     )
 
-                if not self.user_is_enrolled(course, user):
+                if not course.is_enrolled(user):
                     return ResponseFailure.build_resource_error(
                         ex.UserNotEnrolled(request.user_id, request.course_id)
                     )
@@ -48,7 +48,3 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
                 return ResponseSuccess.build_response_no_content()
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
-
-    @staticmethod
-    def user_is_enrolled(course: Course, user: User) -> bool:
-        return True if user in course.enrollments else False

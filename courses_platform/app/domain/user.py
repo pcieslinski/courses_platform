@@ -18,5 +18,8 @@ class User:
     def from_dict(cls, adict: dict) -> User:
         return cls(adict['email'])
 
+    def clear_enrollments(self) -> None:
+        self.courses = []
+
     def __repr__(self):
         return f'User: id<{self.id}>, name<{self.email}>'

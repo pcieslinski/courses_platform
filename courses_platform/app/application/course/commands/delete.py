@@ -26,7 +26,7 @@ class DeleteCourseCommand(ICommandQuery):
                 course = cast(Course, uow.courses.get(request.course_id))
 
                 if course:
-                    self.clear_enrollments(course)
+                    course.clear_enrollments()
                     uow.courses.remove(course)
                 else:
                     return ResponseFailure.build_resource_error(
@@ -37,6 +37,3 @@ class DeleteCourseCommand(ICommandQuery):
 
         except Exception as exc:
             return ResponseFailure.build_system_error(exc)
-
-    def clear_enrollments(self, course: Course) -> None:
-        course.enrollments = []
