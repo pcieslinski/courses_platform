@@ -5,7 +5,7 @@ from app.response_objects import Response, ResponseFailure, ResponseSuccess
 from app.request_objects.course.delete_course_request import DeleteCourseRequest
 
 from app.domain.course import Course
-from app.application.course.exceptions import NoMatchingCourse
+from app.application import exceptions as ex
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -30,8 +30,7 @@ class DeleteCourseCommand(ICommandQuery):
                     uow.courses.remove(course)
                 else:
                     return ResponseFailure.build_resource_error(
-                        NoMatchingCourse(
-                            f'No Course has been found for a given id: {request.course_id}')
+                        ex.NoMatchingCourse(request.course_id)
                     )
 
             return ResponseSuccess.build_response_no_content()

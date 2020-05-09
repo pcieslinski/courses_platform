@@ -6,8 +6,7 @@ from app.request_objects.course.enrollment_request import EnrollmentRequest
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.application.course import exceptions as ex
-from app.application.user.exceptions import NoMatchingUser
+from app.application import exceptions as ex
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -29,20 +28,20 @@ class WithdrawUserEnrollmentCommand(ICommandQuery):
 
                 if not course:
                     return ResponseFailure.build_resource_error(
-                        ex.NoMatchingCourse(
-                            f'No Course has been found for a given id: {request.course_id}'))
+                        ex.NoMatchingCourse(request.course_id)
+                    )
 
                 user = cast(User, uow.users.get(request.user_id, load_relation='courses'))
 
                 if not user:
                     return ResponseFailure.build_resource_error(
-                        NoMatchingUser(
-                            f'No User has been found for a given id: {request.user_id}'))
+                        ex.NoMatchingUser(request.user_id)
+                    )
 
                 if not self.user_is_enrolled(course, user):
                     return ResponseFailure.build_resource_error(
-                        ex.UserNotEnrolled(
-                            f'User: {request.user_id} is not enrolled in Course: {request.course_id}'))
+                        ex.UserNotEnrolled(request.user_id, request.course_id)
+                    )
 
                 course.enrollments.remove(user)
 

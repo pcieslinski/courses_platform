@@ -4,7 +4,7 @@ from app.request_objects.invalid_request import InvalidRequest
 from app.request_objects.user.get_user_request import GetUserRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
-from app.application.user.exceptions import NoMatchingUser
+from app.application import exceptions as ex
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 from app.application.interfaces.icommand_query import ICommandQuery
 
@@ -26,8 +26,7 @@ class GetUserQuery(ICommandQuery):
 
                 if not user:
                     return ResponseFailure.build_resource_error(
-                        NoMatchingUser(
-                            f'No User has been found for a given id: {request.user_id}')
+                        ex.NoMatchingUser(request.user_id)
                     )
 
                 return ResponseSuccess.build_response_success(user)
