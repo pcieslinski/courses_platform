@@ -20,5 +20,11 @@ class Course:
     def from_dict(cls, adict: dict) -> Course:
         return cls(adict['name'])
 
+    def is_enrolled(self, user: User) -> bool:
+        return True if user in self.enrollments else False
+
+    def clear_enrollments(self) -> None:
+        self.enrollments = []
+
     def __repr__(self):
         return f'Course: id<{self.id}>, name<{self.name}>'
