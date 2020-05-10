@@ -26,10 +26,10 @@ def seed_db():
 
     with unit_of_work as uow:
         users = [
-            User(email='test@gmail'),
-            User(email='sample@gmail'),
-            User(email='random@gmail'),
-            User(email='default@gmail')
+            User(email='test@gmail.com'),
+            User(email='sample@gmail.com'),
+            User(email='random@gmail.com'),
+            User(email='default@gmail.com')
         ]
 
         courses = [

@@ -16,3 +16,4 @@ werkzeug==0.16.1
 pytest
 pytest-flask
 mock
+requests

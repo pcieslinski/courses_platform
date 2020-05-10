@@ -9,6 +9,7 @@ pytest = "*"
 pytest-flask = "*"
 mock = "*"
 flake8 = "*"
+requests = "*"
 
 [packages]
 Werkzeug = "==0.16.1"
