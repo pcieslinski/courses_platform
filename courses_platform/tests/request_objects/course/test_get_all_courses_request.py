@@ -5,12 +5,12 @@ from app.request_objects.invalid_request import InvalidRequest
 class TestGetAllCoursesRequest:
 
     def test_get_all_courses_request_initialize_correctly(self):
-        req = GetAllCoursesRequest(include=['stats'])
+        req = GetAllCoursesRequest(include=['enrollments_count'])
 
         assert isinstance(req, GetAllCoursesRequest)
         assert hasattr(req, 'include')
         assert isinstance(req.include, list)
-        assert req.include[0] == 'stats'
+        assert req.include[0] == 'enrollments_count'
 
     def test_get_all_courses_request_initialize_correctly_without_data(self):
         req = GetAllCoursesRequest()
@@ -20,15 +20,15 @@ class TestGetAllCoursesRequest:
         assert req.include == []
 
     def test_get_all_courses_request_builds_correctly_from_dict(self):
-        req = GetAllCoursesRequest.from_dict(dict(include='stats'))
+        req = GetAllCoursesRequest.from_dict(dict(include='enrollments_count'))
 
         assert isinstance(req, GetAllCoursesRequest)
         assert hasattr(req, 'include')
         assert isinstance(req.include, list)
-        assert req.include[0] == 'stats'
+        assert req.include[0] == 'enrollments_count'
 
     def test_get_all_courses_request_catches_errors_when_build_from_wrong_dict(self):
-        req = GetAllCoursesRequest.from_dict(dict(include='stats,test'))
+        req = GetAllCoursesRequest.from_dict(dict(include='enrollments_count,test'))
 
         assert isinstance(req, InvalidRequest)
         assert req.has_errors()

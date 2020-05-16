@@ -1,4 +1,3 @@
-import json
 from flask import Response
 from flask_restful import Resource
 
@@ -6,7 +5,7 @@ from app.application.course.queries import get
 from app.application.course.commands import delete
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
-from app.serializers import CourseJsonEncoder
+from app.serializers import course_serializer
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.course import DeleteCourseRequest, GetCourseRequest
 
@@ -23,7 +22,7 @@ class CoursesDetailApi(Resource):
         response = query.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=CourseJsonEncoder),
+            response.serialize(course_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )
@@ -36,6 +35,6 @@ class CoursesDetailApi(Resource):
         response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value),
+            response.serialize(),
             status=STATUS_CODES[response.type]
         )

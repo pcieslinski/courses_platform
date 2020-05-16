@@ -2,7 +2,7 @@ import json
 import mock
 from uuid import uuid4
 
-from app.serializers import CourseJsonEncoder
+from app.serializers import course_serializer
 from app.response_objects import ResponseSuccess
 
 
@@ -14,7 +14,7 @@ class TestCoursesDetailApi:
         mock_command().execute.return_value = response
 
         http_response = client.get('/api/courses/123')
-        course_data = json.dumps(course, cls=CourseJsonEncoder)
+        course_data = course_serializer.dumps(course)
 
         _, kwargs = mock_command().execute.call_args
 

@@ -1,14 +1,14 @@
-import json
-from flask import Response, request
 from flask_restful import Resource
+from flask import Response, request
+
 
 from app.application.user.queries import get_all
 from app.application.user.commands import create
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
-from app.serializers import UserJsonEncoder
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.user import CreateUserRequest
+from app.serializers import user_serializer, users_serializer
 
 
 class UsersApi(Resource):
@@ -21,7 +21,7 @@ class UsersApi(Resource):
         response = query.execute()
 
         return Response(
-            json.dumps(response.value, cls=UserJsonEncoder),
+            response.serialize(users_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )
@@ -34,7 +34,7 @@ class UsersApi(Resource):
         response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=UserJsonEncoder),
+            response.serialize(user_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )

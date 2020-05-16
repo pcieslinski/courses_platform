@@ -1,11 +1,10 @@
-import json
 from flask import Response
 from flask_restful import Resource
 
 from app.application.user.queries import get_user_courses
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
-from app.serializers import CourseJsonEncoder
+from app.serializers import courses_serializer
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.user import GetUserRequest
 
@@ -22,7 +21,7 @@ class UsersCoursesApi(Resource):
         response = query.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=CourseJsonEncoder),
+            response.serialize(courses_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )

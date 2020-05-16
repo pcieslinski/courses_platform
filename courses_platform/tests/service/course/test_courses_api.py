@@ -2,8 +2,9 @@ import json
 import mock
 
 from app.domain.course import Course
-from app.serializers import CourseJsonEncoder
 from app.response_objects import ResponseSuccess
+from app.serializers.schemas import CourseSchema
+from app.serializers import course_serializer, courses_serializer
 
 
 class TestCoursesApi:
@@ -15,7 +16,7 @@ class TestCoursesApi:
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/courses')
-        courses_data = json.dumps(response_val, cls=CourseJsonEncoder)
+        courses_data = courses_serializer.dumps(response_val)
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(courses_data)
         assert mock_query().execute.call_count == 1
@@ -28,14 +29,15 @@ class TestCoursesApi:
         response = ResponseSuccess.build_response_success(courses_with_enrollments)
         mock_query().execute.return_value = response
 
-        http_response = client.get('/api/courses?include=stats')
-        courses_data = json.dumps(courses_with_enrollments, cls=CourseJsonEncoder)
+        http_response = client.get('/api/courses?include=enrollments_count')
+        courses_serializer = CourseSchema(many=True, include=['enrollments_count'])
+        courses_data = courses_serializer.dumps(courses_with_enrollments)
 
         _, kwargs = mock_query().execute.call_args
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(courses_data)
         assert mock_query().execute.call_count == 1
-        assert kwargs['request'].include == ['stats']
+        assert kwargs['request'].include == ['enrollments_count']
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'
 
@@ -53,7 +55,7 @@ class TestCoursesApi:
         data = json.dumps(dict(name='Test Course'))
 
         http_response = client.post('/api/courses', data=data, headers=headers)
-        course_data = json.dumps(course, cls=CourseJsonEncoder)
+        course_data = course_serializer.dumps(course)
 
         _, kwargs = mock_command().execute.call_args
 

@@ -2,7 +2,7 @@ import json
 import mock
 
 from app.domain.course import Course
-from app.serializers import CourseJsonEncoder
+from app.serializers import courses_serializer
 from app.response_objects import ResponseSuccess
 
 
@@ -15,7 +15,7 @@ class TestUsersCoursesApi:
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/users/123/courses')
-        courses_data = json.dumps(response_val, cls=CourseJsonEncoder)
+        courses_data = courses_serializer.dumps(response_val)
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(courses_data)
         assert mock_query().execute.call_count == 1
