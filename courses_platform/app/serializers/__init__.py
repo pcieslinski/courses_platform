@@ -1,8 +1,7 @@
-from .json_user_serializer import UserJsonEncoder
-from .json_course_serializer import CourseJsonEncoder
+from .schemas import UserSchema, CourseSchema
 
 
-__all__ = [
-    'UserJsonEncoder',
-    'CourseJsonEncoder'
-]
+user_serializer = UserSchema()
+users_serializer = UserSchema(many=True)
+course_serializer = CourseSchema()
+courses_serializer = CourseSchema(many=True)
