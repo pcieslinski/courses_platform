@@ -1,7 +1,8 @@
+import json
 import pytest
 
+from app.response_objects import ResponseFailure
 from app.request_objects.invalid_request import InvalidRequest
-from app.response_objects.response_failure import ResponseFailure
 
 
 @pytest.fixture
@@ -86,3 +87,13 @@ class TestResponseFailure:
         assert isinstance(res, ResponseFailure)
         assert res.type == ResponseFailure.PARAMETERS_ERROR
         assert res.message == 'Exception: parameter error'
+
+    def test_response_failure_serializes_correctly(self, response_failure):
+        serialized_res = response_failure.serialize()
+
+        expected = dict(
+            message='This is a response error',
+            type='ResponseError'
+        )
+
+        assert json.loads(serialized_res) == expected

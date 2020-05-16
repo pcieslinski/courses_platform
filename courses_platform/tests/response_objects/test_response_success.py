@@ -1,8 +1,10 @@
+import json
 from typing import List
 
 import pytest
 
 from app.domain.user import User
+from app.serializers import user_serializer
 from app.response_objects import ResponseSuccess
 
 
@@ -61,3 +63,15 @@ class TestResponseSuccess:
         assert isinstance(res, ResponseSuccess)
         assert res.type == ResponseSuccess.SUCCESS_NO_CONTENT
         assert res.value == ''
+
+    def test_response_success_serializes_correctly(self):
+        user = User(id='1', email='test@gmail.com')
+        res = ResponseSuccess.build_response_resource_created(user)
+
+        serialized_res = res.serialize(user_serializer)
+        expected = dict(
+            id='1',
+            email='test@gmail.com'
+        )
+
+        assert json.loads(serialized_res) == expected

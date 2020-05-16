@@ -1,11 +1,54 @@
 from __future__ import annotations
+import abc
+import json
+from typing import Any, Union
 
-from typing import Union
+from marshmallow import Schema
 
 from app.request_objects.invalid_request import InvalidRequest
 
 
-class ResponseFailure:
+class ResponseBase(abc.ABC):
+    type: str
+    value: Any
+
+    @abc.abstractmethod
+    def __bool__(self) -> bool:
+        raise NotImplementedError
+
+    def serialize(self, schema: Schema = None) -> str:
+        if self and schema:
+            return schema.dumps(self.value)
+
+        return json.dumps(self.value)
+
+
+class ResponseSuccess(ResponseBase):
+    SUCCESS_OK = 'Success'
+    SUCCESS_RESOURCE_CREATED = 'SuccessResourceCreated'
+    SUCCESS_NO_CONTENT = 'SuccessNoContent'
+
+    def __init__(self, type: str, value: Any = None) -> None:
+        self.type = type
+        self.value = value
+
+    def __bool__(self) -> bool:
+        return True
+
+    @classmethod
+    def build_response_success(cls, value: Any) -> ResponseSuccess:
+        return cls(cls.SUCCESS_OK, value)
+
+    @classmethod
+    def build_response_resource_created(cls, value: Any) -> ResponseSuccess:
+        return cls(cls.SUCCESS_RESOURCE_CREATED, value)
+
+    @classmethod
+    def build_response_no_content(cls, value: Any = '') -> ResponseSuccess:
+        return cls(cls.SUCCESS_NO_CONTENT, value)
+
+
+class ResponseFailure(ResponseBase):
     RESOURCE_ERROR = 'ResourceError'
     SYSTEM_ERROR = 'SystemError'
     PARAMETERS_ERROR = 'ParametersError'
