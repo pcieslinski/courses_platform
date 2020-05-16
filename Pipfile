@@ -19,6 +19,7 @@ psycopg2-binary = "*"
 flask = "*"
 flask-restful = "*"
 sqlalchemy = "*"
+marshmallow = "*"
 
 [requires]
 python_version = "3.8"

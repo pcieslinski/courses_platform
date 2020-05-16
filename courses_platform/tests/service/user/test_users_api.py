@@ -2,8 +2,8 @@ import json
 import mock
 
 from app.domain.user import User
-from app.serializers import UserJsonEncoder
 from app.response_objects import ResponseSuccess
+from app.serializers import user_serializer, users_serializer
 
 
 class TestUsersApi:
@@ -15,7 +15,7 @@ class TestUsersApi:
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/users')
-        users_data = json.dumps(response_val, cls=UserJsonEncoder)
+        users_data = users_serializer.dumps(response_val)
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(users_data)
         mock_query().execute.assert_called_with()
@@ -35,7 +35,7 @@ class TestUsersApi:
         data = json.dumps(dict(email='test@gmail.com'))
 
         http_response = client.post('/api/users', data=data, headers=headers)
-        user_data = json.dumps(user, cls=UserJsonEncoder)
+        user_data = user_serializer.dumps(user)
 
         _, kwargs = mock_command().execute.call_args
 

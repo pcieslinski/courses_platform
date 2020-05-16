@@ -2,7 +2,7 @@ import json
 import mock
 from uuid import uuid4
 
-from app.serializers import UserJsonEncoder
+from app.serializers import user_serializer
 from app.response_objects import ResponseSuccess
 
 
@@ -14,7 +14,7 @@ class TestUsersDetailApi:
         mock_command().execute.return_value = response
 
         http_response = client.get('/api/users/100')
-        user_data = json.dumps(user, cls=UserJsonEncoder)
+        user_data = user_serializer.dumps(user)
 
         _, kwargs = mock_command().execute.call_args
 

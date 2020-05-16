@@ -11,9 +11,10 @@ pytz==2019.3
 six==1.14.0
 sqlalchemy==1.3.16
 werkzeug==0.16.1
+marshmallow==3.6.0
 
 # Tests
-pytest
-pytest-flask
-mock
-requests
+pytest==5.4.2
+pytest-flask==1.0.0
+mock==4.0.2
+requests==2.23.0

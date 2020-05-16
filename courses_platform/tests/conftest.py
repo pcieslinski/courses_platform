@@ -1,6 +1,6 @@
 import os
 import time
-from typing import Dict, Generator, List, Union
+from typing import Generator, List
 
 import pytest
 from sqlalchemy import create_engine
@@ -48,13 +48,12 @@ def courses() -> List[Course]:
 
 
 @pytest.fixture
-def courses_with_enrollments() -> List[Dict[str, Union[Course, int]]]:
+def courses_with_enrollments() -> List[Course]:
     return [
-            {
-                'course': Course('Test Course'),
-                'enrollments': 10
-            }
-        ]
+        Course(name='Test Course', enrollments=[
+            User(email='test@gmail.com')
+        ])
+    ]
 
 
 @pytest.fixture

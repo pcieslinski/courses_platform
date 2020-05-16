@@ -1,6 +1,5 @@
 from typing import Union
 
-from app.response_objects.response_failure import ResponseFailure
-from app.response_objects.response_success import ResponseSuccess
+from app.response_objects.responses import ResponseFailure, ResponseSuccess
 
 Response = Union[ResponseFailure, ResponseSuccess]

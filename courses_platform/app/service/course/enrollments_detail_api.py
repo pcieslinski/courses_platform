@@ -1,4 +1,3 @@
-import json
 from flask import Response
 from flask_restful import Resource
 
@@ -27,6 +26,6 @@ class EnrollmentsDetailApi(Resource):
         response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value),
+            response.serialize(),
             status=STATUS_CODES[response.type]
         )

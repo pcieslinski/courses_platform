@@ -1,4 +1,3 @@
-import json
 from flask import Response, request
 from flask_restful import Resource
 
@@ -6,7 +5,9 @@ from app.application.course.commands import create
 from app.application.course.queries import get_all
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
-from app.serializers import CourseJsonEncoder
+from app.serializers import course_serializer
+from app.request_objects import InvalidRequest
+from app.serializers.schemas import CourseSchema
 from app.service.status_codes import STATUS_CODES
 from app.request_objects.course import CreateCourseRequest, GetAllCoursesRequest
 
@@ -18,12 +19,17 @@ class CoursesApi(Resource):
     def get(self) -> Response:
         request_object = GetAllCoursesRequest.from_dict(dict(request.args))
 
+        courses_serializer = (
+            CourseSchema(many=True) if isinstance(request_object, InvalidRequest)
+            else CourseSchema(many=True, include=request_object.include)
+        )
+
         query = get_all.GetAllCoursesQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=CourseJsonEncoder),
+            response.serialize(courses_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )
@@ -36,7 +42,7 @@ class CoursesApi(Resource):
         response = command.execute(request=request_object)
 
         return Response(
-            json.dumps(response.value, cls=CourseJsonEncoder),
+            response.serialize(course_serializer),
             mimetype='application/json',
             status=STATUS_CODES[response.type]
         )

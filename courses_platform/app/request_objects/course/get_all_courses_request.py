@@ -8,7 +8,7 @@ from app.request_objects.invalid_request import InvalidRequest
 
 class GetAllCoursesRequest(ValidRequest):
     accepted_params: Tuple[str] = ('include',)
-    accepted_include_values: Tuple[str] = ('stats',)
+    accepted_include_values: Tuple[str] = ('enrollments_count',)
 
     def __init__(self, include: List[str] = None) -> None:
         self.include = include or []

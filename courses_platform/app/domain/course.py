@@ -20,6 +20,10 @@ class Course:
     def from_dict(cls, adict: dict) -> Course:
         return cls(adict['name'])
 
+    @property
+    def enrollments_count(self) -> int:
+        return len(list(self.enrollments))
+
     def is_enrolled(self, user: User) -> bool:
         return True if user in self.enrollments else False
 

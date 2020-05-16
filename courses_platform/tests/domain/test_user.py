@@ -1,4 +1,5 @@
 from app.domain.user import User
+from app.domain.course import Course
 
 
 class TestUserEntity:
@@ -23,4 +24,13 @@ class TestUserEntity:
         assert hasattr(user, 'id')
 
         assert user.email == 'test@gmail.com'
+        assert user.courses == []
+
+    def test_clear_enrollments_removes_all_user_enrollments(self):
+        course_1 = Course(name='Test Course')
+        course_2 = Course(name='Sample Course')
+        user = User(email='test@gmail.com', courses=[course_1, course_2])
+
+        user.clear_enrollments()
+
         assert user.courses == []
