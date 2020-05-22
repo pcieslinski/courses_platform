@@ -2,7 +2,7 @@ from typing import Dict, List
 from marshmallow import Schema, fields
 
 
-class BaseSchema(Schema):
+class ModelSchema(Schema):
     includable_fields: Dict[str, fields.Field]
 
     def __init__(self, include: List[str] = None, **kwargs) -> None:
@@ -21,9 +21,9 @@ class BaseSchema(Schema):
         }
 
 
-class UserSchema(BaseSchema):
-    id = fields.Str()
-    email = fields.Email()
+class UserSchema(ModelSchema):
+    id = fields.Str(dump_only=True)
+    email = fields.Email(required=True)
 
     includable_fields = {
         'courses': fields.Nested(
@@ -35,9 +35,9 @@ class UserSchema(BaseSchema):
     }
 
 
-class CourseSchema(BaseSchema):
-    id = fields.Str()
-    name = fields.Str()
+class CourseSchema(ModelSchema):
+    id = fields.Str(dump_only=True)
+    name = fields.Str(required=True)
 
     includable_fields = {
         'enrollments': fields.Nested(
@@ -48,3 +48,7 @@ class CourseSchema(BaseSchema):
         ),
         'enrollments_count': fields.Integer()
     }
+
+
+class QuerySchema(Schema):
+    include = fields.List(fields.Str())
