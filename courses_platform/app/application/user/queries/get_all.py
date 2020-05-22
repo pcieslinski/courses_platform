@@ -1,21 +1,12 @@
-from typing import Union
-
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.application.interfaces.icommand_query import ICommandQuery
-
-from app.request_objects.valid_request import ValidRequest
-from app.request_objects.invalid_request import InvalidRequest
 from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 
-Request = Union[InvalidRequest, ValidRequest]
-
-
-class GetAllUsersQuery(ICommandQuery):
+class GetAllUsersQuery:
     def __init__(self, unit_of_work: IUnitOfWork) -> None:
         self.unit_of_work = unit_of_work
 
-    def execute(self, request: Request = None) -> Response:
+    def execute(self) -> Response:
         try:
             with self.unit_of_work as uow:
                 result = uow.users.list()

@@ -1,32 +1,20 @@
-from typing import Union
-
-from app.request_objects.invalid_request import InvalidRequest
-from app.request_objects.course.get_course_request import GetCourseRequest
-from app.response_objects import Response, ResponseFailure, ResponseSuccess
-
 from app.application import exceptions as ex
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.application.interfaces.icommand_query import ICommandQuery
+from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 
-Request = Union[GetCourseRequest, InvalidRequest]
-
-
-class GetCourseQuery(ICommandQuery):
+class GetCourseQuery:
     def __init__(self, unit_of_work: IUnitOfWork) -> None:
         self.unit_of_work = unit_of_work
 
-    def execute(self, request: Request) -> Response:
-        if isinstance(request, InvalidRequest):
-            return ResponseFailure.build_from_invalid_request(request)
-
+    def execute(self, course_id: str) -> Response:
         try:
             with self.unit_of_work as uow:
-                course = uow.courses.get(request.course_id)
+                course = uow.courses.get(course_id)
 
                 if not course:
                     return ResponseFailure.build_resource_error(
-                        ex.NoMatchingCourse(request.course_id)
+                        ex.NoMatchingCourse(course_id)
                     )
 
                 return ResponseSuccess.build_response_success(course)
