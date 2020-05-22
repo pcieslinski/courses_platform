@@ -1,32 +1,28 @@
-from flask import Response, request
+from typing import List
+
+from flask import Response
 from flask_restful import Resource
 
-from app.application.course.commands import create
-from app.application.course.queries import get_all
-from app.application.interfaces.iunit_of_work import IUnitOfWork
-
-from app.serializers import course_serializer
-from app.request_objects import InvalidRequest
+from app.service.parser import use_kwargs
 from app.serializers.schemas import CourseSchema
 from app.service.status_codes import STATUS_CODES
-from app.request_objects.course import CreateCourseRequest, GetAllCoursesRequest
+from app.application.course.commands import create
+from app.application.course.queries import get_all
+from app.serializers import course_serializer, query_serializer
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
 class CoursesApi(Resource):
     def __init__(self, unit_of_work: IUnitOfWork) -> None:
         self.unit_of_work = unit_of_work
 
-    def get(self) -> Response:
-        request_object = GetAllCoursesRequest.from_dict(dict(request.args))
-
-        courses_serializer = (
-            CourseSchema(many=True) if isinstance(request_object, InvalidRequest)
-            else CourseSchema(many=True, include=request_object.include)
-        )
+    @use_kwargs(query_serializer, location='querystring')
+    def get(self, include: List[str] = None) -> Response:
+        courses_serializer = CourseSchema(many=True, include=include)
 
         query = get_all.GetAllCoursesQuery(unit_of_work=self.unit_of_work)
 
-        response = query.execute(request=request_object)
+        response = query.execute()
 
         return Response(
             response.serialize(courses_serializer),
@@ -34,12 +30,11 @@ class CoursesApi(Resource):
             status=STATUS_CODES[response.type]
         )
 
-    def post(self) -> Response:
-        request_object = CreateCourseRequest.from_dict(request.get_json())
-
+    @use_kwargs(course_serializer)
+    def post(self, name: str) -> Response:
         command = create.CreateCourseCommand(unit_of_work=self.unit_of_work)
 
-        response = command.execute(request=request_object)
+        response = command.execute(name=name)
 
         return Response(
             response.serialize(course_serializer),

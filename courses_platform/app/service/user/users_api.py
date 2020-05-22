@@ -1,14 +1,12 @@
+from flask import Response
 from flask_restful import Resource
-from flask import Response, request
 
-
+from app.service.parser import use_kwargs
 from app.application.user.queries import get_all
 from app.application.user.commands import create
-from app.application.interfaces.iunit_of_work import IUnitOfWork
-
 from app.service.status_codes import STATUS_CODES
-from app.request_objects.user import CreateUserRequest
 from app.serializers import user_serializer, users_serializer
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
 class UsersApi(Resource):
@@ -26,12 +24,11 @@ class UsersApi(Resource):
             status=STATUS_CODES[response.type]
         )
 
-    def post(self) -> Response:
-        request_object = CreateUserRequest.from_dict(request.get_json())
-
+    @use_kwargs(user_serializer)
+    def post(self, email: str) -> Response:
         command = create.CreateUserCommand(unit_of_work=self.unit_of_work)
 
-        response = command.execute(request=request_object)
+        response = command.execute(email=email)
 
         return Response(
             response.serialize(user_serializer),

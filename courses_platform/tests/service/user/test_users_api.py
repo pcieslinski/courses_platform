@@ -41,6 +41,6 @@ class TestUsersApi:
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(user_data)
         mock_command().execute.assert_called()
-        assert kwargs['request'].email == 'test@gmail.com'
+        assert kwargs['email'] == 'test@gmail.com'
         assert http_response.status_code == 201
         assert http_response.mimetype == 'application/json'

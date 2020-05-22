@@ -1,14 +1,11 @@
 from flask import Response
 from flask_restful import Resource
 
+from app.serializers import user_serializer
 from app.application.user.queries import get
 from app.application.user.commands import delete
-from app.application.interfaces.iunit_of_work import IUnitOfWork
-
-
-from app.serializers import user_serializer
 from app.service.status_codes import STATUS_CODES
-from app.request_objects.user import GetUserRequest, DeleteUserRequest
+from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
 class UsersDetailApi(Resource):
@@ -16,11 +13,9 @@ class UsersDetailApi(Resource):
         self.unit_of_work = unit_of_work
 
     def get(self, user_id: str) -> Response:
-        request_object = GetUserRequest.from_dict(dict(user_id=user_id))
-
         query = get.GetUserQuery(unit_of_work=self.unit_of_work)
 
-        response = query.execute(request=request_object)
+        response = query.execute(user_id=user_id)
 
         return Response(
             response.serialize(user_serializer),
@@ -29,11 +24,9 @@ class UsersDetailApi(Resource):
         )
 
     def delete(self, user_id: str) -> Response:
-        request_object = DeleteUserRequest.from_dict(dict(user_id=user_id))
-
         command = delete.DeleteUserCommand(unit_of_work=self.unit_of_work)
 
-        response = command.execute(request=request_object)
+        response = command.execute(user_id=user_id)
 
         return Response(
             response.serialize(),

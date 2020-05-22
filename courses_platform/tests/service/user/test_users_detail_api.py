@@ -19,7 +19,7 @@ class TestUsersDetailApi:
         _, kwargs = mock_command().execute.call_args
 
         mock_command().execute.assert_called()
-        assert kwargs['request'].user_id == '100'
+        assert kwargs['user_id'] == '100'
         assert json.loads(http_response.data) == json.loads(user_data)
         assert http_response.status_code == 200
 
@@ -34,6 +34,6 @@ class TestUsersDetailApi:
         _, kwargs = mock_command().execute.call_args
 
         mock_command().execute.assert_called()
-        assert kwargs['request'].user_id == user_id
+        assert kwargs['user_id'] == user_id
         assert http_response.data == b''
         assert http_response.status_code == 204
