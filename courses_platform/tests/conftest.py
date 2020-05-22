@@ -48,15 +48,6 @@ def courses() -> List[Course]:
 
 
 @pytest.fixture
-def courses_with_enrollments() -> List[Course]:
-    return [
-        Course(name='Test Course', enrollments=[
-            User(email='test@gmail.com')
-        ])
-    ]
-
-
-@pytest.fixture
 def in_memory_db() -> Engine:
     engine = create_engine('sqlite:///:memory:')
     metadata.create_all(engine)

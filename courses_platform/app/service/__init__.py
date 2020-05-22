@@ -1,7 +1,7 @@
-from typing import Type
+from typing import Type, Tuple
 
-from flask import Flask
 from flask_restful import Api
+from flask import Flask, jsonify
 
 from app.service.config import Config, DevConfig
 from app.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
@@ -25,6 +25,11 @@ def create_app(config_object: Type[Config] = DevConfig) -> Flask:
     @app.teardown_request
     def remove_session(exception: Exception = None) -> None:
         Session.remove()
+
+    @app.errorhandler(422)
+    def handle_error(err) -> Tuple[str, int]:
+        messages = err.data.get("messages", ["Invalid request."])
+        return jsonify({"errors": messages}), err.code
 
     return app
 

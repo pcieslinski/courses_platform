@@ -19,7 +19,7 @@ class TestCoursesDetailApi:
         _, kwargs = mock_command().execute.call_args
 
         mock_command().execute.assert_called()
-        assert kwargs['request'].course_id == '123'
+        assert kwargs['course_id'] == '123'
         assert json.loads(http_response.data) == json.loads(course_data)
         assert http_response.status_code == 200
 
@@ -34,6 +34,6 @@ class TestCoursesDetailApi:
         _, kwargs = mock_command().execute.call_args
 
         mock_command().execute.assert_called()
-        assert kwargs['request'].course_id == course_id
+        assert kwargs['course_id'] == course_id
         assert http_response.data == b''
         assert http_response.status_code == 204

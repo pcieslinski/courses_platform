@@ -1,14 +1,6 @@
-import pytest
-
 from app.domain.user import User
 from app.response_objects import ResponseSuccess
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
 from app.application.user.queries.get_all import GetAllUsersQuery
-
-
-@pytest.fixture
-def uow(session_factory) -> SqlAlchemyUnitOfWork:
-    return SqlAlchemyUnitOfWork(session_factory)
 
 
 class TestGetAllUsersQuery:
@@ -22,7 +14,7 @@ class TestGetAllUsersQuery:
             uow.users.add(user_2)
 
         query = GetAllUsersQuery(unit_of_work=uow)
-        response = query.execute(request=None)
+        response = query.execute()
 
         assert isinstance(response, ResponseSuccess)
         assert response.type == ResponseSuccess.SUCCESS_OK

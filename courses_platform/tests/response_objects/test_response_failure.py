@@ -2,7 +2,6 @@ import json
 import pytest
 
 from app.response_objects import ResponseFailure
-from app.request_objects.invalid_request import InvalidRequest
 
 
 @pytest.fixture
@@ -42,27 +41,6 @@ class TestResponseFailure:
 
     def test_response_failure_is_false(self, response_failure):
         assert bool(response_failure) is False
-
-    def test_response_failure_initialize_from_empty_invalid_request(self):
-        res = ResponseFailure.build_from_invalid_request(
-            InvalidRequest()
-        )
-
-        assert bool(res) is False
-        assert isinstance(res, ResponseFailure)
-        assert res.type == ResponseFailure.PARAMETERS_ERROR
-
-    def test_response_failure_initialize_from_invalid_request_with_errors(self):
-        req = InvalidRequest()
-        req.add_error('email', 'required parameter')
-        req.add_error('name', 'required parameter')
-
-        res = ResponseFailure.build_from_invalid_request(req)
-
-        assert bool(res) is False
-        assert isinstance(res, ResponseFailure)
-        assert res.type == ResponseFailure.PARAMETERS_ERROR
-        assert res.message == 'email: required parameter\nname: required parameter'
 
     def test_response_failure_builds_from_resource_error(self):
         res = ResponseFailure.build_resource_error(Exception('resource error'))

@@ -1,10 +1,22 @@
 import json
-import mock
+from typing import List
 
+import mock
+import pytest
+
+from app.domain.user import User
 from app.domain.course import Course
 from app.response_objects import ResponseSuccess
-from app.serializers.schemas import CourseSchema
 from app.serializers import course_serializer, courses_serializer
+
+
+@pytest.fixture
+def courses_with_enrollments() -> List[Course]:
+    return [
+        Course(id='1', name='Test Course', enrollments=[
+            User(id='2', email='test@gmail.com')
+        ])
+    ]
 
 
 class TestCoursesApi:
@@ -24,20 +36,48 @@ class TestCoursesApi:
         assert http_response.mimetype == 'application/json'
 
     @mock.patch('app.application.course.queries.get_all.GetAllCoursesQuery')
-    def test_courses_api_returns_list_of_courses_with_stats(self, mock_query, client,
-                                                            courses_with_enrollments):
+    def test_courses_api_returns_list_of_courses_with_enrollments_count(
+            self, mock_query, client, courses_with_enrollments
+    ):
         response = ResponseSuccess.build_response_success(courses_with_enrollments)
         mock_query().execute.return_value = response
 
         http_response = client.get('/api/courses?include=enrollments_count')
-        courses_serializer = CourseSchema(many=True, include=['enrollments_count'])
-        courses_data = courses_serializer.dumps(courses_with_enrollments)
 
-        _, kwargs = mock_query().execute.call_args
+        expected = [
+            dict(
+                id='1',
+                name='Test Course',
+                enrollments_count=1
+            )
+        ]
 
-        assert json.loads(http_response.data.decode('UTF-8')) == json.loads(courses_data)
+        assert json.loads(http_response.data.decode('UTF-8')) == expected
         assert mock_query().execute.call_count == 1
-        assert kwargs['request'].include == ['enrollments_count']
+        assert http_response.status_code == 200
+        assert http_response.mimetype == 'application/json'
+
+    @mock.patch('app.application.course.queries.get_all.GetAllCoursesQuery')
+    def test_courses_api_returns_list_of_courses_with_enrollments(
+            self, mock_query, client, courses_with_enrollments
+    ):
+        response = ResponseSuccess.build_response_success(courses_with_enrollments)
+        mock_query().execute.return_value = response
+
+        http_response = client.get('/api/courses?include=enrollments')
+
+        expected = [
+            dict(
+                id='1',
+                name='Test Course',
+                enrollments=[
+                    dict(id='2', email='test@gmail.com')
+                ]
+            )
+        ]
+
+        assert json.loads(http_response.data.decode('UTF-8')) == expected
+        assert mock_query().execute.call_count == 1
         assert http_response.status_code == 200
         assert http_response.mimetype == 'application/json'
 
@@ -61,6 +101,6 @@ class TestCoursesApi:
 
         assert json.loads(http_response.data.decode('UTF-8')) == json.loads(course_data)
         mock_command().execute.assert_called()
-        assert kwargs['request'].name == 'Test Course'
+        assert kwargs['name'] == 'Test Course'
         assert http_response.status_code == 201
         assert http_response.mimetype == 'application/json'

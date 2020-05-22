@@ -26,7 +26,7 @@ class TestEnrollmentsApi:
 
         assert json.loads(http_response.data.decode('UTF-8')) == request_data
         mock_command().execute.assert_called()
-        assert kwargs['request'].course_id == '123'
-        assert kwargs['request'].user_id == '1'
+        assert kwargs['course_id'] == '123'
+        assert kwargs['user_id'] == '1'
         assert http_response.status_code == 201
         assert http_response.mimetype == 'application/json'

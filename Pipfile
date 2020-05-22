@@ -20,6 +20,7 @@ flask = "*"
 flask-restful = "*"
 sqlalchemy = "*"
 marshmallow = "*"
+webargs = "*"
 
 [requires]
 python_version = "3.8"

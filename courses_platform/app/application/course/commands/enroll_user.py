@@ -1,53 +1,44 @@
-from typing import cast, Union
-
-from app.request_objects.invalid_request import InvalidRequest
-from app.response_objects import Response, ResponseFailure, ResponseSuccess
-from app.request_objects.course.enrollment_request import EnrollmentRequest
+from typing import cast
 
 from app.domain.user import User
 from app.domain.course import Course
 from app.application import exceptions as ex
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.application.interfaces.icommand_query import ICommandQuery
-
-Request = Union[EnrollmentRequest, InvalidRequest]
+from app.response_objects import Response, ResponseFailure, ResponseSuccess
 
 
-class EnrollUserCommand(ICommandQuery):
+class EnrollUserCommand:
     def __init__(self, unit_of_work: IUnitOfWork) -> None:
         self.unit_of_work = unit_of_work
 
-    def execute(self, request: Request) -> Response:
-        if isinstance(request, InvalidRequest):
-            return ResponseFailure.build_from_invalid_request(request)
-
+    def execute(self, course_id: str, user_id: str) -> Response:
         try:
             with self.unit_of_work as uow:
-                course = cast(Course, uow.courses.get(request.course_id))
+                course = cast(Course, uow.courses.get(course_id))
 
                 if not course:
                     return ResponseFailure.build_resource_error(
-                        ex.NoMatchingCourse(request.course_id)
+                        ex.NoMatchingCourse(course_id)
                     )
 
-                user = cast(User, uow.users.get(request.user_id, load_relation='courses'))
+                user = cast(User, uow.users.get(user_id, load_relation='courses'))
 
                 if not user:
                     return ResponseFailure.build_resource_error(
-                        ex.NoMatchingUser(request.user_id)
+                        ex.NoMatchingUser(user_id)
                     )
 
                 if course.is_enrolled(user):
                     return ResponseFailure.build_resource_error(
-                        ex.UserAlreadyEnrolled(request.user_id, request.course_id)
+                        ex.UserAlreadyEnrolled(user_id, course_id)
                     )
 
                 course.enrollments.append(user)
 
                 return ResponseSuccess.build_response_resource_created(
                     {
-                        'course_id': request.course_id,
-                        'user_id': request.user_id
+                        'course_id': course_id,
+                        'user_id': user_id
                     }
                 )
         except Exception as exc:

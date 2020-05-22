@@ -5,8 +5,6 @@ from typing import Any, Union
 
 from marshmallow import Schema
 
-from app.request_objects.invalid_request import InvalidRequest
-
 
 class ResponseBase(abc.ABC):
     type: str
@@ -71,14 +69,6 @@ class ResponseFailure(ResponseBase):
 
     def __bool__(self) -> bool:
         return False
-
-    @classmethod
-    def build_from_invalid_request(cls, invalid_request: InvalidRequest) -> ResponseFailure:
-        message = "\n".join(
-            [f"{err['parameter']}: {err['message']}"
-             for err in invalid_request.errors]
-        )
-        return cls(cls.PARAMETERS_ERROR, message)
 
     @classmethod
     def build_resource_error(cls, message: Exception) -> ResponseFailure:
