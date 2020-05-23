@@ -37,10 +37,10 @@ def seed_db():
             Course(name='Sample Course')
         ]
 
-        courses[0].enrollments.append(users[0])
-        courses[0].enrollments.append(users[1])
-        courses[1].enrollments.append(users[1])
-        courses[1].enrollments.append(users[2])
+        courses[0].enroll(users[0])
+        courses[0].enroll(users[1])
+        courses[1].enroll(users[1])
+        courses[1].enroll(users[2])
 
         for user in users:
             uow.users.add(user)

@@ -56,7 +56,7 @@ class TestEnrollUserCommand:
             user = User(id='20', email='test@gmail.com')
             course = Course(id='100', name='Test Course')
 
-            course.enrollments.append(user)
+            course.enroll(user)
 
             uow.users.add(user)
             uow.courses.add(course)

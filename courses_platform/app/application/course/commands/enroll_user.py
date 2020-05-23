@@ -33,7 +33,7 @@ class EnrollUserCommand:
                         ex.UserAlreadyEnrolled(user_id, course_id)
                     )
 
-                course.enrollments.append(user)
+                course.enroll(user)
 
                 return ResponseSuccess.build_response_resource_created(
                     {

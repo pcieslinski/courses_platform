@@ -33,7 +33,7 @@ class WithdrawUserEnrollmentCommand:
                         ex.UserNotEnrolled(user_id, course_id)
                     )
 
-                course.enrollments.remove(user)
+                course.withdraw_enrollment(user)
 
                 return ResponseSuccess.build_response_no_content()
         except Exception as exc:

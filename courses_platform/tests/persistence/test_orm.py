@@ -71,7 +71,7 @@ class TestCoursesMapper:
         course = Course('Test Course')
         user = User('test@gmail.com')
 
-        course.enrollments.append(user)
+        course.enroll(user)
 
         session.add(course)
         session.commit()

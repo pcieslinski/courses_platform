@@ -24,6 +24,12 @@ class Course:
     def enrollments_count(self) -> int:
         return len(list(self.enrollments))
 
+    def enroll(self, user: User) -> None:
+        self.enrollments.append(user)
+
+    def withdraw_enrollment(self, user: User) -> None:
+        self.enrollments.remove(user)
+
     def is_enrolled(self, user: User) -> bool:
         return True if user in self.enrollments else False
 
