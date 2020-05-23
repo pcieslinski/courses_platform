@@ -13,7 +13,7 @@ class TestWithdrawUserEnrollmentCommand:
             user = User(id='25', email='test@gmail.com')
             course = Course(id='10', name='Test Course')
 
-            course.enrollments.append(user)
+            course.enroll(user)
 
             uow.users.add(user)
             uow.courses.add(course)

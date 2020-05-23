@@ -33,6 +33,22 @@ class TestCourseEntity:
 
         assert course.enrollments_count == 1
 
+    def test_enroll_method_enrolls_user_to_the_course(self):
+        user = User(email='test@gmail.com')
+        course = Course(name='Test Course')
+
+        course.enroll(user)
+
+        assert course.is_enrolled(user)
+
+    def test_withdraw_enrollment_method_withdraws_user_enrollment(self):
+        user = User(email='test@gmail.com')
+        course = Course(name='Test Course', enrollments=[user])
+
+        course.withdraw_enrollment(user)
+
+        assert not course.is_enrolled(user)
+
     def test_is_enrolled_checks_if_user_is_enrolled_in_course(self):
         user = User(email='test@gmail.com')
         course = Course(name='Test Course', enrollments=[user])

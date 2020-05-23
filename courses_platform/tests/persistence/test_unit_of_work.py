@@ -28,7 +28,7 @@ class TestSqlAlchemyUnitOfWork:
             course = uow.courses.get(course_id)
             user = uow.users.get(user_id)
 
-            course.enrollments.append(user)
+            course.enroll(user)
 
         enrollments = list(session.execute(
             'SELECT course_id, user_id FROM "enrollment"'
