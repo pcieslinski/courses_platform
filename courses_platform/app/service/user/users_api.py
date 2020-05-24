@@ -5,8 +5,8 @@ from app.service.parser import use_kwargs
 from app.application.user.queries import get_all
 from app.application.user.commands import create
 from app.service.status_codes import STATUS_CODES
-from app.serializers import user_serializer, users_serializer
 from app.application.interfaces.iunit_of_work import IUnitOfWork
+from app.service.serializers import user_serializer, users_serializer
 
 
 class UsersApi(Resource):

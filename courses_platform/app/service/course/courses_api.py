@@ -4,12 +4,12 @@ from flask import Response
 from flask_restful import Resource
 
 from app.service.parser import use_kwargs
-from app.serializers.schemas import CourseSchema
 from app.service.status_codes import STATUS_CODES
 from app.application.course.commands import create
 from app.application.course.queries import get_all
-from app.serializers import course_serializer, query_serializer
+from app.service.serializers.schemas import CourseSchema
 from app.application.interfaces.iunit_of_work import IUnitOfWork
+from app.service.serializers import course_serializer, query_serializer
 
 
 class CoursesApi(Resource):
