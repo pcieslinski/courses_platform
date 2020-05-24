@@ -16,16 +16,6 @@ from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
 
 
 @pytest.fixture
-def user() -> User:
-    return User('test@gmail.com')
-
-
-@pytest.fixture
-def course() -> Course:
-    return Course(name='Test Course')
-
-
-@pytest.fixture
 def users() -> List[User]:
     user_1 = User('test@gmail.com')
     user_2 = User('sample@gmail.com')

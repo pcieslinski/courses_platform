@@ -1,8 +1,8 @@
 from flask import Response
 from flask_restful import Resource
 
-from app.serializers import courses_serializer
 from app.service.status_codes import STATUS_CODES
+from app.service.serializers import courses_serializer
 from app.application.user.queries import get_user_courses
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 

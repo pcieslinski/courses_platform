@@ -1,10 +1,10 @@
 from flask import Response
 from flask_restful import Resource
 
-from app.serializers import course_serializer
 from app.application.course.queries import get
 from app.service.status_codes import STATUS_CODES
 from app.application.course.commands import delete
+from app.service.serializers import course_serializer
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
