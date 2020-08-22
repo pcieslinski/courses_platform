@@ -7,9 +7,10 @@ from app.application.user import queries
 from app.application.user import commands
 from app.service.parser import use_kwargs
 from app.service.status_codes import STATUS_CODES
-from app.service.serializers.schemas import UserSchema
+from app.service.schemas import query_serializer
+from app.service.course.serializers import courses_serializer
+from app.service.user.serializers import UserSchema, user_serializer
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.service.serializers import user_serializer, courses_serializer, query_serializer
 
 
 class UsersApi(Resource):

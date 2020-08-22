@@ -7,10 +7,10 @@ from flask_restful import Resource
 from app.service.parser import use_kwargs
 from app.application.course import queries
 from app.application.course import commands
+from app.service.schemas import query_serializer
 from app.service.status_codes import STATUS_CODES
-from app.service.serializers.schemas import CourseSchema
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.service.serializers import course_serializer, query_serializer
+from app.service.course.serializers import CourseSchema, course_serializer
 
 
 class CoursesApi(Resource):
