@@ -5,9 +5,9 @@ from flask_restful import Resource
 
 from app.service.parser import use_kwargs
 from app.service.status_codes import STATUS_CODES
-from app.application.course.commands import create
-from app.application.course.queries import get_all
 from app.service.serializers.schemas import CourseSchema
+from app.application.course.queries import GetAllCoursesQuery
+from app.application.course.commands import CreateCourseCommand
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 from app.service.serializers import course_serializer, query_serializer
 
@@ -20,7 +20,7 @@ class CoursesApi(Resource):
     def get(self, include: List[str] = None) -> Response:
         courses_serializer = CourseSchema(many=True, include=include)
 
-        query = get_all.GetAllCoursesQuery(unit_of_work=self.unit_of_work)
+        query = GetAllCoursesQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute()
 
@@ -32,7 +32,7 @@ class CoursesApi(Resource):
 
     @use_kwargs(course_serializer)
     def post(self, name: str) -> Response:
-        command = create.CreateCourseCommand(unit_of_work=self.unit_of_work)
+        command = CreateCourseCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(name=name)
 

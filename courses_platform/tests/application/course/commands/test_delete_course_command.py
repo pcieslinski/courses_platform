@@ -2,7 +2,7 @@ import mock
 
 from app.domain.course import Course
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.course.commands.delete import DeleteCourseCommand
+from app.application.course.commands import DeleteCourseCommand
 
 
 class TestDeleteCourseCommand:

@@ -3,7 +3,7 @@ import mock
 from app.domain.user import User
 from app.domain.course import Course
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.course.commands.withdraw_user_enrollment import WithdrawUserEnrollmentCommand
+from app.application.course.commands import WithdrawUserEnrollmentCommand
 
 
 class TestWithdrawUserEnrollmentCommand:

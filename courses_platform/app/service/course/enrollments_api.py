@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from app.service.parser import use_kwargs
 from app.service.status_codes import STATUS_CODES
-from app.application.course.commands import enroll_user
+from app.application.course.commands import EnrollUserCommand
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
@@ -14,7 +14,7 @@ class EnrollmentsApi(Resource):
 
     @use_kwargs({'user_id': fields.Str()})
     def post(self, course_id: str, user_id: str) -> Response:
-        command = enroll_user.EnrollUserCommand(unit_of_work=self.unit_of_work)
+        command = EnrollUserCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(course_id=course_id, user_id=user_id)
 

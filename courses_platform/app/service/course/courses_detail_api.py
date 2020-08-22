@@ -4,11 +4,11 @@ from flask import Response
 from flask_restful import Resource
 
 from app.service.parser import use_kwargs
-from app.application.course.queries import get
 from app.service.status_codes import STATUS_CODES
-from app.application.course.commands import delete
 from app.service.serializers import query_serializer
 from app.service.serializers.schemas import CourseSchema
+from app.application.course.queries import GetCourseQuery
+from app.application.course.commands import DeleteCourseCommand
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 
@@ -20,7 +20,7 @@ class CoursesDetailApi(Resource):
     def get(self, course_id: str, include: List[str] = None) -> Response:
         course_serializer = CourseSchema(include=include)
 
-        query = get.GetCourseQuery(unit_of_work=self.unit_of_work)
+        query = GetCourseQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute(course_id=course_id)
 
@@ -31,7 +31,7 @@ class CoursesDetailApi(Resource):
         )
 
     def delete(self, course_id: str) -> Response:
-        command = delete.DeleteCourseCommand(unit_of_work=self.unit_of_work)
+        command = DeleteCourseCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(course_id=course_id)
 

@@ -2,8 +2,8 @@ import mock
 
 from app.domain.user import User
 from app.domain.course import Course
+from app.application.course.commands import EnrollUserCommand
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.course.commands.enroll_user import EnrollUserCommand
 
 
 class TestEnrollUserCommand:

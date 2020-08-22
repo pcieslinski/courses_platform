@@ -1,7 +1,7 @@
 import mock
 
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.course.commands.create import CreateCourseCommand
+from app.application.course.commands import CreateCourseCommand
 
 
 class TestCreateCourseCommand:

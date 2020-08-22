@@ -1,7 +1,7 @@
 import mock
 
 from app.domain.course import Course
-from app.application.course.queries.get import GetCourseQuery
+from app.application.course.queries import GetCourseQuery
 from app.response_objects import ResponseSuccess, ResponseFailure
 
 
