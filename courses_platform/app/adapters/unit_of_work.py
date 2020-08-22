@@ -5,9 +5,9 @@ from sqlalchemy import orm
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.persistence import Session
+from app.adapters import Session
 from app.application.interfaces.iunit_of_work import IUnitOfWork
-from app.persistence.repositories import SqlAlchemyRepository
+from app.adapters.repositories import SqlAlchemyRepository
 
 
 class SqlAlchemyUnitOfWork(IUnitOfWork):

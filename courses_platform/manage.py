@@ -2,9 +2,9 @@ import click
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.persistence import engine, Session
-from app.persistence.orm import metadata, start_mappers
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
+from app.adapters import engine, Session
+from app.adapters.orm import metadata, start_mappers
+from app.adapters.unit_of_work import SqlAlchemyUnitOfWork
 
 
 @click.group()

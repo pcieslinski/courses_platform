@@ -2,8 +2,8 @@ import mock
 
 from app.domain.user import User
 from app.domain.course import Course
+from app.application.user.queries import GetUserCoursesQuery
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.user.queries.get_user_courses import GetUserCoursesQuery
 
 
 class TestGetUserCoursesQuery:
@@ -35,7 +35,7 @@ class TestGetUserCoursesQuery:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 1'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_get_user_courses_returns_system_error(self, mock_uow):
         session = mock.Mock()
         session.users.get.side_effect = Exception('System error.')

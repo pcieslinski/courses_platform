@@ -1,8 +1,8 @@
 import mock
 
 from app.domain.user import User
+from app.application.user.commands import DeleteUserCommand
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.user.commands.delete import DeleteUserCommand
 
 
 class TestDeleteUserCommand:
@@ -23,7 +23,7 @@ class TestDeleteUserCommand:
         assert response.value == ''
         assert user is None
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_delete_user_command_returns_system_error_when_generic_exception_is_raised(self, mock_uow):
         session = mock.Mock()
         session.users.remove.side_effect = Exception('Some error.')

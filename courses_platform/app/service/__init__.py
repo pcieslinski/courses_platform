@@ -5,13 +5,13 @@ from flask import Flask, jsonify
 
 from app.service.extensions import ma
 from app.service.config import Config, DevConfig
-from app.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
-from app.service.course import (
+from app.service.user.views import UsersApi, UsersDetailApi, UsersCoursesApi
+from app.service.course.views import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
-from app.persistence import Session
-from app.persistence.orm import start_mappers
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
+from app.adapters import Session
+from app.adapters.orm import start_mappers
+from app.adapters.unit_of_work import SqlAlchemyUnitOfWork
 from app.application.interfaces.iunit_of_work import IUnitOfWork
 
 

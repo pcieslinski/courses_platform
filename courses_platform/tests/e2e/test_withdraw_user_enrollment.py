@@ -3,7 +3,7 @@ import json
 import pytest
 import requests
 
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
+from app.adapters.unit_of_work import SqlAlchemyUnitOfWork
 
 
 def post(api_base_url: str, path: str, data: str) -> requests.Response:

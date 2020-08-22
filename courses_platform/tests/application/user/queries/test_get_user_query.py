@@ -1,7 +1,7 @@
 import mock
 
 from app.domain.user import User
-from app.application.user.queries.get import GetUserQuery
+from app.application.user.queries import GetUserQuery
 from app.response_objects import ResponseSuccess, ResponseFailure
 
 
@@ -28,7 +28,7 @@ class TestGetUserQuery:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingUser: No User has been found for a given id: 100'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_get_user_query_returns_system_error_when_generic_exception_is_raised(self, mock_uow):
         session = mock.Mock()
         session.users.get.side_effect = Exception('System error.')

@@ -1,7 +1,7 @@
 import mock
 
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.course.commands.create import CreateCourseCommand
+from app.application.course.commands import CreateCourseCommand
 
 
 class TestCreateCourseCommand:
@@ -23,7 +23,7 @@ class TestCreateCourseCommand:
         assert course.name == 'Test Course'
         assert list(course.enrollments) == []
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_create_course_command_returns_system_error(self, mock_uow):
         session = mock.Mock()
         session.courses.add.side_effect = Exception('System error.')

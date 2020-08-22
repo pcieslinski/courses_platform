@@ -2,7 +2,7 @@ from __future__ import annotations
 import abc
 from typing import Any
 
-from app.persistence.repositories import IRepository
+from app.adapters.repositories import IRepository
 
 
 class IUnitOfWork(abc.ABC):

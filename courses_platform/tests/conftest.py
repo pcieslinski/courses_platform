@@ -10,9 +10,9 @@ from sqlalchemy.orm import sessionmaker, clear_mappers, Session
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.persistence import DB_PATH
-from app.persistence.orm import metadata, start_mappers
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
+from app.adapters import DB_PATH
+from app.adapters.orm import metadata, start_mappers
+from app.adapters.unit_of_work import SqlAlchemyUnitOfWork
 
 
 @pytest.fixture

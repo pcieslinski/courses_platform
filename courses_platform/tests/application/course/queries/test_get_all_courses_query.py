@@ -1,6 +1,6 @@
 from app.domain.course import Course
 from app.response_objects import ResponseSuccess
-from app.application.course.queries.get_all import GetAllCoursesQuery
+from app.application.course.queries import GetAllCoursesQuery
 
 
 class TestGetAllCoursesQuery:
