@@ -1,8 +1,8 @@
 import mock
 
 from app.domain.user import User
+from app.application.user.commands import DeleteUserCommand
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.user.commands.delete import DeleteUserCommand
 
 
 class TestDeleteUserCommand:

@@ -1,8 +1,8 @@
 import mock
 
 from app.domain.user import User
+from app.application.user.commands import CreateUserCommand
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.user.commands.create import CreateUserCommand
 
 
 class TestCreateUserCommand:

@@ -1,6 +1,6 @@
 from app.domain.user import User
 from app.response_objects import ResponseSuccess
-from app.application.user.queries.get_all import GetAllUsersQuery
+from app.application.user.queries import GetAllUsersQuery
 
 
 class TestGetAllUsersQuery:

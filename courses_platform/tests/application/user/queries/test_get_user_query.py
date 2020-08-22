@@ -1,7 +1,7 @@
 import mock
 
 from app.domain.user import User
-from app.application.user.queries.get import GetUserQuery
+from app.application.user.queries import GetUserQuery
 from app.response_objects import ResponseSuccess, ResponseFailure
 
 

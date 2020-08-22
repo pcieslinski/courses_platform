@@ -4,8 +4,8 @@ from flask import Response
 from flask_restful import Resource
 
 from app.service.parser import use_kwargs
-from app.application.user.queries import get
-from app.application.user.commands import delete
+from app.application.user.queries import GetUserQuery
+from app.application.user.commands import DeleteUserCommand
 from app.service.status_codes import STATUS_CODES
 from app.service.serializers import query_serializer
 from app.service.serializers.schemas import UserSchema
@@ -20,7 +20,7 @@ class UsersDetailApi(Resource):
     def get(self, user_id: str, include: List[str] = None) -> Response:
         user_serializer = UserSchema(include=include)
 
-        query = get.GetUserQuery(unit_of_work=self.unit_of_work)
+        query = GetUserQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute(user_id=user_id)
 
@@ -31,7 +31,7 @@ class UsersDetailApi(Resource):
         )
 
     def delete(self, user_id: str) -> Response:
-        command = delete.DeleteUserCommand(unit_of_work=self.unit_of_work)
+        command = DeleteUserCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(user_id=user_id)
 

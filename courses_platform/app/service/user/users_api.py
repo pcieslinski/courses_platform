@@ -4,8 +4,8 @@ from flask import Response
 from flask_restful import Resource
 
 from app.service.parser import use_kwargs
-from app.application.user.queries import get_all
-from app.application.user.commands import create
+from app.application.user.queries import GetAllUsersQuery
+from app.application.user.commands import CreateUserCommand
 from app.service.status_codes import STATUS_CODES
 from app.service.serializers.schemas import UserSchema
 from app.application.interfaces.iunit_of_work import IUnitOfWork
@@ -20,7 +20,7 @@ class UsersApi(Resource):
     def get(self, include: List[str] = None) -> Response:
         users_serializer = UserSchema(many=True, include=include)
 
-        query = get_all.GetAllUsersQuery(unit_of_work=self.unit_of_work)
+        query = GetAllUsersQuery(unit_of_work=self.unit_of_work)
 
         response = query.execute()
 
@@ -32,7 +32,7 @@ class UsersApi(Resource):
 
     @use_kwargs(user_serializer)
     def post(self, email: str) -> Response:
-        command = create.CreateUserCommand(unit_of_work=self.unit_of_work)
+        command = CreateUserCommand(unit_of_work=self.unit_of_work)
 
         response = command.execute(email=email)
 

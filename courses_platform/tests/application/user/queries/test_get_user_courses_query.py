@@ -2,8 +2,8 @@ import mock
 
 from app.domain.user import User
 from app.domain.course import Course
+from app.application.user.queries import GetUserCoursesQuery
 from app.response_objects import ResponseSuccess, ResponseFailure
-from app.application.user.queries.get_user_courses import GetUserCoursesQuery
 
 
 class TestGetUserCoursesQuery:
