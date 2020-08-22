@@ -35,7 +35,7 @@ class TestCreateUserCommand:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'UserAlreadyExists: User with "test@gmail.com" email already exists'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_create_user_command_returns_system_error(self, mock_uow):
         session = mock.Mock()
         session.users.add.side_effect = Exception('System error.')

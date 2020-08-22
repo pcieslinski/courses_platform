@@ -66,7 +66,7 @@ class TestWithdrawUserEnrollmentCommand:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'UserNotEnrolled: User: 25 is not enrolled in Course: 10'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_withdraw_user_enrollment_returns_system_error(self, mock_uow):
         session = mock.Mock()
         session.courses.get.side_effect = Exception('System error.')

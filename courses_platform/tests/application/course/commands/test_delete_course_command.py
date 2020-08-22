@@ -23,7 +23,7 @@ class TestDeleteCourseCommand:
         assert response.value == ''
         assert course is None
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_delete_course_command_returns_system_error_when_generic_exception_is_raised(self, mock_uow):
         session = mock.Mock()
         session.courses.remove.side_effect = Exception('System error.')

@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from app.domain.user import User
 from app.domain.course import Course
-from app.persistence.repositories import SqlAlchemyRepository
+from app.adapters.repositories import SqlAlchemyRepository
 
 
 class TestSqlAlchemyRepository:

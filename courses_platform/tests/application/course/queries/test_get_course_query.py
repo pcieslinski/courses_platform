@@ -28,7 +28,7 @@ class TestGetCourseQuery:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'NoMatchingCourse: No Course has been found for a given id: 123'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_get_course_query_returns_system_error_when_generic_exception_is_raised(self, mock_uow):
         session = mock.Mock()
         session.courses.get.side_effect = Exception('System error.')

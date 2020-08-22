@@ -69,7 +69,7 @@ class TestEnrollUserCommand:
         assert response.type == ResponseFailure.RESOURCE_ERROR
         assert response.message == 'UserAlreadyEnrolled: User: 20 is already enrolled in Course: 100'
 
-    @mock.patch('app.persistence.unit_of_work.SqlAlchemyUnitOfWork')
+    @mock.patch('app.adapters.unit_of_work.SqlAlchemyUnitOfWork')
     def test_enroll_user_command_returns_system_error(self, mock_uow):
         session = mock.Mock()
         session.courses.get.side_effect = Exception('System error.')

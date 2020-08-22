@@ -2,7 +2,7 @@ import pytest
 from uuid import uuid4
 
 from app.domain.course import Course
-from app.persistence.unit_of_work import SqlAlchemyUnitOfWork
+from app.adapters.unit_of_work import SqlAlchemyUnitOfWork
 
 
 class TestSqlAlchemyUnitOfWork:
