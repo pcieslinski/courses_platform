@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 
 from app.service.extensions import ma
 from app.service.config import Config, DevConfig
-from app.service.user import UsersApi, UsersDetailApi, UsersCoursesApi
+from app.service.user.views import UsersApi, UsersDetailApi, UsersCoursesApi
 from app.service.course.views import (
     CoursesApi, CoursesDetailApi, EnrollmentsApi, EnrollmentsDetailApi)
 
