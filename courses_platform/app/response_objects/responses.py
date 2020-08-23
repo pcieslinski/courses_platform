@@ -15,10 +15,7 @@ class ResponseBase(abc.ABC):
         raise NotImplementedError
 
     def serialize(self, schema: Schema = None) -> str:
-        if self and schema:
-            return schema.dumps(self.value)
-
-        return json.dumps(self.value)
+        return schema.dumps(self.value) if schema else json.dumps(self.value)
 
 
 class ResponseSuccess(ResponseBase):
