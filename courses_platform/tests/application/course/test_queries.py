@@ -1,8 +1,28 @@
 import mock
 
 from app.domain.course import Course
-from app.application.course.queries import GetCourseQuery
+from app.application.course import queries
 from app.response_objects import ResponseSuccess, ResponseFailure
+
+
+class TestGetAllCoursesQuery:
+
+    def test_get_all_courses_query_executes_correctly(self, uow):
+        with uow:
+            uow.courses.add(Course(id='1', name='Test Course'))
+            uow.courses.add(Course(id='2', name='Sample Course'))
+
+        query = queries.GetAllCoursesQuery(unit_of_work=uow)
+        response = query.execute()
+
+        assert isinstance(response, ResponseSuccess)
+        assert response.type == ResponseSuccess.SUCCESS_OK
+
+        assert len(response.value) == 2
+        assert response.value[0].id == '1'
+        assert response.value[0].name == 'Test Course'
+        assert response.value[1].id == '2'
+        assert response.value[1].name == 'Sample Course'
 
 
 class TestGetCourseQuery:
@@ -11,7 +31,7 @@ class TestGetCourseQuery:
         with uow:
             uow.courses.add(Course(id='123', name='Test Course'))
 
-        query = GetCourseQuery(unit_of_work=uow)
+        query = queries.GetCourseQuery(unit_of_work=uow)
         response = query.execute(course_id='123')
 
         assert bool(response) is True
@@ -21,7 +41,7 @@ class TestGetCourseQuery:
         assert response.value.name == 'Test Course'
 
     def test_qet_course_query_returns_exception_when_no_resource_has_been_found(self, uow):
-        query = GetCourseQuery(unit_of_work=uow)
+        query = queries.GetCourseQuery(unit_of_work=uow)
         response = query.execute(course_id='123')
 
         assert isinstance(response, ResponseFailure)
@@ -34,7 +54,7 @@ class TestGetCourseQuery:
         session.courses.get.side_effect = Exception('System error.')
         mock_uow.__enter__.return_value = session
 
-        query = GetCourseQuery(unit_of_work=mock_uow)
+        query = queries.GetCourseQuery(unit_of_work=mock_uow)
         response = query.execute(course_id='123')
 
         assert isinstance(response, ResponseFailure)
