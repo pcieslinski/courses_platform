@@ -1,6 +1,6 @@
-# Courses Platform
+# Courses Platform 📝
 
-## Aproach
+## Aproach 💡
 The project includes a REST API that has been implemented in 
 accordance with clean architecture. Leonardo Giordani's work 
 inspired me very much during the development of this 
@@ -8,30 +8,37 @@ application. Especially I mean his book, which can be found
 [here](https://leanpub.com/clean-architectures-in-python).
 Excellent book with very good examples, I highly recommend it.
 
-## Quickstart
-The fastest way to launch the application is to use the 
-docker-compose configuration. Run these command in the 
+The second source that is definitely worth mentioning here is 
+the repository/book [CosmicPython](https://github.com/cosmicpython/book) 📘.
+
+## Quickstart 📜
+The fastest way to start an application is to use the `Makefile`. Run this command in
 project root directory.
 
 ```bash
-docker-compose build
-docker-compose up -d
+make build
+make up
 ```
 
-The application includes CLI, which allows you to add test 
-data to the database. 
+To add the startup data to the database, just use this command: 
 
 ```bash
-docker-compose exec courses_platform python manage.py seed-db
+make seed-db
 ```
 
 To turn everything off:
 
 ```bash
-docker-compose down -v
+make down
 ```
 
-## Layers
+To run all tests, use this command:
+
+```bash
+make test
+```
+
+## Layers 🔬
 
 #### Domain
 ____________________
@@ -46,11 +53,12 @@ ____________________
 All functionalities have been broken down into a number of 
 independent commands and queries.
 
-#### Persistence
+#### Adapters
 ____________________
-PostgreSQL was used as the database. In this layer there are 
-practically only database models and the popular client for 
-relational databases in Python - SQLAlchemy.
+The adapters that have been implemented are mainly Repository
+for interacting with the database and mapping objects from the
+database to domain objects. Additionally, the Unit of Work pattern
+was used here to ensure transactionality.
 
 #### Service
 ____________________
@@ -59,14 +67,11 @@ It is very minimalistic and is based primarily on the application layer.
 
 #### Error Management
 ____________________
-As suggested by Leonardo Giordani in his book, I used Requests and 
-Responses to manage errors within the application. Errors are raised
-in the application layer in specific commands and queries - this is
-where business rules can determine what the error really is.
+Errors are raised in the application layer in specific commands and 
+queries - this is where business rules can determine what the error really is.
 
 
-
-## Endpoints
+## Endpoints 🚀
 
 One of the best methods for testing the APIs is [HTTPie](https://httpie.org/). 
 In this section, I will use commands using exactly this CLI.
@@ -83,10 +88,13 @@ ____________________
 ```bash
 http :5000/api/users
 ```
+```bash
+http :5000/api/users include==courses
+```
 \
 `POST` - create new user.
 ```bash
-http POST :5000/api/users email='test'
+http POST :5000/api/users email='test@gmail.com'
 ```
   
 
@@ -97,6 +105,43 @@ ____________________
 ```bash
 http :5000/api/users/123 
 ```
+```bash
+http :5000/api/users/123 include==courses
+```
+**Sample response**:
+
+```json
+{
+    "_links": {
+        "collection": "/api/users",
+        "courses": "/api/users/4aa841d3-a852-408e-bd3f-e23b726b8d1a/courses",
+        "self": "/api/users/4aa841d3-a852-408e-bd3f-e23b726b8d1a"
+    },
+    "courses": [
+        {
+            "_links": {
+                "collection": "/api/courses",
+                "enroll_user": "/api/courses/3ad9b870-b752-4854-9708-4fc6b703c64d/users",
+                "self": "/api/courses/3ad9b870-b752-4854-9708-4fc6b703c64d"
+            },
+            "id": "3ad9b870-b752-4854-9708-4fc6b703c64d",
+            "name": "Test Course"
+        },
+        {
+            "_links": {
+                "collection": "/api/courses",
+                "enroll_user": "/api/courses/b39fefaa-a143-475c-9b4d-751b0843aaa8/users",
+                "self": "/api/courses/b39fefaa-a143-475c-9b4d-751b0843aaa8"
+            },
+            "id": "b39fefaa-a143-475c-9b4d-751b0843aaa8",
+            "name": "Sample Course"
+        }
+    ],
+    "email": "sample@gmail.com",
+    "id": "4aa841d3-a852-408e-bd3f-e23b726b8d1a"
+}
+```
+
 \
 `DELETE` - delete user.
 ```bash
@@ -120,12 +165,8 @@ ____________________
 ```bash
 http :5000/api/courses
 ```
-\
- `GET` `/api/courses?include=stats` - get a list of all courses with number of 
-enrollments for each one.
-
 ```bash
-http :5000/api/courses include==stats
+http :5000/api/courses include==enrollments
 ```
 \
 `POST` - create new course.
@@ -140,6 +181,43 @@ ____________________
 
 ```bash
 http :5000/api/courses/123
+```
+```bash
+http :5000/api/courses/123 include==enrollments
+```
+
+**Sample response**:
+```json
+{
+    "_links": {
+        "collection": "/api/courses",
+        "enroll_user": "/api/courses/3ad9b870-b752-4854-9708-4fc6b703c64d/users",
+        "self": "/api/courses/3ad9b870-b752-4854-9708-4fc6b703c64d"
+    },
+    "enrollments": [
+        {
+            "_links": {
+                "collection": "/api/users",
+                "courses": "/api/users/9c2f4dee-8db5-4045-95bb-c487d6d52e5b/courses",
+                "self": "/api/users/9c2f4dee-8db5-4045-95bb-c487d6d52e5b"
+            },
+            "email": "test@gmail.com",
+            "id": "9c2f4dee-8db5-4045-95bb-c487d6d52e5b"
+        },
+        {
+            "_links": {
+                "collection": "/api/users",
+                "courses": "/api/users/4aa841d3-a852-408e-bd3f-e23b726b8d1a/courses",
+                "self": "/api/users/4aa841d3-a852-408e-bd3f-e23b726b8d1a"
+            },
+            "email": "sample@gmail.com",
+            "id": "4aa841d3-a852-408e-bd3f-e23b726b8d1a"
+        }
+    ],
+    "enrollments_count": 2,
+    "id": "3ad9b870-b752-4854-9708-4fc6b703c64d",
+    "name": "Test Course"
+}
 ```
 \
 `DELETE` - delete course.
@@ -164,11 +242,9 @@ ____________________
 http DELETE :5000/api/courses/123/users/321
 ```
 
-## TODO
+## TODO 🏆
 
-1. Implement hypermedia controls.
-2. Add email validation in the endpoint for creating new users.
-3. Write integration tests.
-4. Implement a solution that allows composing commands and queries 
-into more complex abstractions.
-5. Add NGINX as a rivers proxy to the architecture.
+1. Add authentication layer with JWT.
+2. Implement OpenAPI specification.
+3. Create a K8S setup.
+4. Add NGINX as a rivers proxy to the architecture.
