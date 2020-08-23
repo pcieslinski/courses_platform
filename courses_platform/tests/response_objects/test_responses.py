@@ -1,22 +1,62 @@
 import json
+from typing import List
+
 import pytest
 
-from app.response_objects import ResponseFailure
+from app.domain.user import User
+from app.response_objects import ResponseSuccess, ResponseFailure
 
 
 @pytest.fixture
-def response_type() -> str:
-    return 'ResponseError'
+def response_success(users: List[User]) -> ResponseSuccess:
+    return ResponseSuccess('ResponseSuccess', users)
 
 
 @pytest.fixture
-def response_message() -> str:
-    return 'This is a response error'
+def response_failure() -> ResponseFailure:
+    return ResponseFailure('ResponseError', 'This is a response error')
 
 
-@pytest.fixture
-def response_failure(response_type, response_message) -> ResponseFailure:
-    return ResponseFailure(response_type, response_message)
+class TestResponseSuccess:
+
+    def test_response_success_initialize_correctly_with_value(self, response_success, users):
+        assert isinstance(response_success, ResponseSuccess)
+        assert response_success.type == 'ResponseSuccess'
+        assert response_success.value is users
+
+    def test_response_success_initialize_correctly_without_value(self):
+        res = ResponseSuccess('ResponseSuccess')
+
+        assert isinstance(res, ResponseSuccess)
+        assert res.type == 'ResponseSuccess'
+        assert res.value is None
+
+    def test_response_success_is_true(self, response_success):
+        assert bool(response_success) is True
+
+    def test_response_success_builds_from_success_ok(self, users):
+        res = ResponseSuccess.build_response_success(users)
+
+        assert bool(res) is True
+        assert isinstance(res, ResponseSuccess)
+        assert res.type == ResponseSuccess.SUCCESS_OK
+        assert res.value == users
+
+    def test_response_success_builds_from_resource_created(self, users):
+        res = ResponseSuccess.build_response_resource_created(users)
+
+        assert bool(res) is True
+        assert isinstance(res, ResponseSuccess)
+        assert res.type == ResponseSuccess.SUCCESS_RESOURCE_CREATED
+        assert res.value == users
+
+    def test_response_success_builds_from_no_content(self):
+        res = ResponseSuccess.build_response_no_content()
+
+        assert bool(res) is True
+        assert isinstance(res, ResponseSuccess)
+        assert res.type == ResponseSuccess.SUCCESS_NO_CONTENT
+        assert res.value == ''
 
 
 class TestResponseFailure:
@@ -26,11 +66,11 @@ class TestResponseFailure:
         assert response_failure.type == 'ResponseError'
         assert response_failure.message == 'This is a response error'
 
-    def test_response_failure_initialize_correctly_with_generic_exception(self, response_type):
-        res = ResponseFailure(response_type, Exception('simple exception'))
+    def test_response_failure_initialize_correctly_with_generic_exception(self):
+        res = ResponseFailure('ResponseError', Exception('simple exception'))
 
         assert isinstance(res, ResponseFailure)
-        assert res.type == response_type
+        assert res.type == 'ResponseError'
         assert res.message == 'Exception: simple exception'
 
     def test_property_value_returns_response_type_and_message(self, response_failure):
