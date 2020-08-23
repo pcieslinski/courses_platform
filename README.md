@@ -1,6 +1,6 @@
-# Courses Platform
+# Courses Platform 📝
 
-## Aproach
+## Aproach 💡
 The project includes a REST API that has been implemented in 
 accordance with clean architecture. Leonardo Giordani's work 
 inspired me very much during the development of this 
@@ -11,7 +11,7 @@ Excellent book with very good examples, I highly recommend it.
 The second source that is definitely worth mentioning here is 
 the repository/book [CosmicPython](https://github.com/cosmicpython/book) 📘.
 
-## Quickstart
+## Quickstart 📜
 The fastest way to start an application is to use the `Makefile`. Run this command in
 project root directory.
 
@@ -38,7 +38,7 @@ To run all tests, use this command:
 make test
 ```
 
-## Layers
+## Layers 🔬
 
 #### Domain
 ____________________
@@ -71,7 +71,7 @@ Errors are raised in the application layer in specific commands and
 queries - this is where business rules can determine what the error really is.
 
 
-## Endpoints
+## Endpoints 🚀
 
 One of the best methods for testing the APIs is [HTTPie](https://httpie.org/). 
 In this section, I will use commands using exactly this CLI.
@@ -242,7 +242,7 @@ ____________________
 http DELETE :5000/api/courses/123/users/321
 ```
 
-## TODO
+## TODO 🏆
 
 1. Add authentication layer with JWT.
 2. Implement OpenAPI specification.
