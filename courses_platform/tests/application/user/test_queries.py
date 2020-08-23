@@ -73,6 +73,7 @@ class TestGetUserCoursesQuery:
         assert response.type == ResponseFailure.SYSTEM_ERROR
         assert response.message == 'Exception: System error.'
 
+
 class TestGetUserQuery:
 
     def test_get_user_query_executes_correctly(self, uow):
