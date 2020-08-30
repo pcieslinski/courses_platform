@@ -40,6 +40,52 @@ make test
 
 ## Layers 🔬
 
+```
+app
+├── __init__.py
+├── adapters
+│   ├── __init__.py
+│   ├── orm.py
+│   ├── repositories.py
+│   └── unit_of_work.py
+├── application
+│   ├── __init__.py
+│   ├── course
+│   │   ├── __init__.py
+│   │   ├── commands.py
+│   │   └── queries.py
+│   ├── user
+│   │   ├── __init__.py
+│   │   ├── commands.py
+│   │   └── queries.py
+│   ├── interfaces
+│   │   ├── __init__.py
+│   │   └── iunit_of_work.py
+│   └── exceptions.py
+├── domain
+│   ├── __init__.py
+│   ├── course.py
+│   └── user.py
+├── response_objects
+│   ├── __init__.py
+│   └── responses.py
+└── service
+    ├── __init__.py
+    ├── config.py
+    ├── course
+    │   ├── __init__.py
+    │   ├── serializers.py
+    │   └── views.py
+    ├── user
+    │   ├── __init__.py
+    │   ├── serializers.py
+    │   └── views.py
+    ├── extensions.py
+    ├── parser.py
+    ├── schemas.py
+    └── status_codes.py
+```
+
 #### Domain
 ____________________
 At the domain layer, two entities have been implemented: 
