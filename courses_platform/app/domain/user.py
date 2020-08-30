@@ -7,6 +7,15 @@ from app.domain.course import Course
 
 
 class User:
+    """
+    Domain object for the user. May be enrolled in a course.
+
+    Args:
+        - email (str): Email of the given user
+        - id (str, optional): User ID, which is automatically generated when creating a new user
+        - enrollments (List[Course], optional): List of enrollments for the user's courses
+    """
+
     def __init__(
             self, email: str, id: str = None, courses: List[Course] = None
     ) -> None:

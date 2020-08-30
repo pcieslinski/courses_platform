@@ -33,6 +33,15 @@ class IRepository(abc.ABC):
 
 
 class SqlAlchemyRepository(IRepository):
+    """
+    SQLAlchemy repository, which enables basic operations with the database
+    and the selected model.
+
+    Args:
+        - session (sqlalchemy.orm.session.Session): Session object from sqlalchemy that enables
+            communication with the database
+        - model (Model): One of the classes that are used in the domain layer
+    """
 
     def __init__(self, session: Session, model: Model):
         self.session = session

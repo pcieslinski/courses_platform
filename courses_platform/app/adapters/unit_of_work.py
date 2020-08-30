@@ -11,6 +11,14 @@ from app.adapters.repositories import SqlAlchemyRepository
 
 
 class SqlAlchemyUnitOfWork(IUnitOfWork):
+    """
+    Unit of work for SQLAlchemy, which ensures transactionality when performing database
+    operations with the help of repositories. All failed operations are automatically rollbacked.
+
+    Args:
+        - session_factory (orm.sessionmaker): Session factory from sqlalchemy
+    """
+
     def __init__(
             self, session_factory: orm.sessionmaker = Session) -> None:
         self.session_factory = session_factory

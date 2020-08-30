@@ -19,6 +19,15 @@ class ResponseBase(abc.ABC):
 
 
 class ResponseSuccess(ResponseBase):
+    """
+    Wrapper for all successful application layer responses.
+
+    Args:
+        - type (str): One of the three types of successful responses: `Success`,
+            `SuccessResourceCreated`, `SuccessNoContent`
+        - value (Any, optional): The value that is returned by the application layer
+    """
+
     SUCCESS_OK = 'Success'
     SUCCESS_RESOURCE_CREATED = 'SuccessResourceCreated'
     SUCCESS_NO_CONTENT = 'SuccessNoContent'
@@ -44,6 +53,16 @@ class ResponseSuccess(ResponseBase):
 
 
 class ResponseFailure(ResponseBase):
+    """
+    Wrapper for all failed responses from the application layer.
+
+    Args:
+        - type (str): One of the three types of failed responses: `ResourceError`, `SystemError`
+        - message (Union[Exception, str]): The message that is passed from the application layer
+            can either be an Exception, in which case the traceback will be used to build the message,
+            or a regular string.
+    """
+
     RESOURCE_ERROR = 'ResourceError'
     SYSTEM_ERROR = 'SystemError'
 

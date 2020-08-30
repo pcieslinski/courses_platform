@@ -47,6 +47,11 @@ enrollment: Table = Table(
 
 
 def start_mappers() -> None:
+    """
+    Function responsible for initializing the mapping between ORM objects
+    and Domain objects.
+    """
+
     users_mapper = mapper(User, user)
     mapper(
         Course, course, properties={

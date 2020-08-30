@@ -9,6 +9,16 @@ if TYPE_CHECKING:
 
 
 class Course:
+    """
+    Domain object for the course. The basic actions available for this object are enrolling
+    up and withdrawing users enrollment from the course.
+
+    Args:
+        - name (str): Name of the course
+        - id (str, optional): Course ID, which is automatically generated when creating a new course
+        - enrollments (List[User], optional): List of users who are enrolled in the course
+    """
+
     def __init__(
             self, name: str, id: str = None, enrollments: List[User] = None
     ) -> None:
