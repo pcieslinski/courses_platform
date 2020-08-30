@@ -98,14 +98,6 @@ class TestResponseFailure:
         assert res.type == ResponseFailure.SYSTEM_ERROR
         assert res.message == 'Exception: system error'
 
-    def test_response_failure_builds_from_parameters_error(self):
-        res = ResponseFailure.build_parameters_error(Exception('parameter error'))
-
-        assert bool(res) is False
-        assert isinstance(res, ResponseFailure)
-        assert res.type == ResponseFailure.PARAMETERS_ERROR
-        assert res.message == 'Exception: parameter error'
-
     def test_response_failure_serializes_correctly(self, response_failure):
         serialized_res = response_failure.serialize()
 

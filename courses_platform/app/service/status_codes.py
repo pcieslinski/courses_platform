@@ -6,6 +6,5 @@ STATUS_CODES = {
     ResponseSuccess.SUCCESS_RESOURCE_CREATED: 201,
     ResponseSuccess.SUCCESS_NO_CONTENT: 204,
     ResponseFailure.RESOURCE_ERROR: 404,
-    ResponseFailure.PARAMETERS_ERROR: 400,
     ResponseFailure.SYSTEM_ERROR: 500
 }

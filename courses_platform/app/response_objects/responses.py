@@ -46,7 +46,6 @@ class ResponseSuccess(ResponseBase):
 class ResponseFailure(ResponseBase):
     RESOURCE_ERROR = 'ResourceError'
     SYSTEM_ERROR = 'SystemError'
-    PARAMETERS_ERROR = 'ParametersError'
 
     def __init__(self, type: str, message: Union[Exception, str]) -> None:
         self.type = type
@@ -74,7 +73,3 @@ class ResponseFailure(ResponseBase):
     @classmethod
     def build_system_error(cls, message: Exception) -> ResponseFailure:
         return cls(cls.SYSTEM_ERROR, message)
-
-    @classmethod
-    def build_parameters_error(cls, message: Union[Exception, str]) -> ResponseFailure:
-        return cls(cls.PARAMETERS_ERROR, message)
